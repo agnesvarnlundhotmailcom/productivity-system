@@ -45,4 +45,4 @@ Projektet är under utveckling.
 ![Webb – dashboard](bilder/webb.png)
 
 ### Färgpalett
-![Färgpalett]()
+![Färgpalett](bilder/färgpalett.png)
