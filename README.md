@@ -37,3 +37,12 @@ Affärslogik och kärnfunktionalitet delas mellan plattformarna för att säkers
 ## Status
 Projektet är under utveckling.
 
+## Design
+### Mobil
+![Mobil – översikt](bilder/mobil.png)
+
+### Webb
+![Webb – dashboard](bilder/webb.png)
+
+### Färgpalett
+![Färgpalett]()
