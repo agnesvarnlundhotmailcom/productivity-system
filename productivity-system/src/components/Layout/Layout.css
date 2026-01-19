@@ -56,23 +56,3 @@
   color: var(--accent-primary); /* Lyser upp vid hover */
 }
 
-/* Profilcirkel */
-.profile-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--surface-2);
-  color: var(--text-primary);
-  border: 1px solid var(--surface-3);
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.profile-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-}
