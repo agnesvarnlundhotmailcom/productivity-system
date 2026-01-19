@@ -1,44 +1,48 @@
-#root {
-  max-width: 1280px;
+/* Huvudcontainer */
+.dashboard-container {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: var(--app-padding);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* 3-kolumns grid */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr; /* Mitten är bredast */
+  gap: var(--section-gap);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
+/* Dina "Lådor" (Cards) */
 .card {
-  padding: 2em;
+  background-color: var(--surface-2); /* Din specifika kort-färg */
+  border: 1px solid var(--surface-3); /* Subtil kant */
+  border-radius: 16px;
+  padding: var(--space-lg);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.read-the-docs {
-  color: #888;
+/* Knappstil (baserad på din accent) */
+.btn-primary {
+  background-color: rgba(14, 211, 172, 0.1); /* Genomskinlig accent */
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-primary);
+  color: var(--text-on-accent);
 }
 
 
