@@ -1,0 +1,50 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Vi använder surface-1 som är lite ljusare än bakgrunden */
+  background-color: var(--bg-main-1); 
+  height: 80px;
+  /* Använder din spacing-variabel */
+  padding: 0 var(--space-xl); 
+}
+
+/* Vänster sida */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+  color: var(--accent-primary); /* Den nya turkosa färgen */
+  /* Neon-glow effekt */
+  text-shadow: 0 0 12px rgba(14, 211, 172, 0.4); 
+}
+
+.app-title {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* Höger sida */
+.header-right nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-secondary); /* Gråaktig text */
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--accent-primary); /* Lyser upp vid hover */
+}
+

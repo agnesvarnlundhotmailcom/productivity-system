@@ -1,0 +1,48 @@
+/* Huvudcontainer */
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--app-padding);
+}
+
+/* 3-kolumns grid */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr; /* Mitten är bredast */
+  gap: var(--section-gap);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+/* Dina "Lådor" (Cards) */
+.card {
+  background-color: var(--surface-2); /* Din specifika kort-färg */
+  border: 1px solid var(--surface-3); /* Subtil kant */
+  border-radius: 16px;
+  padding: var(--space-lg);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Knappstil (baserad på din accent) */
+.btn-primary {
+  background-color: rgba(14, 211, 172, 0.1); /* Genomskinlig accent */
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-primary);
+  color: var(--text-on-accent);
+}
+
+
