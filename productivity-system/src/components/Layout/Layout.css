@@ -1,74 +1,78 @@
-/* Vi använder din --bg-card färg för att headern ska kännas som en del av UI:t */
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   
-  background-color: var(--bg-card); /* Din mörkgrå färg */
+  /* Vi använder surface-1 som är lite ljusare än bakgrunden */
+  background-color: var(--surface-1); 
   height: 80px;
-  padding: 0 24px; /* Lite mer luft */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* En väldigt subtil linje under */
-  margin-bottom: 24px; /* Luft ner till innehållet */
+  
+  /* Använder din spacing-variabel */
+  padding: 0 var(--space-xl); 
+  
+  /* En subtil kantlinje som matchar accent-dark eller surface-3 */
+  border-bottom: 1px solid var(--surface-3);
+  
+  /* Skugga för att lyfta den från bakgrunden */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Vänster sida */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-sm);
 }
 
 .logo-icon {
   font-size: 1.5rem;
-  color: var(--primary-green); /* Din neonfärg på ikonen */
-  text-shadow: 0 0 10px rgba(0, 229, 255, 0.4); /* Lite "glow" effekt */
+  color: var(--accent-primary); /* Den nya turkosa färgen */
+  /* Neon-glow effekt */
+  text-shadow: 0 0 12px rgba(14, 211, 172, 0.4); 
 }
 
 .app-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-main); /* Vit text */
-  margin: 0;
-  letter-spacing: -0.5px;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
-/* Höger sida (Meny) */
+/* Höger sida */
 .header-right nav {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: var(--space-lg);
 }
 
 .nav-link {
   text-decoration: none;
-  color: var(--text-muted); /* Grå text när den inte är aktiv */
+  color: var(--text-secondary); /* Gråaktig text */
   font-weight: 500;
-  font-size: 1rem;
-  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
 }
 
 .nav-link:hover, .nav-link.active {
-  color: var(--primary-green); /* Neonfärg vid hover */
-  text-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+  color: var(--accent-primary); /* Lyser upp vid hover */
 }
 
-/* Profilcirkeln */
+/* Profilcirkel */
 .profile-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1); /* Svagt ljus bakgrund */
-  color: var(--text-main);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-weight: bold;
-  cursor: pointer;
+  background-color: var(--surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--surface-3);
+  
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.2s;
+  cursor: pointer;
+  transition: border-color 0.2s;
 }
 
 .profile-btn:hover {
-  border-color: var(--primary-green);
-  color: var(--primary-green);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }

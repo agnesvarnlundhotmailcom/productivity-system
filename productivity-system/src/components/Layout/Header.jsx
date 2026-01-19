@@ -14,7 +14,7 @@ const Header = () => {
       <div className="header-right">
         <nav>
           <a href="#" className="nav-link active">Hem</a>
-          <a href="#" className="nav-link">Statistik</a>
+          <a href="#" className="nav-link">Tidsspårning</a>
         </nav>
       </div>
     </header>
