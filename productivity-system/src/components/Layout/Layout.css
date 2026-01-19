@@ -2,19 +2,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
   /* Vi använder surface-1 som är lite ljusare än bakgrunden */
-  background-color: var(--surface-1); 
+  background-color: var(--bg-main-1); 
   height: 80px;
-  
   /* Använder din spacing-variabel */
   padding: 0 var(--space-xl); 
-  
-  /* En subtil kantlinje som matchar accent-dark eller surface-3 */
-  border-bottom: 1px solid var(--surface-3);
-  
-  /* Skugga för att lyfta den från bakgrunden */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Vänster sida */
