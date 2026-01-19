@@ -1,0 +1,64 @@
+/* Grunden för hela listen */
+.header-container {
+  display: flex; /* Gör att vi kan lägga saker på rad */
+  justify-content: space-between; /* Trycker isär vänster och höger del */
+  align-items: center; /* Centrerar allt i höjdled */
+  
+  background-color: #ffffff; /* Vit bakgrund (eller byt till mörk färg) */
+  height: 70px; /* Fast höjd */
+  padding: 0 2rem; /* Luft på sidorna */
+  border-bottom: 1px solid #e0e0e0; /* En tunn linje under */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Liten skugga */
+}
+
+/* Vänster sida (Loggan) */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+/* Höger sida (Menyn) */
+.header-right nav {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Avstånd mellan länkarna */
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #27ae60; /* Grön färg vid hover/aktiv */
+}
+
+/* Profilcirkeln längst till höger */
+.profile-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%; /* Gör den rund */
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;     /* För att centrera bokstaven i cirkeln */
+  align-items: center;
+  justify-content: center;
+}
