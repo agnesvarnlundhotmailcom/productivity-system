@@ -1,64 +1,74 @@
-/* Grunden för hela listen */
+/* Vi använder din --bg-card färg för att headern ska kännas som en del av UI:t */
 .header-container {
-  display: flex; /* Gör att vi kan lägga saker på rad */
-  justify-content: space-between; /* Trycker isär vänster och höger del */
-  align-items: center; /* Centrerar allt i höjdled */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   
-  background-color: #ffffff; /* Vit bakgrund (eller byt till mörk färg) */
-  height: 70px; /* Fast höjd */
-  padding: 0 2rem; /* Luft på sidorna */
-  border-bottom: 1px solid #e0e0e0; /* En tunn linje under */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Liten skugga */
+  background-color: var(--bg-card); /* Din mörkgrå färg */
+  height: 80px;
+  padding: 0 24px; /* Lite mer luft */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* En väldigt subtil linje under */
+  margin-bottom: 24px; /* Luft ner till innehållet */
 }
 
-/* Vänster sida (Loggan) */
+/* Vänster sida */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .logo-icon {
   font-size: 1.5rem;
+  color: var(--primary-green); /* Din neonfärg på ikonen */
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.4); /* Lite "glow" effekt */
 }
 
 .app-title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #333;
+  color: var(--text-main); /* Vit text */
   margin: 0;
+  letter-spacing: -0.5px;
 }
 
-/* Höger sida (Menyn) */
+/* Höger sida (Meny) */
 .header-right nav {
   display: flex;
   align-items: center;
-  gap: 20px; /* Avstånd mellan länkarna */
+  gap: 30px;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #666;
+  color: var(--text-muted); /* Grå text när den inte är aktiv */
   font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.2s;
+  font-size: 1rem;
+  transition: all 0.2s ease;
 }
 
 .nav-link:hover, .nav-link.active {
-  color: #27ae60; /* Grön färg vid hover/aktiv */
+  color: var(--primary-green); /* Neonfärg vid hover */
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
 }
 
-/* Profilcirkeln längst till höger */
+/* Profilcirkeln */
 .profile-btn {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%; /* Gör den rund */
-  background-color: #2c3e50;
-  color: white;
-  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1); /* Svagt ljus bakgrund */
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   font-weight: bold;
   cursor: pointer;
-  display: flex;     /* För att centrera bokstaven i cirkeln */
+  display: flex;
   align-items: center;
   justify-content: center;
+  transition: 0.2s;
+}
+
+.profile-btn:hover {
+  border-color: var(--primary-green);
+  color: var(--primary-green);
 }
