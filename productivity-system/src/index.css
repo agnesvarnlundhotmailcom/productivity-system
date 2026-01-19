@@ -1,68 +1,62 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  /* Färgpalett från dina skisser */
+  --bg-dark: #121214;       /* Den mörkaste bakgrunden */
+  --bg-card: #1E1E24;       /* Färgen på "lådorna" */
+  --primary-green: #00E5FF; /* Neonfärgen (cyan/grön) */
+  --text-main: #FFFFFF;
+  --text-muted: #888888;
+  
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
 }
 
 body {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* En hjälpklass för dina "lådor" */
+.card {
+  background-color: var(--bg-card);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.dashboard-container {
+  max-width: 1400px; /* Så det inte blir för brett på jättestora skärmar */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr; /* Mittenkolumnen är lite bredare */
+  gap: 24px; /* Mellanrum mellan kolumnerna */
+}
+
+.column {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  flex-direction: column;
+  gap: 20px; /* Mellanrum mellan korten i höjdled */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
+/* Knapp-stil från skissen */
+.btn-primary {
+  background-color: rgba(0, 229, 255, 0.15);
+  color: var(--primary-green);
+  border: 1px solid var(--primary-green);
+  padding: 10px 20px;
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font-weight: bold;
+  font-size: 16px;
+  transition: 0.2s;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.btn-primary:hover {
+  background-color: var(--primary-green);
+  color: #000;
 }
