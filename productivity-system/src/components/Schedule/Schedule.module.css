@@ -1,23 +1,24 @@
 .container {
-    background-color: #121c25;  
-    padding: 24px;    
+    background-color: var(--surface-2);
+    border: 1px solid var(--surface-3);
+    padding: var(--space-lg);  
     border-radius: 16px;
-    color: #fff;
+    color: var(--text-primary);
     max-width: 100%;
-    margin: 0 auto;
-    font-family: sans-serif;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: var(--space-md);
   }
   
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: var(--space-md);
     padding: 0 5px;
-    color: #ccc;
+    color: var(--text-secondary);
     font-size: 16px;
     font-weight: 500;
-    text-transform: capitalize; /* Gör första bokstaven i "måndag" stor */
+    text-transform: capitalize;
   }
   
   .headerTitle {
@@ -28,7 +29,7 @@
   .addButton {
     background: none;
     border: none;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 28px;
     cursor: pointer;
     line-height: 1;
@@ -36,18 +37,19 @@
   }
   
   .addButton:hover {
-    color: #0ea5e9;
+    color: var(--accent-primary);
   }
   
   /* Formulär */
   .form {
-    background-color: #374151;
+    background-color: var(--surface-1);
     padding: 15px;
     border-radius: 12px;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    border: 1px solid var(--surface-3);
     animation: fadeIn 0.3s ease;
   }
   
@@ -59,15 +61,15 @@
   .input, .select {
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid #4b5563;
-    background-color: #1f2937;
-    color: #fff;
+    border: 1px solid var(--surface-3);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
     outline: none;
     font-size: 14px;
   }
   
   .input:focus, .select:focus {
-    border-color: #0ea5e9;
+    border-color: var(--accent-primary);
   }
   
   .inputTime {
@@ -82,8 +84,8 @@
     padding: 12px;
     border-radius: 8px;
     border: none;
-    background-color: #0ea5e9;
-    color: #fff;
+    background-color: var(--accent-primary);
+    color: var(--text-on-accent);
     font-weight: bold;
     cursor: pointer;
     margin-top: 5px;
@@ -91,7 +93,7 @@
   }
   
   .saveBtn:hover {
-    background-color: #0284c7;
+    filter: brightness(1.1);
   }
   
   /* Listan */
@@ -103,7 +105,7 @@
   
   .emptyState {
     text-align: center;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-top: 20px;
     font-size: 14px;
     font-style: italic;
@@ -113,12 +115,18 @@
   .card {
     display: flex;
     align-items: center;
-    background-color: #1f2937;
+    background-color: var(--surface-1);
     padding: 16px;
     border-radius: 12px;
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--surface-3);
   }
   
   .accentBar {
@@ -131,7 +139,7 @@
   }
   
   .time {
-    color: #9ca3af;
+    color: var(--text-secondary);
     font-family: monospace;
     font-size: 14px;
     margin-left: 12px;
@@ -140,7 +148,7 @@
   }
   
   .title {
-    color: #fff;
+    color: var(--text-primary);
     font-weight: 500;
     font-size: 15px;
     flex: 1;
@@ -152,8 +160,8 @@
   
   .categoryTag {
     font-size: 11px;
-    color: #6b7280;
-    background-color: rgba(255,255,255,0.05);
+    color: var(--text-secondary);
+    background-color: var(--surface-3);
     padding: 4px 8px;
     border-radius: 6px;
     text-transform: capitalize;
