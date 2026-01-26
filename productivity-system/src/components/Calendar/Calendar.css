@@ -263,7 +263,7 @@
 /* Mobile tweaks */
 @media (max-width: 520px){
   .ftRing{ width: 300px; height: 300px; }
-  .ftTime{ font-size: 64px; }
+  .ftTime{ font-size: 64px;  }
   .ftButtons{ grid-template-columns: 1fr; }
   .ftStatsGrid{ grid-template-columns: 1fr; }
 }
