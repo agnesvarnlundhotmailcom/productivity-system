@@ -33,7 +33,6 @@ const IconHeader = () => (
 );
 
 const TodoWidget = () => {
-  // ÄNDRING: Startar med en tom lista istället för dummy-data
   const [tasks, setTasks] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
@@ -43,7 +42,7 @@ const TodoWidget = () => {
     const newTask = {
       id: Date.now(),
       text: inputValue,
-      completed: false, // Nya uppgifter är alltid ej klara
+      completed: false,
     };
 
     setTasks([...tasks, newTask]);
