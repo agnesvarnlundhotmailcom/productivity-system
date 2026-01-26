@@ -1,4 +1,14 @@
 :root {
+  --bg: #070a10;
+  --card: rgba(15, 22, 35, 0.75);
+  --cardBorder: rgba(255,255,255,0.06);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.55);
+  --muted2: rgba(255,255,255,0.35);
+  --accent: #1fe7c6;
+  --shadow: 0 18px 60px rgba(0,0,0,0.55);
+  --radius: 22px;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -28,6 +38,11 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+
+  background: radial-gradient(1000px 600px at 20% 15%, rgba(31,231,198,0.12), transparent 60%),
+              radial-gradient(900px 700px at 70% 40%, rgba(93, 130, 255, 0.10), transparent 55%),
+              var(--bg);
+  color: var(--text);
 }
 
 h1 {
