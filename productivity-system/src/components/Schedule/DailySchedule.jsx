@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ScheduleItem from './ScheduleItem';
 import styles from './Schedule.module.css';
 
@@ -11,7 +11,7 @@ export default function DailySchedule() {
   const [newTitle, setNewTitle] = useState("");
   const [newCategory, setNewCategory] = useState("Arbete");
 
-  // Hämta dagens datum automatiskt (T.ex "måndag 19 januari")
+  // Hämta dagens datum automatiskt
   const todayDate = new Date().toLocaleDateString('sv-SE', { 
     weekday: 'long', 
     day: 'numeric', 
@@ -21,10 +21,10 @@ export default function DailySchedule() {
   // Funktion för färgkodning
   const getColorForCategory = (cat) => {
     switch(cat) {
-      case 'Arbete': return '#0ea5e9'; // Blå
-      case 'Paus': return '#f97316';   // Orange
-      case 'Möte': return '#8b5cf6';   // Lila
-      default: return '#d946ef';       // Rosa (Personligt)
+      case 'Arbete': return '#39bef8'; // Blå
+      case 'Paus': return '#f49e0c';   // Orange
+      case 'Möte': return '#c093fc';   // Lila
+      default: return '#fb7185';       // Rosa (Personligt)
     }
   };
 
