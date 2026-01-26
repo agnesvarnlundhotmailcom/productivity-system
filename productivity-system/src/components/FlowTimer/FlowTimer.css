@@ -1,0 +1,25 @@
+*{
+.ftWrap {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.ftHeader {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.ftTitle {
+  font-size: 2.5em;
+  margin: 0;
+}
+.ftTagline {
+  font-size: 1.2em;
+  color: #666;
+}
+.ftTimer {
+  font-size: 4em;
+  text-align: center;
+  margin: 20px 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+}
