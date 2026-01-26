@@ -1,33 +1,30 @@
-/* TodoWidget.module.css */
-
 .container {
-    background-color: #111318;
-    padding: 1.5rem;
+    background-color: var(--surface-1);
+    padding: var(--space-lg);
     border-radius: 1rem;
-    color: #ffffff;
+    color: var(--text-primary);
     width: 100%;
     max-width: 400px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', sans-serif;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--surface-3);
   }
   
-  /* Header */
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-lg);
   }
   
   .titleGroup {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-sm);
   }
   
   .headerIcon {
-    color: #4ade80; /* Din gröna accentfärg */
+    color: var(--accent-primary);
     display: flex;
     align-items: center;
   }
@@ -36,26 +33,26 @@
     font-size: 1.125rem;
     font-weight: 600;
     margin: 0;
+    color: var(--text-primary);
   }
   
   .counter {
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--text-secondary);
   }
   
-  /* Input section */
   .inputWrapper {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-lg);
   }
   
   .inputField {
     width: 100%;
-    background-color: #1A1D24;
-    border: 1px solid transparent;
+    background-color: var(--surface-3);
+    border: 1px solid var(--surface-3);
     padding: 0.75rem 3rem 0.75rem 1rem;
     border-radius: 0.75rem;
-    color: white;
+    color: var(--text-primary);
     font-size: 0.875rem;
     outline: none;
     box-sizing: border-box;
@@ -63,7 +60,7 @@
   }
   
   .inputField:focus {
-    border-color: rgba(74, 222, 128, 0.3);
+    border-color: var(--accent-primary);
     box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.1);
   }
   
@@ -72,8 +69,8 @@
     right: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
-    background-color: #4ade80;
-    color: #000;
+    background-color: var(--accent-primary);
+    color: var(--text-on-accent);
     border: none;
     border-radius: 0.5rem;
     width: 28px;
@@ -86,47 +83,47 @@
   }
   
   .addButton:hover {
-    background-color: #22c55e;
+    filter: brightness(1.1);
   }
   
-  /* List Items */
   .list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--space-sm);
   }
   
   .item {
-    background-color: #1A1D24;
+    background-color: var(--surface-3);
     padding: 0.75rem;
     border-radius: 0.75rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, border-color 0.2s;
     user-select: none;
+    border: 1px solid transparent;
   }
   
   .item:hover {
-    background-color: #20242c;
+    background-color: var(--surface-3);
   }
   
   .completedItem {
-    background-color: rgba(26, 29, 36, 0.6);
+    background-color: rgba(24, 24, 39, 0.4);
+    border-color: transparent;
   }
   
   .itemText {
     font-size: 0.875rem;
-    color: #e2e8f0;
+    color: var(--text-primary);
   }
   
   .completedItem .itemText {
     text-decoration: line-through;
-    color: #64748b;
+    color: var(--text-secondary);
   }
   
-  /* Ikoner i listan */
   .checkIcon {
     display: flex;
     align-items: center;
@@ -134,13 +131,13 @@
   }
   
   .unchecked {
-    color: #64748b;
+    color: var(--text-secondary);
   }
   
   .item:hover .unchecked {
-    color: #94a3b8;
+    color: var(--text-primary);
   }
   
   .checked {
-    color: #4ade80;
+    color: var(--accent-primary);
   }
