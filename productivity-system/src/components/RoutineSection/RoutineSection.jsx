@@ -34,7 +34,9 @@ const RoutineSection = () => {
     { id: 'orange', value: 'var(--accent-warning)' }, 
     { id: 'pink',   value: 'var(--accent-danger)' },  
     { id: 'purple', value: 'var(--accent-purple)' },               
-    { id: 'blue',   value: 'var(--accent-blue)' },                        
+    { id: 'blue',   value: 'var(--accent-blue)' },               
+    { id: 'green',  value: 'var(--accent-green)' },               
+    { id: 'yellow', value: 'var(--accent-yellow)' },               
   ];
 
   const iconOptions = [
