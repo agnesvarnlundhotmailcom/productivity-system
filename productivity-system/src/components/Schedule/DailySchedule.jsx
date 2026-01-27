@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import ScheduleItem from './ScheduleItem';
 import styles from './Schedule.module.css';
-import { 
-  Clock
-} from 'lucide-react';
+import { Clock } from 'lucide-react'; 
 
 export default function DailySchedule() {
   const [activities, setActivities] = useState([]);
