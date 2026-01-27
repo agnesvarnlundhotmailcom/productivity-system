@@ -1,36 +1,7 @@
 import React, { useState } from 'react';
+// 1. Importera alla ikoner vi behöver från Lucide
+import { ListTodo, CircleCheck, Circle, Plus } from 'lucide-react'; 
 import styles from './TodoWidget.module.css';
-
-// --- Ikoner (SVG) ---
-const IconCheck = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-    <path d="m9 12 2 2 4-4" />
-  </svg>
-);
-
-const IconCircle = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-  </svg>
-);
-
-const IconPlus = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14" />
-    <path d="M12 5v14" />
-  </svg>
-);
-
-const IconHeader = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="5" width="6" height="6" rx="1" />
-    <path d="m3 17 2 2 4-4" />
-    <path d="M13 6h8" />
-    <path d="M13 12h8" />
-    <path d="M13 18h8" />
-  </svg>
-);
 
 const TodoWidget = () => {
   const [tasks, setTasks] = useState([]);
@@ -68,7 +39,8 @@ const TodoWidget = () => {
       <div className={styles.header}>
         <div className={styles.titleGroup}>
           <div className={styles.headerIcon}>
-            <IconHeader />
+            {/* Bytt till ListTodo */}
+            <ListTodo size={20} strokeWidth={2} />
           </div>
           <h2 className={styles.title}>Att göra</h2>
         </div>
@@ -88,7 +60,8 @@ const TodoWidget = () => {
           className={styles.inputField}
         />
         <button onClick={addTask} className={styles.addButton}>
-          <IconPlus />
+          {/* Bytt till Plus */}
+          <Plus size={16} strokeWidth={3} />
         </button>
       </div>
 
@@ -107,7 +80,12 @@ const TodoWidget = () => {
             className={`${styles.item} ${task.completed ? styles.completedItem : ''}`}
           >
             <div className={`${styles.checkIcon} ${task.completed ? styles.checked : styles.unchecked}`}>
-              {task.completed ? <IconCheck /> : <IconCircle />}
+              {/* Bytt till CircleCheck och Circle */}
+              {task.completed ? (
+                <CircleCheck size={20} strokeWidth={2} />
+              ) : (
+                <Circle size={20} strokeWidth={2} />
+              )}
             </div>
             
             <span className={styles.itemText}>
