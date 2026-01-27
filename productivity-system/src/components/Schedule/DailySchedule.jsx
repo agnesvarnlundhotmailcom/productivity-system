@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import ScheduleItem from './ScheduleItem';
 import styles from './Schedule.module.css';
+import { 
+  Clock
+} from 'lucide-react';
 
 export default function DailySchedule() {
   const [activities, setActivities] = useState([]);
@@ -55,7 +58,7 @@ export default function DailySchedule() {
       {/* Header med dynamiskt datum */}
       <div className={styles.header}>
         <div className={styles.headerTitle}>
-          <span style={{ marginRight: '8px' }}>🕒</span> 
+          <span style={{ marginRight: '8px' }}><Clock size={20}/></span> 
           Schema - {todayDate}
         </div>
         <button onClick={() => setIsAdding(!isAdding)} className={styles.addButton}>
