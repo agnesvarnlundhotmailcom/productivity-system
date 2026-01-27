@@ -10,8 +10,7 @@ function App() {
       <Header />
       
       <main className="dashboard-container">
-        <h2>Välkommen till din fokus-app</h2>
-        <p style={{marginBottom: '2rem'}}>Här är dina dagliga mål och rutiner.</p>
+        <p>Här är dina dagliga mål och rutiner.</p>
         
         {/* Här laddar vi in din nya komponent */}
 
