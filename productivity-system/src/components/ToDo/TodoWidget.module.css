@@ -8,6 +8,7 @@
     font-family: 'Inter', sans-serif;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
     border: 1px solid var(--surface-3);
+    margin-bottom: var(--space-lg);
   }
   
   .header {
