@@ -1,13 +1,17 @@
 import React from 'react';
 import './Layout.css';
+import { Sparkles } from 'lucide-react';
 
 const Header = () => {
   return (
     <header className="header-container">
       {/* Vänster sida: Logga/Titel */}
       <div className="header-left">
-        <span className="logo-icon">⚡</span> {/* En liten ikon, typ blixt */}
-        <h1 className="app-title">NAMN PÅ APPEN</h1>
+
+      <span className="logo-icon">
+        <Sparkles size={30} />
+      </span>
+        <h1 className="app-title">FlowTime</h1>
       </div>
 
       {/* Höger sida: Meny/Navigation */}
