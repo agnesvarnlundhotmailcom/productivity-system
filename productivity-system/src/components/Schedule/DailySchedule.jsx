@@ -56,7 +56,9 @@ export default function DailySchedule() {
       {/* Header med dynamiskt datum */}
       <div className={styles.header}>
         <div className={styles.headerTitle}>
-          <span style={{ marginRight: '8px' }}><Clock size={20}/></span> 
+        <span style={{ marginRight: '8px' }}>
+        <Clock size={20} color="#0ed3ac" />
+        </span>
           Schema - {todayDate}
         </div>
         <button onClick={() => setIsAdding(!isAdding)} className={styles.addButton}>
