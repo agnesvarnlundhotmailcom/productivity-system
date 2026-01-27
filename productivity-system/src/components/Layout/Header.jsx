@@ -1,6 +1,6 @@
 import React from 'react';
 import './Layout.css';
-import { Sparkles } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 const Header = () => {
   return (
@@ -9,7 +9,7 @@ const Header = () => {
       <div className="header-left">
 
       <span className="logo-icon">
-        <Sparkles size={30} />
+        <Zap size={30} />
       </span>
         <h1 className="app-title">FlowTime</h1>
       </div>
