@@ -15,11 +15,12 @@ export default function Form() {
     }
     if (password.length < 6) {
       alert("Lösenordet måste vara minst 6 tecken långt.");
-    }return;
-  }
+    return;
+    }
 
-      console.log("Användarnamn:", username);
-      console.log("Lösenord:", password);
+    console.log("Användarnamn:", username);
+    console.log("Lösenord:", password);
+  }
 
   return (
     <form className="form" onSubmit={handleSubmit}>
@@ -39,3 +40,4 @@ export default function Form() {
       <button type="submit">Logga in</button>
     </form>
   );
+}
