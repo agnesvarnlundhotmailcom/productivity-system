@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import "./FlowTimer.css";
 
+// Hjälpfunktion: Pure function - ingen sidoeffekt, samma indata ger samma utdata
+// pad2 = "padding 2" - lägger till nolla framför ensiffer nummer
 function pad2(n) {
   return String(n).padStart(2, "0");
 }
 
+// formatMMSS = konverterar sekunder till MM:SS format
+// Pure function = enkelt att testa, ingen slumpmässighet eller externa beroenden
 function formatMMSS(totalSeconds) {
   const m = Math.floor(totalSeconds / 60);
   const s = totalSeconds % 60;
@@ -15,39 +19,63 @@ export default function FlowTimer({
   appName = "FlowTime",
   tagline = "Din produktivitetspartner",
 }) {
-  // v2: state
+  // ===== STATE MANAGEMENT =====
+  // React-koncept: useState Hook - skapar reaktiv state för komponenten
+  // State = data som komponenten lagrar och kan uppdatera
+  // Varje setState kaller render igen med nya värden
   const [secondsWork, setSecondsWork] = useState(0);
   const [secondsBreak, setSecondsBreak] = useState(0);
 
-  // "mode": work | break
+  // mode = vilken läge timern är i ("work" eller "break")
+  // Varför: Bestämmer vilken timer som tickar och visas i displayen
   const [mode, setMode] = useState("work");
+
+  // isRunning = boolsk state för att kontrollera om intervallen är aktiv
+  // Varför: Avgör om timern tickar eller är pausad
   const [isRunning, setIsRunning] = useState(false);
 
-  // Här är det som visas i stora klockan:
+  // ===== DERIVED STATE =====
+  // Avledt värde från state - beräknas varje render, sparas inte separat
+  // Varför: Undviker duplicering och håller en enda "sanningskälla"
   const displaySeconds = mode === "work" ? secondsWork : secondsBreak;
 
-  // v2: useEffect (tick + cleanup)
+  // ===== SIDE EFFECTS =====
+  // React-koncept: useEffect Hook - hanterar sidoeffekter (interval, API-anrop, etc)
+  // Varför: Vi vill starta/stoppa en interval timer när isRunning eller mode ändras
   useEffect(() => {
+    // Early return - om timern inte körs, gör ingenting
     if (!isRunning) return;
 
+    // Setara upp en interval som tickar varje sekund (1000ms)
+    // setInterval = utför funktion upprepade gånger
     const id = setInterval(() => {
       if (mode === "work") {
+        // Funktionell uppdatering (prev) - använder föregående värde för att undvika race conditions
         setSecondsWork((prev) => prev + 1);
       } else {
         setSecondsBreak((prev) => prev + 1);
       }
     }, 1000);
 
+    // ===== CLEANUP FUNCTION =====
+    // React-koncept: Cleanup/Unmount - körs innan nästa effect eller vid unmount
+    // Varför: Stoppar intervallen för att undvika minnesläckor och dubbelkörning
+    // Utan cleanup skulle vi ha flera intervaller som tickar samtidigt
     return () => clearInterval(id);
-  }, [isRunning, mode]);
+  }, [isRunning, mode]); // Dependency array - effect körs om dessa ändras
 
+  // ===== MEMOIZATION =====
+  // React-koncept: useMemo Hook - memoization av beräknad värde
+  // Varför: greeting ändras aldrig under sessionen (enbart beräknat en gång)
   const greeting = useMemo(() => {
     const h = new Date().getHours();
     if (h < 10) return "God morgon!";
     if (h < 18) return "God eftermiddag!";
     return "God kväll!";
-  }, []);
+  }, []); // Tom array = körs endast en gång vid mount
 
+  // ===== EVENT HANDLERS =====
+  // Små funktioner som uppdaterar state när användaren klickar
   const startWork = () => {
     setMode("work");
     setIsRunning(true);
@@ -60,6 +88,7 @@ export default function FlowTimer({
 
   const pause = () => setIsRunning(false);
 
+  // resetAll = återställer alla timers och state till initiala värden
   const resetAll = () => {
     setIsRunning(false);
     setSecondsWork(0);
@@ -67,6 +96,8 @@ export default function FlowTimer({
     setMode("work");
   };
 
+  // ===== RENDER =====
+  // React-koncept: JSX - deklarativ syntax för att bygga UI med JavaScript
   return (
     <div className="ftWrap">
       <header className="ftHeader">
@@ -122,19 +153,28 @@ export default function FlowTimer({
       <section className="ftCard">
         <div className="ftDial">
           <div className="ftRing" aria-hidden="true" />
+          {/* Använder derived state (displaySeconds) formaterad med formatMMSS */}
           <div className="ftTime">{formatMMSS(displaySeconds)}</div>
+
+          {/* React-koncept: Conditional rendering - visar olika text baserat på state */}
+          {/* Ternary operator (? :) = om/då/annars logik direkt i JSX */}
           <div className="ftModePill">
             {mode === "work" ? "Arbete" : "Paus"} {isRunning ? "• Pågår" : "• Pausad"}
           </div>
         </div>
 
         <div className="ftButtons">
+          {/* React-koncept: Conditional className - CSS-klasser baserat på state */}
+          {/* isSelected läggs till om mode === "work" */}
+          {/* React-koncept: Event handler - onClick kör funktion när användaren klickar */}
+          {/* Ternary - om timern körs och mode är work, pausa; annars starta */}
           <button
             className={`ftBtn ftBtnWork ${mode === "work" ? "isSelected" : ""}`}
             type="button"
             onClick={isRunning && mode === "work" ? pause : startWork}
           >
             <span className="ftBtnIcon" aria-hidden="true">▶</span>
+            {/* Conditional rendering - visa olika buttontext baserat på isRunning */}
             {isRunning && mode === "work" ? "Pausa arbete" : "Starta arbete"}
           </button>
 
@@ -158,7 +198,9 @@ export default function FlowTimer({
       <section className="ftStats">
         <h3 className="ftStatsTitle">Dagens statistik</h3>
 
+        {/* React-koncept: List rendering - visar samma struktur för olika data */}
         <div className="ftStatsGrid">
+          {/* Statskort för arbetstid - formaterar secondsWork med formatMMSS */}
           <div className="ftStatCard ftStatCardWork">
             <div className="ftStatLabel">
               <span className="ftDot ftDotWork" />
@@ -167,6 +209,7 @@ export default function FlowTimer({
             <div className="ftStatValue">{formatMMSS(secondsWork)}</div>
           </div>
 
+          {/* Statskort för paustid - samma struktur, annat data (secondsBreak) */}
           <div className="ftStatCard ftStatCardBreak">
             <div className="ftStatLabel">
               <span className="ftDot ftDotBreak" />
