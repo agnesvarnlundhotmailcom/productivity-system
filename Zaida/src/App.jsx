@@ -1,14 +1,10 @@
 import "./App.css";
 import FlowTimer from "./components/FlowTimer/FlowTimer";
-import Calendar from "./components/Calendar/Calendar";
-import Form from "./components/Form/Form";
 
 export default function App() {
   return (
     <main>
-      <Form />
       <FlowTimer />
-      <Calendar />
     </main>
   );
 }
