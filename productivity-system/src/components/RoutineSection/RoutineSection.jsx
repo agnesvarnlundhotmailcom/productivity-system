@@ -54,8 +54,8 @@ const RoutineSection = () => {
     return React.cloneElement(iconObj ? iconObj.component : <FolderPlus size={20}/>, { color });
   };
 
-  // --- DEL 4: DIN SPARADE LISTA (Huvudminnet) ---
-  // Här bor alla dina kategorier. Det är en lista som innehåller objekt (kategorier).
+  // --- DEL 4: SPARADE LISTA (Huvudminnet) ---
+  // Här bor alla kategorier. Det är en lista som innehåller objekt (kategorier).
   // Varje kategori har i sin tur en egen liten lista inuti sig som heter "routines".
   const [categories, setCategories] = useState([
     {
