@@ -1,6 +1,6 @@
+import UserLogin from "./components/UserLogin/userLogin";
 import Header from './components/Layout/Header';
 import Calendar from "./components/Calendar/Calendar";
-import UserLogin from ".components/userLogin/userLogin";
 import RoutineSection from './components/RoutineSection/RoutineSection';
 import TodoWidget from './components/ToDo/TodoWidget';
 import DailySchedule from './components/Schedule/DailySchedule';
@@ -17,7 +17,7 @@ function App() {
         {/* Här laddar vi in din nya komponent */}
 
           <div className="userLogin">
-            <userLogin />
+            <UserLogin />
           </div>
 
           <div className="calendar-wrapper">

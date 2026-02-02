@@ -1,16 +1,15 @@
 import {useState} from "react";
-import App from  "../App.jsx";
 import "./userLogin.css";
 
 
 export default function UserLogin () {
-  const [user, setUser] = useState("user");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState ("");
 
-      function handleUserRegistration () {
+      // function handleUserRegistration () {
 
-      }
+      // }
 
       function handleLogin () {
         const cleanUser = user.trim();
