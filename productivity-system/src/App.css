@@ -18,7 +18,6 @@
   gap: var(--section-gap);
 }
 
-/* Dina "Lådor" (Cards) */
 .card {
   background-color: var(--surface-2); /* Din specifika kort-färg */
   border: 1px solid var(--surface-3); /* Subtil kant */
@@ -27,7 +26,6 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Knappstil (baserad på din accent) */
 .btn-primary {
   background-color: rgba(14, 211, 172, 0.1); /* Genomskinlig accent */
   color: var(--accent-primary);
@@ -45,7 +43,6 @@
   color: var(--text-on-accent);
 }
 
-/* Layouten som placerar dem bredvid varandra */
 .grid-layout {
   display: flex;
   gap: 20px;          /* Mellanrummet mellan boxarna */
@@ -53,17 +50,14 @@
   align-items: flex-start;
 }
 
-/* 2/3 bredd för schemat */
 .schedule-wrapper {
   flex: 2;
 }
 
-/* 1/3 bredd för todo */
 .todo-wrapper {
   flex: 1;
 }
 
-/* VIKTIGT: Vi måste "nollställa" de fasta bredderna inuti komponenterna */
 .schedule-wrapper > div,
 .todo-wrapper > div {
   max-width: none !important; 
@@ -71,7 +65,6 @@
   margin-bottom: 0 !important;
 }
 
-/* Mobilanpassning: Stapla dem när skärmen blir för smal */
 @media (max-width: 900px) {
   .grid-layout {
     flex-direction: column;
