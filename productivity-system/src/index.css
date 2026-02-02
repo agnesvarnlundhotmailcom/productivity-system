@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-:root {
+:root[data-theme="dark"] {
   /* =========================
     BACKGROUND & SURFACES
   ========================== */
@@ -8,9 +8,9 @@
   --bg-gradient-top: #0a0f1b;
   --bg-gradient-bottom: #111925;
 
-  --surface-1: #181827; /* Header / Nav */
-  --surface-2: #121c25; /* Kort / Lådor */
-  --surface-3: #191f2e; /* Borders / Hovers */
+  --surface-1: #181827;
+  --surface-2: #121c25;
+  --surface-3: #191f2e;
 
   /* =========================
     TEXT
@@ -22,23 +22,64 @@
   /* =========================
     ACCENTS
   ========================== */
-  --accent-primary: #0ed3ac; /* Din neon-turkosa */
+  --accent-primary: #0ed3ac;
   --accent-warning: #f49e0c;
   --accent-danger: #fb7185;
   --accent-purple: #c083fc;
   --accent-blue: #39bef8;
-  
+
   /* =========================
      SPACING
   ========================== */
-  --space-sm: 0.75rem;  /* 12px */
-  --space-md: 1.25rem;  /* 20px */
-  --space-lg: 1.5rem;   /* 24px */
-  --space-xl: 2rem;     /* 32px */
-  
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
   --app-padding: var(--space-md);
   --section-gap: var(--space-md);
 }
+
+:root[data-theme="light"] {
+  /* =========================
+    BACKGROUND & SURFACES
+  ========================== */
+  --bg-main: #f6f8fb;
+  --bg-gradient-top: #ffffff;
+  --bg-gradient-bottom: #eef2f7;
+
+  --surface-1: #ffffff; /* Header / Nav */
+  --surface-2: #f1f5f9; /* Kort / Lådor */
+  --surface-3: #e2e8f0; /* Borders / Hovers */
+
+  /* =========================
+    TEXT
+  ========================== */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-on-accent: #ffffff;
+
+  /* =========================
+    ACCENTS
+  ========================== */
+  --accent-primary: #0ed3ac; /* Samma neon-turkosa */
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
+  --accent-purple: #a855f7;
+  --accent-blue: #0ea5e9;
+
+  /* =========================
+     SPACING
+  ========================== */
+  --space-sm: 0.75rem;
+  --space-md: 1.25rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  --app-padding: var(--space-md);
+  --section-gap: var(--space-md);
+}
+
 
 /* =========================
    GLOBAL RESET & BODY
