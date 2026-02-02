@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-=======
 :root {
   --bg: #070a10;
   --card: rgba(15, 22, 35, 0.75);
@@ -15,7 +12,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
->>>>>>> calendar
+}
 
 :root[data-theme="dark"] {
   /* =========================
@@ -108,9 +105,8 @@
 body {
   margin: 0;
   min-height: 100vh;
-<<<<<<< HEAD
   font-family: "Inter", system-ui, sans-serif;
-  
+
   /* Din bakgrunds-gradient */
   background:
     radial-gradient(
@@ -122,13 +118,11 @@ body {
 
   color: var(--text-primary);
   line-height: 1.5;
-=======
 
   background: radial-gradient(1000px 600px at 20% 15%, rgba(31,231,198,0.12), transparent 60%),
               radial-gradient(900px 700px at 70% 40%, rgba(93, 130, 255, 0.10), transparent 55%),
               var(--bg);
   color: var(--text);
->>>>>>> calendar
 }
 
 h1, h2, h3 {
