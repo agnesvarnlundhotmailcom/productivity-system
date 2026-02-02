@@ -1,0 +1,91 @@
+/* Huvudboxen */
+.stats-box {
+  background-color: var(--surface-2);
+  padding: var(--space-lg);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 500px; 
+  margin: 0 auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.stats-main-title {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  margin-bottom: var(--space-md);
+  letter-spacing: 0.3px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+}
+
+/* Korten */
+.stat-card {
+  background-color: var(--surface-3);
+  padding: var(--space-md);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.stat-value {
+  font-family: monospace;
+  font-size: 1.5rem;
+}
+
+/* Färgteman */
+.green-theme { color: var(--accent-primary); }
+.orange-theme { color: var(--accent-warning); }
+.default-theme { color: var(--text-primary); }
+
+.stat-icon {
+  stroke-width: 2.5px;
+  flex-shrink: 0; 
+}
+
+@media (max-width: 480px) {
+  .stats-box {
+    padding: var(--space-md);
+    border-radius: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr; 
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: var(--space-sm) var(--space-md);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .stat-header {
+    gap: 12px;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+  }
+}
