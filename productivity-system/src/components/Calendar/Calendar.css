@@ -37,6 +37,7 @@
   padding: 18px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
+  margin-bottom: var(--space-sm);
 }
 
 .cardHeader{
