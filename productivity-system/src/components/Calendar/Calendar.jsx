@@ -3,7 +3,9 @@ import { Calendar } from "lucide-react";
 import { useMemo, useState } from "react";
 
 function pad2(n) {
+
   return String(n).padStart(2, "0");
+  
 }
 
 function sameDay(a, b) {
