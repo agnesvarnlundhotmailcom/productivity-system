@@ -178,11 +178,6 @@
   transition: transform 0.2s ease, border-color 0.2s;
 }
 
-.card:hover {
-  border-color: var(--text-secondary); /* Liten highlight vid hover */
-  transform: translateY(-2px);
-}
-
 /* --- Header i kortet --- */
 .card-header {
   display: flex;
