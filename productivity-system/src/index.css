@@ -1,20 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 :root {
-  --bg: #070a10;
-  --card: rgba(15, 22, 35, 0.75);
-  --cardBorder: rgba(255,255,255,0.06);
-  --text: rgba(255,255,255,0.92);
-  --muted: rgba(255,255,255,0.55);
-  --muted2: rgba(255,255,255,0.35);
-  --accent: #1fe7c6;
-  --shadow: 0 18px 60px rgba(0,0,0,0.55);
-  --radius: 22px;
-
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-}
-
-:root[data-theme="dark"] {
   /* =========================
     BACKGROUND & SURFACES
   ========================== */
@@ -22,9 +8,9 @@
   --bg-gradient-top: #0a0f1b;
   --bg-gradient-bottom: #111925;
 
-  --surface-1: #181827;
-  --surface-2: #121c25;
-  --surface-3: #191f2e;
+  --surface-1: #181827; /* Header / Nav */
+  --surface-2: #121c25; /* Kort / Lådor */
+  --surface-3: #191f2e; /* Borders / Hovers */
 
   /* =========================
     TEXT
@@ -36,64 +22,23 @@
   /* =========================
     ACCENTS
   ========================== */
-  --accent-primary: #0ed3ac;
+  --accent-primary: #0ed3ac; /* Din neon-turkosa */
   --accent-warning: #f49e0c;
   --accent-danger: #fb7185;
   --accent-purple: #c083fc;
   --accent-blue: #39bef8;
-
+  
   /* =========================
      SPACING
   ========================== */
-  --space-sm: 0.75rem;
-  --space-md: 1.25rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-
+  --space-sm: 0.75rem;  /* 12px */
+  --space-md: 1.25rem;  /* 20px */
+  --space-lg: 1.5rem;   /* 24px */
+  --space-xl: 2rem;     /* 32px */
+  
   --app-padding: var(--space-md);
   --section-gap: var(--space-md);
 }
-
-:root[data-theme="light"] {
-  /* =========================
-    BACKGROUND & SURFACES
-  ========================== */
-  --bg-main: #f6f8fb;
-  --bg-gradient-top: #ffffff;
-  --bg-gradient-bottom: #eef2f7;
-
-  --surface-1: #ffffff; /* Header / Nav */
-  --surface-2: #f1f5f9; /* Kort / Lådor */
-  --surface-3: #e2e8f0; /* Borders / Hovers */
-
-  /* =========================
-    TEXT
-  ========================== */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-on-accent: #ffffff;
-
-  /* =========================
-    ACCENTS
-  ========================== */
-  --accent-primary: #0ed3ac; /* Samma neon-turkosa */
-  --accent-warning: #f59e0b;
-  --accent-danger: #ef4444;
-  --accent-purple: #a855f7;
-  --accent-blue: #0ea5e9;
-
-  /* =========================
-     SPACING
-  ========================== */
-  --space-sm: 0.75rem;
-  --space-md: 1.25rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-
-  --app-padding: var(--space-md);
-  --section-gap: var(--space-md);
-}
-
 
 /* =========================
    GLOBAL RESET & BODY
@@ -106,7 +51,7 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Inter", system-ui, sans-serif;
-
+  
   /* Din bakgrunds-gradient */
   background:
     radial-gradient(
@@ -118,11 +63,6 @@ body {
 
   color: var(--text-primary);
   line-height: 1.5;
-
-  background: radial-gradient(1000px 600px at 20% 15%, rgba(31,231,198,0.12), transparent 60%),
-              radial-gradient(900px 700px at 70% 40%, rgba(93, 130, 255, 0.10), transparent 55%),
-              var(--bg);
-  color: var(--text);
 }
 
 h1, h2, h3 {
