@@ -43,17 +43,19 @@
 
 .grid-layout {
   display: flex;
+  flex-direction: row; /* Desktop-läge som standard */
   gap: 20px;
   margin-bottom: 20px;
   align-items: flex-start;
 }
 
+/* Desktop-proportioner */
 .schedule-wrapper {
-  flex: 2;
+  flex: 2; /* Tar upp 2 delar (ca 66%) */
 }
 
 .todo-wrapper {
-  flex: 1;
+  flex: 1; /* Tar upp 1 del (ca 33%) */
 }
 
 .schedule-wrapper > div,
@@ -63,8 +65,16 @@
   margin-bottom: 0 !important;
 }
 
+/* Mobilläge (under 900px) */
 @media (max-width: 900px) {
   .grid-layout {
-    flex-direction: column;
+    flex-direction: column; /* Lägger dem på höjden */
+  }
+
+  .schedule-wrapper,
+  .todo-wrapper {
+    flex: none; /* Inaktiverar proportionerna från desktop */
+    width: 100%; /* Tvingar dem att ta upp hela bredden */
   }
 }
+
