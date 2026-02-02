@@ -13,10 +13,14 @@ function App() {
         <p>Här är dina dagliga mål och rutiner.</p>
         
         {/* Här laddar vi in din nya komponent */}
-
-        <div>
-          <DailySchedule/>
-          <TodoWidget/>
+  
+        <div className="grid-layout">
+          <div className="schedule-wrapper">
+            <DailySchedule />
+          </div>
+          <div className="todo-wrapper">
+            <TodoWidget />
+          </div>
         </div>
 
         <RoutineSection />

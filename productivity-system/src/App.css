@@ -45,4 +45,37 @@
   color: var(--text-on-accent);
 }
 
+/* Layouten som placerar dem bredvid varandra */
+.grid-layout {
+  display: flex;
+  gap: 20px;          /* Mellanrummet mellan boxarna */
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+/* 2/3 bredd för schemat */
+.schedule-wrapper {
+  flex: 2;
+}
+
+/* 1/3 bredd för todo */
+.todo-wrapper {
+  flex: 1;
+}
+
+/* VIKTIGT: Vi måste "nollställa" de fasta bredderna inuti komponenterna */
+.schedule-wrapper > div,
+.todo-wrapper > div {
+  max-width: none !important; 
+  width: 100% !important;
+  margin-bottom: 0 !important;
+}
+
+/* Mobilanpassning: Stapla dem när skärmen blir för smal */
+@media (max-width: 900px) {
+  .grid-layout {
+    flex-direction: column;
+  }
+}
+
 
