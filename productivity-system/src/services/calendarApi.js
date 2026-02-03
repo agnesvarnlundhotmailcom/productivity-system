@@ -35,7 +35,7 @@ export default function HolidaysExampleCalendar() {
   useEffect(() => {
     const controller = new AbortController();
     const year = currentDate.getFullYear();
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError("");
 
