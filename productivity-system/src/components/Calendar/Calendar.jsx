@@ -1,8 +1,11 @@
 import "./Calendar.css";
+import { Calendar } from "lucide-react";
 import { useMemo, useState } from "react";
 
 function pad2(n) {
+
   return String(n).padStart(2, "0");
+  
 }
 
 function sameDay(a, b) {
@@ -20,7 +23,7 @@ function mondayIndex(date) {
 
 const DOW_SV = ["mån", "tis", "ons", "tors", "fre", "lör", "sön"];
 
-export default function Calendar() {
+export default function Calender() {
   const [currentDate, setCurrentDate] = useState(() => {
     const t = new Date();
     return new Date(t.getFullYear(), t.getMonth(), 1); // månadsvy
@@ -90,37 +93,14 @@ export default function Calendar() {
 
   return (
     <main className="screen">
-      <div className="screenInner">
-        {/* Om du redan har FlowTime header/greeting i annan fil kan du ta bort detta block */}
-        <header className="appHeader">
-          <div className="logoBox" aria-hidden="true">
-            <span className="logoBolt">⚡</span>
-          </div>
-          <div className="brandText">
-            <h1 className="brandTitle">FlowTime</h1>
-            <p className="brandTagline">Din produktivitetspartner</p>
-          </div>
-        </header>
-
-        <section className="greeting">
-          <p className="greetingText">God eftermiddag! Redo att optimera din dag?</p>
-        </section>
-
-        <div className="viewSwitch" role="tablist" aria-label="Växla vy">
-          <button className="viewBtn isActive" role="tab" aria-selected="true" type="button">
-            <span className="viewIcon" aria-hidden="true">🗓️</span>
-          </button>
-          <button className="viewBtn" role="tab" aria-selected="false" type="button">
-            <span className="viewIcon" aria-hidden="true">⏱️</span>
-          </button>
-        </div>
-
         <div className="stack">
           {/* Kalenderkortet */}
           <section className="card">
             <div className="cardHeader">
               <div className="cardTitleWrap">
-                <span className="miniIcon" aria-hidden="true">🗓️</span>
+                <span style={{ marginRight: '8px' }}>
+                <Calendar size={20} color="#0ed3ac" />
+                </span>     
                 <h2 className="cardTitle">{monthLabel}</h2>
               </div>
 
@@ -159,27 +139,7 @@ export default function Calendar() {
               })}
             </div>
           </section>
-
-          {/* Schemakortet */}
-          <section className="card">
-            <div className="scheduleHeader">
-              <div className="scheduleTitleWrap">
-                <span className="miniIcon" aria-hidden="true">🕒</span>
-                <h2 className="scheduleTitle">
-                  Schema - {DOW_SV[mondayIndex(selectedDate)]} {selectedDate.getDate()}{" "}
-                  {selectedDate.toLocaleString("sv-SE", { month: "long" })}
-                </h2>
-              </div>
-
-              <button className="iconBtn" type="button" aria-label="Lägg till">
-                +
-              </button>
-            </div>
-
-            <div className="scheduleEmpty">Inget schemalagt för denna dag</div>
-          </section>
         </div>
-      </div>
     </main>
   );
 }

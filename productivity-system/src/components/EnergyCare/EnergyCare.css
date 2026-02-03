@@ -1,0 +1,67 @@
+/* Själva kortet */
+.energy-card {
+  margin-top: var(--section-gap);
+  width: 100%;
+}
+
+/* Status-texten (STABIL) */
+.status-text {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: bold;
+}
+
+/* Procent-siffran */
+.energy-percent {
+  font-size: 3.5rem;
+  color: var(--accent-warning);
+  margin: 15px 0 10px 0;
+}
+
+/* Mätaren (Samma som dina andra progress bars) */
+.progress-bar-bg {
+  height: 6px;
+  background: var(--surface-3);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent-warning);
+  box-shadow: 0 0 10px var(--accent-warning); /* Glow-effekt */
+}
+
+/* Botten-sektionen med två kolumner */
+.energy-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+/* De små inre rutorna */
+.info-box {
+  background: var(--surface-3);
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.info-box p {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.6rem;
+  margin: 0 0 5px 0;
+  color: var(--text-secondary);
+}
+
+.info-box span {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.icon-bg {
+color: var(--accent-warning);
+}

@@ -39,10 +39,10 @@ Projektet är under utveckling.
 
 ## Design
 ### Mobil
-![Mobil – översikt](bilder/mobil.png)
+![Mobil – översikt](skiss/mobil.png)
 
 ### Webb
-![Webb – dashboard](bilder/webb.png)
+![Webb – dashboard](skiss/desktop.png)
 
 ### Färgpalett
-![Färgpalett](bilder/färgpalett.png)
+![Färgpalett](skiss/färgpalett.png)

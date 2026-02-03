@@ -1,42 +1,80 @@
-#root {
-  max-width: 1280px;
+.dashboard-container {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: var(--app-padding);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: var(--section-gap);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
 }
 
 .card {
-  padding: 2em;
+  background-color: var(--surface-2); 
+  border: 1px solid var(--surface-3); 
+  border-radius: 16px;
+  padding: var(--space-lg);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.read-the-docs {
-  color: #888;
+.btn-primary {
+  background-color: rgba(14, 211, 172, 0.1); 
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.2s;
 }
+
+.btn-primary:hover {
+  background-color: var(--accent-primary);
+  color: var(--text-on-accent);
+}
+
+.grid-layout {
+  display: flex;
+  flex-direction: row; /* Desktop-läge som standard */
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+/* Desktop-proportioner */
+.schedule-wrapper {
+  flex: 2; /* Tar upp 2 delar (ca 66%) */
+}
+
+.todo-wrapper {
+  flex: 1; /* Tar upp 1 del (ca 33%) */
+}
+
+.schedule-wrapper > div,
+.todo-wrapper > div {
+  max-width: none !important; 
+  width: 100% !important;
+  margin-bottom: 0 !important;
+}
+
+/* Mobilläge (under 900px) */
+@media (max-width: 900px) {
+  .grid-layout {
+    flex-direction: column; /* Lägger dem på höjden */
+  }
+
+  .schedule-wrapper,
+  .todo-wrapper {
+    flex: none; /* Inaktiverar proportionerna från desktop */
+    width: 100%; /* Tvingar dem att ta upp hela bredden */
+  }
+}
+
