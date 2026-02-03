@@ -33,12 +33,30 @@ export default function Calendar() {
     year: "numeric",
   });
 
-  function prevMonth() {
-    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
+  //växla mellan månader
+  // function prevMonth() {
+  //   setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
+  // }
+
+  // function nextMonth() {
+  //   setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
+  // }
+
+  //växla mellan veckor
+  function prevWeek() {
+    setCurrentDate((d) => {
+      const copy = new Date(d);
+      copy.setDate(copy.getDate()-7);
+      return copy;
+    })
   }
 
-  function nextMonth() {
-    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
+  function nextWeek() {
+    setCurrentDate((d) => {
+      const copy = new Date(d);
+      copy.setDate(copy.getDate()+7);
+      return copy;
+    })
   }
 
   function goToday() {
@@ -107,7 +125,7 @@ export default function Calendar() {
               </div>
 
               <div className="cardActions">
-                <button className="iconBtn" type="button" aria-label="Föregående" onClick={prevMonth}>
+                <button className="iconBtn" type="button" aria-label="Föregående" onClick={prevWeek}>
                   ‹
                 </button>
 
@@ -115,7 +133,7 @@ export default function Calendar() {
                   Idag
                 </button>
 
-                <button className="iconBtn" type="button" aria-label="Nästa" onClick={nextMonth}>
+                <button className="iconBtn" type="button" aria-label="Nästa" onClick={nextWeek}>
                   ›
                 </button>
               </div>
