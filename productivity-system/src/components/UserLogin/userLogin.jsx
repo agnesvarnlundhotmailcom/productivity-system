@@ -30,7 +30,6 @@ export default function UserLogin () {
 
         setStatus(`Inloggad som ${cleanUser}`);
         setPassword(""); //rensa lösenord efter login
-
       }
 
   return (
