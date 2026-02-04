@@ -34,32 +34,33 @@ export default function UserLogin () {
 
   return (
       <>
-      <input
-        className="userName"
-        type="username"
-        placeholder="användarnamn"
-        value={user}
-        onChange={(e) => setUser(e.target.value)} />
+      <section className="">
+        <input
+          className="userName input"
+          type="username"
+          placeholder="användarnamn"
+          value={user}
+          onChange={(e) => setUser(e.target.value)} />
 
-      <input
-        className="password"
-        type="password"
-        placeholder="lösenord"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)} />
+        <input
+          className="password input"
+          type="password"
+          placeholder="lösenord"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)} />
 
-      <button
-        className="LogInBtn"
-        onClick={handleLogin}>
-          Logga in
-      </button>
+        <button
+          className="LogInBtn"
+          onClick={handleLogin}>
+            Logga in
+        </button>
 
-      <div
-      className="statusInfo">
-        {status && <p>{status}</p>}
+        <div
+        className="statusInfo">
+          {status && <p>{status}</p>}
 
-      </div>
-
+        </div>
+    </section>
 
       </>
   );

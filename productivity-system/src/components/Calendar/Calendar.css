@@ -109,6 +109,7 @@
   background: rgba(31,231,198,0.20);
   border-color: rgba(31,231,198,0.25);
   color: #05221c;
+  padding: 0px;
 }
 
 .dayCell{

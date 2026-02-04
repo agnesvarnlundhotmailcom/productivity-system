@@ -11,7 +11,6 @@ function App() {
     <div>
             <UserLogin />
 
-      <Header />
 
 
           <div className="calendar-wrapper">
@@ -37,6 +36,7 @@ function App() {
         <RoutineSection />
 
       </main>
+      <Header />
     </div>
   );
 }
