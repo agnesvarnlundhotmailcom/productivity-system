@@ -11,14 +11,15 @@ function App() {
     <div>
       <Header />
 
+          <div className="userLogin">
+            <UserLogin />
+          </div>
+          
       <main className="dashboard-container">
         <p>Här är dina dagliga mål och rutiner.</p>
 
         {/* Här laddar vi in din nya komponent */}
 
-          <div className="userLogin">
-            <UserLogin />
-          </div>
 
           <div className="calendar-wrapper">
             <Calendar />
