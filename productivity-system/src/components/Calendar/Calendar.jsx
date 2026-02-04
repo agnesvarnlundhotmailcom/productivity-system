@@ -3,9 +3,7 @@ import { Calendar } from "lucide-react";
 import { useMemo, useState } from "react";
 
 function pad2(n) {
-
   return String(n).padStart(2, "0");
-  
 }
 
 function sameDay(a, b) {
@@ -22,106 +20,124 @@ function mondayIndex(date) {
 }
 
 const DOW_SV = ["mån", "tis", "ons", "tors", "fre", "lör", "sön"];
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
 export default function Calender() {
-  const [currentDate, setCurrentDate] = useState(() => {
-    const t = new Date();
-    return new Date(t.getFullYear(), t.getMonth(), 1); // månadsvy
-  });
+  // Veckans "ankare" i ms (number) — robust och lätt att flytta
+  const [currentTs, setCurrentTs] = useState(() => Date.now());
 
-  const [selectedDate, setSelectedDate] = useState(() => new Date());
+  // Vald dag i ms (number) eller null
+  // Vid start: markera idag
+  const [selectedTs, setSelectedTs] = useState(() => Date.now());
 
-  const monthLabel = currentDate.toLocaleString("sv-SE", {
-    month: "long",
-    year: "numeric",
-  });
+  const currentDate = useMemo(() => new Date(currentTs), [currentTs]);
+  const selectedDate = useMemo(
+    () => (selectedTs == null ? null : new Date(selectedTs)),
+    [selectedTs]
+  );
 
-  function prevMonth() {
-    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
-  }
-
-  function nextMonth() {
-    setCurrentDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
-  }
-
-  function goToday() {
-    const t = new Date();
-    setSelectedDate(t);
-    setCurrentDate(new Date(t.getFullYear(), t.getMonth(), 1));
-  }
-
-  // Veckorad runt selectedDate (mån..sön)
   const weekDays = useMemo(() => {
     const base = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
-      selectedDate.getDate()
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
     );
 
-    const startOffset = mondayIndex(base); // hur långt från måndag
+    const startOffset = mondayIndex(base);
     const monday = new Date(base);
     monday.setDate(base.getDate() - startOffset);
 
     return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(monday);
       d.setDate(monday.getDate() + i);
-      return {
-        date: d,
-        dow: DOW_SV[i],
-        dom: d.getDate(),
-      };
+      return { date: d, dow: DOW_SV[i], dom: d.getDate() };
     });
-  }, [selectedDate]);
+  }, [currentDate]);
+
+  const monthLabel = currentDate.toLocaleString("sv-SE", {
+    month: "long",
+    year: "numeric",
+  });
+
+  function prevWeek() {
+    setCurrentTs((ts) => ts - WEEK_MS);
+    setSelectedTs(null); // bläddring => ingen markering
+  }
+
+  function nextWeek() {
+    setCurrentTs((ts) => ts + WEEK_MS);
+    setSelectedTs(null); // bläddring => ingen markering
+  }
+
+  function goToday() {
+    const now = Date.now();
+    setCurrentTs(now);    // visar veckan för idag
+    setSelectedTs(now);   // markerar idag
+  }
 
   return (
     <main className="screen">
-        <div className="stack">
-          {/* Kalenderkortet */}
-          <section className="card">
-            <div className="cardHeader">
-              <div className="cardTitleWrap">
-                <span style={{ marginRight: '8px' }}>
+      <div className="stack">
+        <section className="card">
+          <div className="cardHeader">
+            <div className="cardTitleWrap">
+              <span style={{ marginRight: "8px" }}>
                 <Calendar size={20} color="#0ed3ac" />
-                </span>     
-                <h2 className="cardTitle">{monthLabel}</h2>
-              </div>
-
-              <div className="cardActions">
-                <button className="iconBtn" type="button" aria-label="Föregående" onClick={prevMonth}>
-                  ‹
-                </button>
-
-                <button className="pillBtn" type="button" onClick={goToday}>
-                  Idag
-                </button>
-
-                <button className="iconBtn" type="button" aria-label="Nästa" onClick={nextMonth}>
-                  ›
-                </button>
-              </div>
+              </span>
+              <h2 className="cardTitle">{monthLabel}</h2>
             </div>
 
-            <div className="calendarRow">
-              {weekDays.map((day) => {
-                const isSelected = sameDay(day.date, selectedDate);
+            <div className="cardActions">
+              <button
+                className="iconBtn"
+                type="button"
+                aria-label="Föregående vecka"
+                onClick={prevWeek}
+              >
+                ‹
+              </button>
 
-                return (
-                  <div
-                    key={`${day.date.getFullYear()}-${pad2(day.date.getMonth() + 1)}-${pad2(day.dom)}`}
-                    className={isSelected ? "dayPill isSelected" : "dayCell"}
-                    onClick={() => setSelectedDate(day.date)}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <div className={isSelected ? "dow" : "dow isMuted"}>{day.dow}</div>
-                    <div className="dom">{day.dom}</div>
-                    {isSelected && <div className="dot" aria-hidden="true" />}
+              <button className="pillBtn" type="button" onClick={goToday}>
+                Idag
+              </button>
+
+              <button
+                className="iconBtn"
+                type="button"
+                aria-label="Nästa vecka"
+                onClick={nextWeek}
+              >
+                ›
+              </button>
+            </div>
+          </div>
+
+          <div className="calendarRow">
+            {weekDays.map((day) => {
+              const isSelected =
+                selectedDate instanceof Date && sameDay(day.date, selectedDate);
+
+              return (
+                <div
+                  key={`${day.date.getFullYear()}-${pad2(
+                    day.date.getMonth() + 1
+                  )}-${pad2(day.dom)}`}
+                  className={isSelected ? "dayPill isSelected" : "dayCell"}
+                  onClick={() => setSelectedTs(day.date.getTime())}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <div className={isSelected ? "dow" : "dow isMuted"}>
+                    {day.dow}
                   </div>
-                );
-              })}
-            </div>
-          </section>
-        </div>
+                  <div className="dom">{day.dom}</div>
+                  {isSelected && <div className="dot" aria-hidden="true" />}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
