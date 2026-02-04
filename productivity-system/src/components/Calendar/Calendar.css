@@ -37,7 +37,6 @@
   padding: 18px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
-  margin-bottom: var(--space-sm);
 }
 
 .cardHeader{
@@ -90,13 +89,15 @@
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  gap: 10px;
+
 }
 
 .dayPill{
   width: 62px;
   border-radius: 18px;
   padding: 12px 10px 10px;
+    align-items: center;
+  justify-content: center;
   display:flex;
   flex-direction:column;
   gap: 6px;
