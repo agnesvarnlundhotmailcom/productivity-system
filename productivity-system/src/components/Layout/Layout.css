@@ -2,11 +2,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* Vi använder surface-1 som är lite ljusare än bakgrunden */
-  background-color: var(--bg-main-1); 
+
+  /* Header ska använda surface-1 */
+  background-color: var(--surface-1);
+
   height: 80px;
-  /* Använder din spacing-variabel */
-  padding: 0 var(--space-xl); 
+  padding: 0 var(--space-xl);
 }
 
 /* Vänster sida */
@@ -18,9 +19,8 @@
 
 .logo-icon {
   font-size: 1.5rem;
-  color: var(--accent-primary); /* Den nya turkosa färgen */
-  /* Neon-glow effekt */
-  text-shadow: 0 0 12px rgba(14, 211, 172, 0.4); 
+  color: var(--accent-primary);
+  text-shadow: 0 0 12px rgba(14, 211, 172, 0.4);
 }
 
 .app-title {
@@ -29,7 +29,13 @@
   letter-spacing: -0.02em;
 }
 
-/* Höger sida */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+/* Navigation */
 .header-right nav {
   display: flex;
   align-items: center;
@@ -38,13 +44,13 @@
 
 .nav-link {
   text-decoration: none;
-  color: var(--text-secondary); /* Gråaktig text */
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.2s ease;
 }
 
-.nav-link:hover, .nav-link.active {
-  color: var(--accent-primary); /* Lyser upp vid hover */
+.nav-link:hover,
+.nav-link.active {
+  color: var(--accent-primary);
 }
-

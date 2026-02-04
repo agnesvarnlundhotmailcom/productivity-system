@@ -1,0 +1,164 @@
+.screen{
+  margin-bottom: 12px;
+}
+.viewSwitch{
+  display:flex;
+  gap: 14px;
+  margin: 18px 0 24px;
+}
+
+.viewBtn{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  border: 1px solid var(--cardBorder);
+  background: rgba(255,255,255,0.03);
+  color: var(--muted);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  cursor: pointer;
+}
+.viewBtn.isActive{
+  background: rgba(31,231,198,0.20);
+  border-color: rgba(31,231,198,0.25);
+  color: #05221c;
+}
+.viewIcon{ font-size: 20px; }
+
+.stack{
+  display:flex;
+  flex-direction:column;
+  gap: 18px;
+}
+
+.card{
+  background: var(--card);
+  border: 1px solid var(--cardBorder);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.cardHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cardTitleWrap{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+.cardTitle{
+  margin:0;
+  font-size: 30px;
+  letter-spacing: 0.2px;
+}
+
+.cardActions{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.iconBtn{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid var(--cardBorder);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor:pointer;
+}
+
+.pillBtn{
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--cardBorder);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  cursor:pointer;
+}
+
+.calendarRow{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+
+}
+
+.dayPill{
+  width: 62px;
+  border-radius: 18px;
+  padding: 12px 10px 10px;
+    align-items: center;
+  justify-content: center;
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+  border: 1px solid var(--cardBorder);
+  background: rgba(255,255,255,0.03);
+}
+
+.dayPill.isSelected{
+  background: rgba(31,231,198,0.20);
+  border-color: rgba(31,231,198,0.25);
+  color: #05221c;
+}
+
+.dayCell{
+  min-width: 42px;
+  text-align:center;
+  padding-bottom: 10px;
+}
+
+.dow{
+  font-size: 18px;
+  margin-bottom: 8px;
+  text-transform: lowercase;
+}
+.dow.isMuted{ color: var(--muted2); }
+
+.dom{
+  font-size: 30px;
+  letter-spacing: 0.2px;
+}
+
+.dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(5,34,28,0.6);
+  margin-top: 8px;
+}
+
+.scheduleHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.scheduleTitleWrap{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+.scheduleTitle{
+  margin:0;
+  font-size: 26px;
+}
+
+.scheduleEmpty{
+  text-align:center;
+  padding: 34px 8px 18px;
+  color: var(--muted2);
+  font-size: 18px;
+}
