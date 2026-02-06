@@ -122,7 +122,7 @@ function next() {
               <span style={{ marginRight: "8px" }}>
               </span>
               <h2 className="cardTitleYear">
-                <Calendar size={25} color="#0ed3ac" />
+                <Calendar size={35} color="#0ed3ac" />
   {" "+yearLabel}</h2>
               <h2 className="cardTitle">{monthLabel}</h2>
             </div>
@@ -137,6 +137,9 @@ function next() {
                 ‹
               </button>
 
+              <button className="pillBtn" type="button" onClick={goToday}>
+                Idag
+              </button>
              <button
                 className="pillBtn"
                 type= "button"
@@ -145,9 +148,6 @@ function next() {
                 {view === "week" ? "Månad" : "Vecka"}
             </button>
 
-              <button className="pillBtn" type="button" onClick={goToday}>
-                Idag
-              </button>
 
               <button
                 className="iconBtn"
