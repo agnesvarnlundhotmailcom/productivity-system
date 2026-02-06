@@ -68,6 +68,7 @@
   gap: 6px;
   border: #05221c 2px solid;
   justify-content: end;
+
 }
 
 .iconBtn{
@@ -209,5 +210,53 @@
 
 @media (min-width: 700px){
 
+  /* * {
+    border: red solid
+    border:#0ed3ac 2px solid;
+  } */
+
+  .iconBtn{
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+  }
+
+  .pillBtn{
+    height: 50px;
+    font-size: 30px;
+
+  }
+
+/* VECKOVY */
+.dow{
+  font-size: 30px;
+  margin-top: 40px;
 
 }
+.dow.isMuted{ color: var(--muted2); }
+
+.dom{
+  font-size: 30px;
+  letter-spacing: 0.2px;
+}
+
+
+
+/* MÅNADSVY */
+.cardTitle, .cardTitleYear{
+  font-size: 40px;
+}
+
+/* storlek på veckodagar */
+.monthDowCell {
+  margin-top: 40px;
+  font-size: 30px;
+}
+/* storlek på datum */
+.monthCell {
+  font-size: 30px;
+}
+
+
+}
+
