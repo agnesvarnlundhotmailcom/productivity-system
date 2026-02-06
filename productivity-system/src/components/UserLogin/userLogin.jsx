@@ -11,7 +11,8 @@ export default function UserLogin () {
 
       // }
 
-      function handleLogin () {
+      function handleLogin (e) {
+        e.preventDefault();
         const cleanUser = user.trim();
         const cleanPassword = password.trim();
 
@@ -33,11 +34,11 @@ export default function UserLogin () {
       }
 
   return (
-      <>
-      <section className="">
+
+      <form onSubmit= {handleLogin}>
         <input
           className="userName input"
-          type="username"
+          type="text"
           placeholder="användarnamn"
           value={user}
           onChange={(e) => setUser(e.target.value)} />
@@ -51,17 +52,15 @@ export default function UserLogin () {
 
         <button
           className="LogInBtn"
-          onClick={handleLogin}>
+          type="submit">
             Logga in
         </button>
 
         <div
         className="statusInfo">
           {status && <p>{status}</p>}
-
         </div>
-    </section>
+      </form>
 
-      </>
   );
 }
