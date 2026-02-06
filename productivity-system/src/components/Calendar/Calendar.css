@@ -51,24 +51,28 @@
 .cardTitleWrap{
   display:flex;
   align-items:center;
-  gap: 12px;
+
+    min-width: 0; /* SUPERviktigt */
 }
 
 .cardTitle{
   margin:0;
   font-size: 16px;
   letter-spacing: 0.2px;
+  border: #0ed3ac 2px solid;
 }
 
 .cardActions{
   display:flex;
   align-items:center;
-  gap: 10px;
+  gap: 6px;
+  border: #05221c 2px solid;
+  justify-content: end;
 }
 
 .iconBtn{
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
   border-radius: 14px;
   border: 1px solid var(--cardBorder);
   background: rgba(255,255,255,0.04);
@@ -77,7 +81,7 @@
 }
 
 .pillBtn{
-  height: 40px;
+  height: 25px;
   padding: 0 16px;
   border-radius: 14px;
   border: 1px solid var(--cardBorder);
@@ -90,7 +94,6 @@
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
-
 }
 
 .dayPill{
@@ -186,7 +189,7 @@
 }
 
 .monthCell {
-  padding: 10px 0;
+  padding: 2px 2px;
   text-align: center;
   border-radius: 10px;
   cursor: pointer;
