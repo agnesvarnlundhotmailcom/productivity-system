@@ -29,8 +29,8 @@
   flex-direction:column;
   gap: 18px;
   padding: 15px;
-}
 
+}
 .card{
   background: var(--card);
   border: 1px solid var(--cardBorder);
