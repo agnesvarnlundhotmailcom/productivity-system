@@ -74,9 +74,11 @@ export default function Calender() {
 }, [currentDate]);
 
 
+  const yearLabel = currentDate.toLocaleString("sv-SE", {
+    year: "numeric",
+  });
   const monthLabel = currentDate.toLocaleString("sv-SE", {
     month: "long",
-    year: "numeric",
   });
 
 function prev() {
@@ -118,8 +120,10 @@ function next() {
           <div className="cardHeader">
             <div className="cardTitleWrap">
               <span style={{ marginRight: "8px" }}>
-                <Calendar size={20} color="#0ed3ac" />
               </span>
+              <h2 className="cardTitleYear">
+                <Calendar size={25} color="#0ed3ac" />
+  {" "+yearLabel}</h2>
               <h2 className="cardTitle">{monthLabel}</h2>
             </div>
 
