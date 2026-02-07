@@ -3,15 +3,15 @@ import "./userLogin.css";
 
 
 export default function UserLogin () {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const [status, setStatus] = useState ("");
+  const [user, setUser] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [status, setStatus] = useState<string> ("");
 
       // function handleUserRegistration () {
 
       // }
 
-      function handleLogin (e) {
+      const handleLogin = (e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
         const cleanUser = user.trim();
         const cleanPassword = password.trim();
