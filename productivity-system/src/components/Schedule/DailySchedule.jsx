@@ -6,23 +6,19 @@ import { DataContext } from "../../contexts/DataContext";
 
 export default function DailySchedule() {
   const { data, setData } = useContext(DataContext);
-  const activities = data.schedule;
+  const activities = data.schedule ?? [];
 
   const [isAdding, setIsAdding] = useState(false);
-  
-  // State för formuläret
   const [newTime, setNewTime] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newCategory, setNewCategory] = useState("Arbete");
 
-  // Hämta dagens datum automatiskt
   const todayDate = new Date().toLocaleDateString('sv-SE', { 
     weekday: 'long', 
     day: 'numeric', 
     month: 'long' 
   });
 
-  // Funktion för färgkodning
   const getColorForCategory = (cat) => {
     switch(cat) {
       case 'Arbete': return '#39bef8';
@@ -57,9 +53,34 @@ export default function DailySchedule() {
     setNewTitle("");
   };
 
+  const handleDelete = (id) => {
+    setData(prev => ({
+      ...prev,
+      schedule: prev.schedule.filter(item => item.id !== id)
+    }));
+  };
+
+  const handleUpdate = (id, updatedData) => {
+    const updatedList = activities
+      .map(item =>
+        item.id === id
+          ? {
+              ...item,
+              ...updatedData,
+              color: getColorForCategory(updatedData.category || item.category)
+            }
+          : item
+      )
+      .sort((a, b) => a.time.localeCompare(b.time));
+
+    setData(prev => ({
+      ...prev,
+      schedule: updatedList
+    }));
+  };
+
   return (
     <div className={styles.container}>
-      {/* Header med dynamiskt datum */}
       <div className={styles.header}>
         <div className={styles.headerTitle}>
           <span style={{ marginRight: '8px' }}>
@@ -76,20 +97,18 @@ export default function DailySchedule() {
         </button>
       </div>
 
-      {/* Formulär */}
       {isAdding && (
         <div className={styles.form}>
           <div className={styles.formRow}>
-            <input 
-              type="time" 
-              value={newTime} 
-              onChange={(e) => setNewTime(e.target.value)} 
-              className={`${styles.input} ${styles.inputTime}`}
-              required
+            <input
+              type="time"
+              value={newTime}
+              onChange={(e) => setNewTime(e.target.value)}
+              className={styles.input}
             />
-            <select 
-              value={newCategory} 
-              onChange={(e) => setNewCategory(e.target.value)} 
+            <select
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
               className={styles.select}
             >
               <option value="Arbete">Arbete</option>
@@ -98,13 +117,12 @@ export default function DailySchedule() {
               <option value="Personligt">Personligt</option>
             </select>
           </div>
-          <input 
-            type="text" 
-            placeholder="Skriv din aktivitet..." 
-            value={newTitle} 
-            onChange={(e) => setNewTitle(e.target.value)} 
+          <input
+            type="text"
+            placeholder="Aktivitet..."
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
             className={styles.input}
-            autoFocus 
           />
           <button onClick={handleAdd} className={styles.saveBtn}>
             Lägg till
@@ -112,7 +130,6 @@ export default function DailySchedule() {
         </div>
       )}
 
-      {/* Listan */}
       <div className={styles.list}>
         {activities.length === 0 && !isAdding && (
           <div className={styles.emptyState}>
@@ -121,12 +138,11 @@ export default function DailySchedule() {
         )}
 
         {activities.map((item) => (
-          <ScheduleItem 
+          <ScheduleItem
             key={item.id}
-            time={item.time}
-            title={item.title}
-            category={item.category}
-            color={item.color}
+            item={item}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
           />
         ))}
       </div>
