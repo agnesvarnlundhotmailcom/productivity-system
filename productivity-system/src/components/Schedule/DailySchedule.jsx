@@ -67,13 +67,9 @@ const handleDelete = (id) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerTitle}>
-<<<<<<< HEAD
-          <span style={{ marginRight: '8px' }}><Clock size={20} color="#0ed3ac" /></span>
-=======
         <span style={{ marginRight: '8px' }}>
         <Clock size={20} color="#0ed3ac" style={{ filter: 'drop-shadow(0 0 5px var(--accent-primary))' }} />
         </span>
->>>>>>> cf0c6f30ac7248a1d99cf2750c54ee4501a48d86
           Schema - {todayDate}
         </div>
         <button onClick={() => setIsAdding(!isAdding)} className={styles.addButton}>
