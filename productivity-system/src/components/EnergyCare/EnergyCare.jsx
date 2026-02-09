@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Zap, Activity } from 'lucide-react';
 import './EnergyCare.css';
+import { DataContext } from "../../contexts/DataContext";
 
 const EnergyCare = () => {
-  // Vi startar med lite historik i grafen
-  const [energyHistory, setEnergyHistory] = useState([]);
-  
+  const { data, setData } = useContext(DataContext);
+  const energyHistory = data.energyLogs;
+
   // Den senaste valda nivån är det sista elementet i listan
   const currentLevel = energyHistory[energyHistory.length - 1];
 
-  // Funktion som körs när man klickar på en emoji-knapp
   const handleSelectLevel = (newLevel) => {
-    // Vi lägger till det nya värdet sist i arrayen
-    // Vi behåller bara de senaste 15 värdena så att grafen inte blir för trång
-    setEnergyHistory(prev => [...prev.slice(-14), newLevel]);
+    setData(prev => ({
+      ...prev,
+      energyLogs: [...prev.energyLogs.slice(-14), newLevel]
+    }));
   };
 
   const getBarColor = (level) => {
@@ -41,16 +42,16 @@ const EnergyCare = () => {
         </div>
       </div>
 
-      {/* Visar den nivå man just klickat på */}
       <div className="level-status-box">
         <span className="status-label">Senaste nivå</span>
         <div className="status-value">
-          <span className="current-emoji">{emojis.find(e => e.val === currentLevel)?.icon}</span>
+          <span className="current-emoji">
+            {emojis.find(e => e.val === currentLevel)?.icon}
+          </span>
           <strong>{currentLevel}/5</strong>
         </div>
       </div>
 
-      {/* Knappar för att välja nivå */}
       <div className="emoji-selector-grid">
         {emojis.map((item) => (
           <button 
@@ -64,7 +65,6 @@ const EnergyCare = () => {
         ))}
       </div>
 
-      {/* Grafen som uppdateras live */}
       <div className="chart-wrapper">
         <div className="chart-info">
           <Activity size={12} />
