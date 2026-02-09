@@ -1,5 +1,5 @@
 import "./Calendar.css";
-import { Calendar } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 
 function pad2(n) {
@@ -22,12 +22,8 @@ function mondayIndex(date) {
 const DOW_SV = ["mån", "tis", "ons", "tors", "fre", "lör", "sön"];
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-export default function Calender() {
-  // Veckans "ankare" i ms (number) — robust och lätt att flytta
+export default function CalendarView() {
   const [currentTs, setCurrentTs] = useState(() => Date.now());
-
-  // Vald dag i ms (number) eller null
-  // Vid start: markera idag
   const [selectedTs, setSelectedTs] = useState(() => Date.now());
 
   const currentDate = useMemo(() => new Date(currentTs), [currentTs]);
@@ -61,68 +57,44 @@ export default function Calender() {
 
   function prevWeek() {
     setCurrentTs((ts) => ts - WEEK_MS);
-    setSelectedTs(null); // bläddring => ingen markering
+    setSelectedTs(null);
   }
 
   function nextWeek() {
     setCurrentTs((ts) => ts + WEEK_MS);
-    setSelectedTs(null); // bläddring => ingen markering
+    setSelectedTs(null);
   }
 
   function goToday() {
     const now = Date.now();
-    setCurrentTs(now);    // visar veckan för idag
-    setSelectedTs(now);   // markerar idag
+    setCurrentTs(now);
+    setSelectedTs(now);
   }
 
   return (
     <main className="screen">
-        <div className="stack">
-          {/* Kalenderkortet */}
-          <section className="card">
-            <div className="cardHeader">
-              <div className="cardTitleWrap">
-                <span style={{ marginRight: '8px' }}>
-                <Calendar size={20} color="#0ed3ac" style={{ filter: 'drop-shadow(0 0 5px var(--accent-primary))' }} />
-                </span>     
-                <h2 className="cardTitle">{monthLabel}</h2>
-              </div>
-
-              <div className="cardActions">
-                <button className="iconBtn" type="button" aria-label="Föregående" onClick={prevWeek}>
-                  ‹
-                </button>
-
-                <button className="pillBtn" type="button" onClick={goToday}>
-                  Idag
-                </button>
-
-                <button className="iconBtn" type="button" aria-label="Nästa" onClick={nextWeek}>
-                  ›
-                </button>
-              </div>
+      <div className="stack">
+        <section className="card">
+          <div className="cardHeader">
+            <div className="cardTitleWrap">
+              <span style={{ marginRight: 8 }}>
+                <CalendarIcon
+                  size={20}
+                  color="#0ed3ac"
+                  style={{ filter: "drop-shadow(0 0 5px var(--accent-primary))" }}
+                />
+              </span>
+              <h2 className="cardTitle">{monthLabel}</h2>
             </div>
 
             <div className="cardActions">
-              <button
-                className="iconBtn"
-                type="button"
-                aria-label="Föregående vecka"
-                onClick={prevWeek}
-              >
+              <button className="iconBtn" onClick={prevWeek} aria-label="Föregående">
                 ‹
               </button>
-
-              <button className="pillBtn" type="button" onClick={goToday}>
+              <button className="pillBtn" onClick={goToday}>
                 Idag
               </button>
-
-              <button
-                className="iconBtn"
-                type="button"
-                aria-label="Nästa vecka"
-                onClick={nextWeek}
-              >
+              <button className="iconBtn" onClick={nextWeek} aria-label="Nästa">
                 ›
               </button>
             </div>
@@ -131,7 +103,8 @@ export default function Calender() {
           <div className="calendarRow">
             {weekDays.map((day) => {
               const isSelected =
-                selectedDate instanceof Date && sameDay(day.date, selectedDate);
+                selectedDate instanceof Date &&
+                sameDay(day.date, selectedDate);
 
               return (
                 <div
@@ -139,15 +112,20 @@ export default function Calender() {
                     day.date.getMonth() + 1
                   )}-${pad2(day.dom)}`}
                   className={isSelected ? "dayPill isSelected" : "dayCell"}
-                  onClick={() => setSelectedTs(day.date.getTime())}
                   role="button"
                   tabIndex={0}
+                  onClick={() => setSelectedTs(day.date.getTime())}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      setSelectedTs(day.date.getTime());
+                    }
+                  }}
                 >
                   <div className={isSelected ? "dow" : "dow isMuted"}>
                     {day.dow}
                   </div>
                   <div className="dom">{day.dom}</div>
-                  {isSelected && <div className="dot" aria-hidden="true" />}
+                  {isSelected && <div className="dot" />}
                 </div>
               );
             })}
