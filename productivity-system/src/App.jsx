@@ -9,21 +9,19 @@ import './App.css';
 function App() {
   return (
     <div>
+            <UserLogin />
+
       <Header />
 
-      <main className="dashboard-container">
-        <p>Här är dina dagliga mål och rutiner.</p>
-
-        {/* Här laddar vi in din nya komponent */}
-
-          <div className="userLogin">
-            <UserLogin />
-          </div>
 
           <div className="calendar-wrapper">
             <Calendar />
           </div>
 
+      <main className="dashboard-container">
+        <p>Här är dina dagliga mål och rutiner.</p>
+
+        {/* Här laddar vi in din nya komponent */}
 
         <div className="grid-layout">
 
