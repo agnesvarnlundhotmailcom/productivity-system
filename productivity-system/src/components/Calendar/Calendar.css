@@ -76,8 +76,9 @@
 
 .calendarRow {
   display: flex;
-  align-items: flex-start;
+  align-items: flex;
   justify-content: space-between;
+  justify-content: space-evenly;  
   gap: 10px;
 }
 
