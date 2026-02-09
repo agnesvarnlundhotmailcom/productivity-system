@@ -51,14 +51,23 @@ export default function DailySchedule() {
     setNewTitle("");
   };
 
+const handleDelete = (id) => {
+    setActivities(activities.filter(item => item.id !== id));
+  };
+
+  const handleUpdate = (id, updatedData) => {
+    const updatedList = activities.map(item => 
+      item.id === id ? { ...item, ...updatedData, color: getColorForCategory(updatedData.category || item.category) } : item
+    ).sort((a, b) => a.time.localeCompare(b.time));
+    
+    setActivities(updatedList);
+  };
+
   return (
     <div className={styles.container}>
-      {/* Header med dynamiskt datum */}
       <div className={styles.header}>
         <div className={styles.headerTitle}>
-        <span style={{ marginRight: '8px' }}>
-        <Clock size={20} color="#0ed3ac" />
-        </span>
+          <span style={{ marginRight: '8px' }}><Clock size={20} color="#0ed3ac" /></span>
           Schema - {todayDate}
         </div>
         <button onClick={() => setIsAdding(!isAdding)} className={styles.addButton}>
@@ -66,55 +75,29 @@ export default function DailySchedule() {
         </button>
       </div>
 
-      {/* Formulär */}
       {isAdding && (
         <div className={styles.form}>
           <div className={styles.formRow}>
-            <input 
-              type="time" 
-              value={newTime} 
-              onChange={(e) => setNewTime(e.target.value)} 
-              className={`${styles.input} ${styles.inputTime}`}
-              required
-            />
-            <select 
-              value={newCategory} 
-              onChange={(e) => setNewCategory(e.target.value)} 
-              className={styles.select}
-            >
+            <input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} className={styles.input} />
+            <select value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className={styles.select}>
               <option value="Arbete">Arbete</option>
               <option value="Paus">Paus</option>
               <option value="Möte">Möte</option>
               <option value="Personligt">Personligt</option>
             </select>
           </div>
-          <input 
-            type="text" 
-            placeholder="Skriv din aktivitet..." 
-            value={newTitle} 
-            onChange={(e) => setNewTitle(e.target.value)} 
-            className={styles.input}
-            autoFocus 
-          />
+          <input type="text" placeholder="Aktivitet..." value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className={styles.input} />
           <button onClick={handleAdd} className={styles.saveBtn}>Lägg till</button>
         </div>
       )}
 
-      {/* Listan */}
       <div className={styles.list}>
-        {activities.length === 0 && !isAdding && (
-          <div className={styles.emptyState}>
-            Tryck på + för att lägga till dagens första aktivitet
-          </div>
-        )}
-
         {activities.map((item) => (
           <ScheduleItem 
             key={item.id}
-            time={item.time}
-            title={item.title}
-            category={item.category}
-            color={item.color}
+            item={item} 
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
           />
         ))}
       </div>
