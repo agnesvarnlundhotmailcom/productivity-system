@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { ListTodo, CircleCheck, Circle, Plus, Trash2, Pencil, Check, X } from 'lucide-react'; 
+import React, { useState, useContext } from 'react';
+// 1. Importera alla ikoner vi behöver från Lucide
+import { ListTodo, CircleCheck, Circle, Plus } from 'lucide-react'; 
+import { DataContext } from "../../contexts/DataContext";
 import styles from './TodoWidget.module.css';
 
 const TodoWidget = () => {
-  const [tasks, setTasks] = useState([]);
+  const { data, setData } = useContext(DataContext);
+  const tasks = data.tasks;
   const [inputValue, setInputValue] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editValue, setEditValue] = useState("");
@@ -30,9 +35,12 @@ const TodoWidget = () => {
   };
 
   const toggleTask = (id) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+    setData(prev => ({
+      ...prev,
+      tasks: prev.tasks.map(task => 
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    }));
   };
 
   const completedCount = tasks.filter(t => t.completed).length;

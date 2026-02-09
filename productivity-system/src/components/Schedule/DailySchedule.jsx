@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import ScheduleItem from './ScheduleItem';
 import styles from './Schedule.module.css';
 import { Clock } from 'lucide-react'; 
+import { DataContext } from "../../contexts/DataContext";
 
 export default function DailySchedule() {
-  const [activities, setActivities] = useState([]);
+  const { data, setData } = useContext(DataContext);
+  const activities = data.schedule;
+
   const [isAdding, setIsAdding] = useState(false);
   
   // State för formuläret
@@ -22,10 +25,10 @@ export default function DailySchedule() {
   // Funktion för färgkodning
   const getColorForCategory = (cat) => {
     switch(cat) {
-      case 'Arbete': return '#39bef8'; // Blå
-      case 'Paus': return '#f49e0c';   // Orange
-      case 'Möte': return '#c093fc';   // Lila
-      default: return '#fb7185';       // Rosa (Personligt)
+      case 'Arbete': return '#39bef8';
+      case 'Paus': return '#f49e0c';
+      case 'Möte': return '#c093fc';
+      default: return '#fb7185';
     }
   };
 
@@ -40,12 +43,15 @@ export default function DailySchedule() {
       color: getColorForCategory(newCategory)
     };
 
-    // Lägg till och sortera listan
-    const updatedList = [...activities, newItem].sort((a, b) => 
+    const updatedList = [...activities, newItem].sort((a, b) =>
       a.time.localeCompare(b.time)
     );
 
-    setActivities(updatedList);
+    setData(prev => ({
+      ...prev,
+      schedule: updatedList
+    }));
+
     setIsAdding(false);
     setNewTime("");
     setNewTitle("");
@@ -67,9 +73,13 @@ const handleDelete = (id) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.headerTitle}>
-        <span style={{ marginRight: '8px' }}>
-        <Clock size={20} color="#0ed3ac" style={{ filter: 'drop-shadow(0 0 5px var(--accent-primary))' }} />
-        </span>
+          <span style={{ marginRight: '8px' }}>
+            <Clock
+              size={20}
+              color="#0ed3ac"
+              style={{ filter: 'drop-shadow(0 0 5px var(--accent-primary))' }}
+            />
+          </span>
           Schema - {todayDate}
         </div>
         <button onClick={() => setIsAdding(!isAdding)} className={styles.addButton}>
