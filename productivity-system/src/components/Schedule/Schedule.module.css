@@ -8,9 +8,9 @@
     font-family: 'Inter', sans-serif;
     margin-bottom: var(--space-md);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-  }
+}
   
-  .header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,14 +20,14 @@
     font-size: 16px;
     font-weight: 500;
     text-transform: capitalize;
-  }
+}
   
-  .headerTitle {
+.headerTitle {
     display: flex;
     align-items: center;
-  }
+}
   
-  .addButton {
+.addButton {
     background: none;
     border: none;
     color: var(--text-primary);
@@ -35,14 +35,14 @@
     cursor: pointer;
     line-height: 1;
     padding: 0 10px;
-  }
+}
   
-  .addButton:hover {
+.addButton:hover {
     color: var(--accent-primary);
-  }
+}
   
-  /* Formulär */
-  .form {
+/* --- FORMULÄR (NYA PASS) --- */
+.form {
     background-color: var(--surface-1);
     padding: 15px;
     border-radius: 12px;
@@ -52,14 +52,14 @@
     gap: 10px;
     border: 1px solid var(--surface-3);
     animation: fadeIn 0.3s ease;
-  }
+}
   
-  .formRow {
+.formRow {
     display: flex;
     gap: 10px;
-  }
+}
   
-  .input, .select {
+.input, .select {
     padding: 12px;
     border-radius: 8px;
     border: 1px solid var(--surface-3);
@@ -67,21 +67,21 @@
     color: var(--text-primary);
     outline: none;
     font-size: 14px;
-  }
+}
   
-  .input:focus, .select:focus {
+.input:focus, .select:focus {
     border-color: var(--accent-primary);
-  }
+}
   
-  .inputTime {
+.inputTime {
     flex: 1;
-  }
+}
   
-  .select {
+.select {
     flex: 1;
-  }
+}
   
-  .saveBtn {
+.saveBtn {
     padding: 12px;
     border-radius: 8px;
     border: none;
@@ -91,29 +91,27 @@
     cursor: pointer;
     margin-top: 5px;
     transition: background-color 0.2s;
-  }
+}
   
-  .saveBtn:hover {
+.saveBtn:hover {
     filter: brightness(1.1);
-  }
-  
-  /* Listan */
-  .list {
+}
+
+.list {
     display: flex;
     flex-direction: column;
     gap: 12px;
-  }
+}
   
-  .emptyState {
+.emptyState {
     text-align: center;
     color: var(--text-secondary);
     margin-top: 20px;
     font-size: 14px;
     font-style: italic;
-  }
+}
   
-  /* Card Styling */
-  .card {
+.card {
     display: flex;
     align-items: center;
     background-color: var(--surface-1);
@@ -124,31 +122,31 @@
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     border: 1px solid transparent;
     transition: border-color 0.2s;
-  }
+}
 
-  .card:hover {
+.card:hover {
     border-color: var(--surface-3);
-  }
+}
   
-  .accentBar {
+.accentBar {
     position: absolute;
     left: 0;
     top: 15%;
     bottom: 15%;
     width: 4px;
     border-radius: 0 4px 4px 0;
-  }
+}
   
-  .time {
+.time {
     color: var(--text-secondary);
     font-family: monospace;
     font-size: 14px;
     margin-left: 12px;
     margin-right: 16px;
     min-width: 45px;
-  }
+}
   
-  .title {
+.title {
     color: var(--text-primary);
     font-weight: 500;
     font-size: 15px;
@@ -156,19 +154,66 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-right: 10px;
-  }
-  
-  .categoryTag {
-    font-size: 11px;
-    color: var(--text-secondary);
-    background-color: var(--surface-3);
-    padding: 4px 8px;
-    border-radius: 6px;
-    text-transform: capitalize;
-  }
-  
-  @keyframes fadeIn {
+    margin-right: 15px;
+}
+
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.iconBtn, .deleteBtn {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.iconBtn:hover {
+  background-color: var(--surface-3);
+  color: var(--accent-primary);
+}
+
+.deleteBtn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+.editRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.editInput {
+  background-color: var(--surface-2);
+  border: 1px solid var(--surface-3);
+  color: var(--text-primary);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.editInput:focus {
+  border-color: var(--accent-primary);
+}
+
+.editInputTitle {
+  flex: 1;
+}
+
+@keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
-  }
+}
