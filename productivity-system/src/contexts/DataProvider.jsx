@@ -1,3 +1,4 @@
+//äger datan + localStorage hantering, och gör den tillgänglig för alla komponenter som behöver den
 import { useState, useEffect } from "react";
 import { DataContext } from "./DataContext";
 
