@@ -28,8 +28,9 @@
   display:flex;
   flex-direction:column;
   gap: 18px;
-}
+  padding: 15px;
 
+}
 .card{
   background: var(--card);
   border: 1px solid var(--cardBorder);
@@ -48,26 +49,31 @@
 }
 
 .cardTitleWrap{
+  padding: 0;
   display:flex;
-  align-items:center;
-  gap: 12px;
+  flex-direction: column;
+  align-items:left;
+  min-width: 0; /* SUPERviktigt */
 }
 
-.cardTitle{
+.cardTitle, .cardTitleYear{
   margin:0;
-  font-size: 30px;
+  font-size: 16px;
   letter-spacing: 0.2px;
 }
 
 .cardActions{
   display:flex;
   align-items:center;
-  gap: 10px;
+  gap: 6px;
+  border: #05221c 2px solid;
+  justify-content: end;
+
 }
 
 .iconBtn{
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
   border-radius: 14px;
   border: 1px solid var(--cardBorder);
   background: rgba(255,255,255,0.04);
@@ -76,7 +82,7 @@
 }
 
 .pillBtn{
-  height: 40px;
+  height: 25px;
   padding: 0 16px;
   border-radius: 14px;
   border: 1px solid var(--cardBorder);
@@ -89,7 +95,6 @@
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
-
 }
 
 .dayPill{
@@ -109,6 +114,7 @@
   background: rgba(31,231,198,0.20);
   border-color: rgba(31,231,198,0.25);
   color: #05221c;
+  padding: 0px;
 }
 
 .dayCell{
@@ -162,3 +168,96 @@
   color: var(--muted2);
   font-size: 18px;
 }
+
+
+.monthDowRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.monthDowCell {
+  opacity: 0.7;
+  font-size: 12px;
+  text-align: center;
+}
+
+.monthGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.monthCell {
+  padding: 2px 2px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.monthCell.isOutside {
+  opacity: 0.35;
+}
+
+.monthCell.isSelected {
+  outline: 2px solid #0ed3ac;
+}
+
+
+
+/* //SKÄRMAR BREDARE ÄN 700PX */
+
+@media (min-width: 700px){
+
+  /* * {
+    border: red solid
+    border:#0ed3ac 2px solid;
+  } */
+
+  .iconBtn{
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+  }
+
+  .pillBtn{
+    height: 50px;
+    font-size: 30px;
+
+  }
+
+/* VECKOVY */
+.dow{
+  font-size: 30px;
+  margin-top: 40px;
+
+}
+.dow.isMuted{ color: var(--muted2); }
+
+.dom{
+  font-size: 30px;
+  letter-spacing: 0.2px;
+}
+
+
+
+/* MÅNADSVY */
+.cardTitle, .cardTitleYear{
+  font-size: 40px;
+}
+
+/* storlek på veckodagar */
+.monthDowCell {
+  margin-top: 40px;
+  font-size: 30px;
+}
+/* storlek på datum */
+.monthCell {
+  font-size: 30px;
+}
+
+
+}
+
+
