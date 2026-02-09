@@ -1,61 +1,96 @@
-import React from 'react';
-// HÄMTNING: Vi hämtar ikoner (Blixt, Klocka, Kaffe) från biblioteket Lucide.
-import { Zap, Clock, Coffee } from 'lucide-react';
+import React, { useState } from 'react';
+import { Zap, Activity } from 'lucide-react';
 import './EnergyCare.css';
 
 const EnergyCare = () => {
-  // DIN INSTÄLLNING: Detta är siffran som styr hela kortet.
-  // Ändrar 52 här, så ändras både texten och mätaren automatiskt.
-  const energyLevel = 52;
+  // Vi startar med lite historik i grafen
+  const [energyHistory, setEnergyHistory] = useState([]);
+  
+  // Den senaste valda nivån är det sista elementet i listan
+  const currentLevel = energyHistory[energyHistory.length - 1];
+
+  // Funktion som körs när man klickar på en emoji-knapp
+  const handleSelectLevel = (newLevel) => {
+    // Vi lägger till det nya värdet sist i arrayen
+    // Vi behåller bara de senaste 15 värdena så att grafen inte blir för trång
+    setEnergyHistory(prev => [...prev.slice(-14), newLevel]);
+  };
+
+  const getBarColor = (level) => {
+    if (level >= 4) return 'var(--accent-primary)'; 
+    if (level === 3) return 'var(--accent-warning)'; 
+    return 'var(--accent-danger)'; 
+  };
+
+  const emojis = [
+    { icon: '😴', val: 1 },
+    { icon: '😔', val: 2 },
+    { icon: '😐', val: 3 },
+    { icon: '😊', val: 4 },
+    { icon: '🔥', val: 5 }
+  ];
 
   return (
-    <section className="card energy-card">
-      {/* 1. TOPPEN: Visar vad kortet handlar om (Ikon + Namn) */}
-      <div className="card-header">
-        <div className="header-left">
-          {/* Cirkeln bakom blixt-ikonen */}
-          <div className="icon-bg">
-            <Zap size={18} fill="currentColor" />
+    <div className="energy-card">
+      <div className="card-header-row">
+        <div className="header-left-side">
+          <div className="zap-icon-wrapper">
+            <Zap size={20} className="zap-icon" />
           </div>
-          <h3>Energinivå</h3>
+          <h3 className="card-title">Energinivå</h3>
         </div>
-        {/* En liten text-etikett uppe i hörnet */}
-        <span className="status-text">STABIL</span>
       </div>
 
-      {/* 2. MITTEN: Den stora siffran och själva mätaren */}
-      <div className="energy-main">
-        {/* Här skriver vi ut siffran vi valde högst upp (energyLevel) */}
-        <h1 className="energy-percent">{energyLevel}%</h1>
+      {/* Visar den nivå man just klickat på */}
+      <div className="level-status-box">
+        <span className="status-label">Senaste nivå</span>
+        <div className="status-value">
+          <span className="current-emoji">{emojis.find(e => e.val === currentLevel)?.icon}</span>
+          <strong>{currentLevel}/5</strong>
+        </div>
+      </div>
+
+      {/* Knappar för att välja nivå */}
+      <div className="emoji-selector-grid">
+        {emojis.map((item) => (
+          <button 
+            key={item.val} 
+            onClick={() => handleSelectLevel(item.val)}
+            className={`emoji-button ${currentLevel === item.val ? 'is-active' : ''}`}
+          >
+            <span className="emoji-img">{item.icon}</span>
+            <span className="emoji-num">{item.val}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Grafen som uppdateras live */}
+      <div className="chart-wrapper">
+        <div className="chart-info">
+          <Activity size={12} />
+          <span>Idag</span>
+        </div>
         
-        {/* Mätarens bakgrund (den gråa skåran) */}
-        <div className="progress-bar-bg">
-          {/* Denna del är "fyllningen". 
-              Vi använder style för att säga: "Bredden på färgen ska vara exakt så många procent som energinivån". */}
-          <div 
-            className="progress-fill" 
-            style={{ width: `${energyLevel}%` }} 
-          />
+        <div className="bar-chart-area">
+          {energyHistory.map((level, i) => (
+            <div 
+              key={i} 
+              className="chart-bar" 
+              style={{ 
+                height: `${(level / 5) * 100}%`, 
+                backgroundColor: getBarColor(level) 
+              }}
+            />
+          ))}
         </div>
-      </div>
-
-      {/* 3. BOTTEN: Två rutor med extra tips och tider */}
-      <div className="energy-footer">
         
-        {/* Första boxen: Nästa energitopp */}
-        <div className="info-box">
-          <p><Clock size={14} /> NÄSTA PEAK</p>
-          <span>15:00</span>
+        <div className="chart-labels">
+          <span>Tidigare</span>
+          <span className="chart-avg">Live Graf</span>
+          <span>Nu</span>
         </div>
-
-        {/* Andra boxen: Ett smart råd */}
-        <div className="info-box">
-          <p><Coffee size={14} /> REKOMMENDATION</p>
-          <span>Bra för fokus</span>
-        </div>
-
       </div>
-    </section>
+    </div>
   );
 };
 

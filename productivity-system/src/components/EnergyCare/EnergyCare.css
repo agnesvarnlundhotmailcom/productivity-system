@@ -1,67 +1,148 @@
-/* Själva kortet */
+/* Huvudkortet */
 .energy-card {
-  margin-top: var(--section-gap);
+  background: var(--surface-2);
+  border: 1px solid var(--surface-3);
+  padding: var(--space-md);
+  border-radius: 16px;
   width: 100%;
 }
 
-/* Status-texten (STABIL) */
-.status-text {
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-  font-weight: bold;
+/* Header */
+.card-header-row {
+  margin-bottom: 20px;
 }
 
-/* Procent-siffran */
-.energy-percent {
-  font-size: 3.5rem;
-  color: var(--accent-warning);
-  margin: 15px 0 10px 0;
-}
-
-/* Mätaren (Samma som dina andra progress bars) */
-.progress-bar-bg {
-  height: 6px;
-  background: var(--surface-3);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--accent-warning);
-  box-shadow: 0 0 10px var(--accent-warning); /* Glow-effekt */
-}
-
-/* Botten-sektionen med två kolumner */
-.energy-footer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-top: 25px;
-}
-
-/* De små inre rutorna */
-.info-box {
-  background: var(--surface-3);
-  padding: 15px;
-  border-radius: 12px;
-}
-
-.info-box p {
+.header-left-side {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.6rem;
-  margin: 0 0 5px 0;
-  color: var(--text-secondary);
+  gap: 10px;
 }
 
-.info-box span {
-  font-size: 0.9rem;
+.zap-icon-wrapper {
+ font-size: 1.5rem;
+  color: var(--accent-primary);
+  text-shadow: 0 0 12px rgba(14, 211, 172, 0.4);
+  filter: drop-shadow(0 0 5px var(--accent-primary));
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: var(--text-primary);
-  font-weight: 500;
 }
 
-.icon-bg {
-color: var(--accent-warning);
+/* Den mörka statusboxen */
+.level-status-box {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.status-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.status-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+}
+
+.current-emoji {
+  font-size: 1.2rem;
+}
+
+/* Knapparna (Emoji-väljaren) */
+.emoji-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.emoji-button {
+  background: var(--surface-3);
+  border: 1px solid transparent;
+  padding: 12px 0;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.emoji-button:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.emoji-button.is-active {
+  background: rgba(14, 211, 172, 0.1);
+  border-color: var(--accent-primary);
+}
+
+.emoji-button.is-active .emoji-num {
+  color: var(--accent-primary);
+}
+
+.emoji-img {
+  font-size: 1.2rem;
+}
+
+.emoji-num {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Grafen */
+.chart-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  margin-bottom: 12px;
+}
+
+.bar-chart-area {
+  display: flex;
+  align-items: flex-end; /* Gör att staplarna växer nerifrån och upp */
+  gap: 4px;
+  height: 60px; /* Höjden på själva grafen */
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--surface-3);
+}
+
+.chart-bar {
+  flex: 1;
+  border-radius: 3px 3px 1px 1px;
+  min-width: 4px;
+  transition: height 0.3s ease-out;
+}
+
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+.chart-avg {
+  font-weight: 500;
 }

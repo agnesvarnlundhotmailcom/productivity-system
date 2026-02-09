@@ -57,7 +57,7 @@ export default function DailySchedule() {
       <div className={styles.header}>
         <div className={styles.headerTitle}>
         <span style={{ marginRight: '8px' }}>
-        <Clock size={20} color="#0ed3ac" />
+        <Clock size={20} color="#0ed3ac" style={{ filter: 'drop-shadow(0 0 5px var(--accent-primary))' }} />
         </span>
           Schema - {todayDate}
         </div>

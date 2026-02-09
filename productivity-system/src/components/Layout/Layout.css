@@ -21,6 +21,7 @@
   font-size: 1.5rem;
   color: var(--accent-primary);
   text-shadow: 0 0 12px rgba(14, 211, 172, 0.4);
+  filter: drop-shadow(0 0 5px var(--accent-primary));
 }
 
 .app-title {

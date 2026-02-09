@@ -81,7 +81,7 @@ export default function Calender() {
             <div className="cardHeader">
               <div className="cardTitleWrap">
                 <span style={{ marginRight: '8px' }}>
-                <Calendar size={20} color="#0ed3ac" />
+                <Calendar size={20} color="#0ed3ac" style={{ filter: 'drop-shadow(0 0 5px var(--accent-primary))' }} />
                 </span>     
                 <h2 className="cardTitle">{monthLabel}</h2>
               </div>
