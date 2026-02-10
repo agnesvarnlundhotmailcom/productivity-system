@@ -1,44 +1,48 @@
-import React, { useState } from 'react';
-import UserLogin from "./components/UserLogin/userLogin";
-import Header from './components/Layout/Header';
-import Calendar from "./components/Calendar/Calendar";
-import RoutineSection from './components/RoutineSection/RoutineSection';
-import TodoWidget from './components/ToDo/TodoWidget';
-import DailySchedule from './components/Schedule/DailySchedule';
-import './App.css';
+import React, { useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import FlowTimerPage from "./pages/FlowTimerPage";
+import TodoPage from "./pages/TodoPage";
+import CalendarPage from "./pages/CalendarPage";
+import LoginPage from "./pages/LoginPage";
+import SettingsModal from "./components/Settings/SettingsModal";
+import "./App.css";
 
 function App() {
-  // Gemensamt tillstånd för valt datum (timestamp)
-// Istället för useState(Date.now())
-const [selectedTs, setSelectedTs] = useState(() => Date.now());
+  const [selectedTs, setSelectedTs] = useState(() => Date.now());
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <div>
-      <UserLogin />
-      <Header />
+      <header className="app-header">
+        <nav>
+          <Link to="/">Hem</Link>{" | "}
+          <Link to="/flow">FlowTimer</Link>{" | "}
+          <Link to="/todo">To‑Do</Link>{" | "}
+          <Link to="/calendar">Kalender</Link>{" | "}
+          <button type="button" onClick={() => setSettingsOpen(true)}>
+            Inställningar
+          </button>{" | "}
+          <Link to="/login">Log in</Link>
+        </nav>
+      </header>
 
-      <main className="dashboard-container">
-        <p>Här är dina dagliga mål och rutiner.</p>
-
-        <div className="calendar-wrapper">
-          {/* Vi skickar ner datumet och funktionen att ändra det */}
-          <Calendar selectedTs={selectedTs} onDateChange={setSelectedTs} />
-        </div>
-
-        <div className="grid-layout">
-          <div className="schedule-wrapper">
-            {/* Vi skickar det valda datumet till schemat */}
-            <DailySchedule selectedDate={selectedTs} />
-          </div>
-
-          <div className="todo-wrapper">
-            {/* Vi skickar det valda datumet till to-do listan */}
-            <TodoWidget selectedDate={selectedTs} />
-          </div>
-        </div>
-
-        <RoutineSection />
+      <main>
+        <Routes>
+          <Route
+            path="/"
+            element={<CalendarPage selectedDate={selectedTs} setSelectedDate={setSelectedTs} />}
+          />
+          <Route path="/flow" element={<FlowTimerPage />} />
+          <Route path="/todo" element={<TodoPage selectedDate={selectedTs} />} />
+          <Route
+            path="/calendar"
+            element={<CalendarPage selectedDate={selectedTs} setSelectedDate={setSelectedTs} />}
+          />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
       </main>
+
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 }
