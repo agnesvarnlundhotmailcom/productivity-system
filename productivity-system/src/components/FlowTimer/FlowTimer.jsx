@@ -13,8 +13,8 @@ function formatMMSS(totalSeconds) {
 }
 
 export default function FlowTimer({
-  appName = "FlowTime",
-  tagline = "Din produktivitetspartner",
+  appName = "",
+  tagline = "",
 }) {
   const { data, setData } = useContext(DataContext);
 
@@ -51,9 +51,9 @@ export default function FlowTimer({
 
   const greeting = useMemo(() => {
     const h = new Date().getHours();
-    if (h < 12) return "God morgon!";
-    if (h >= 12) return "God eftermiddag!";
-    return "God kväll!";
+    if (h < 12) return "";
+    if (h >= 12) return "";
+    if (h >=18) return "";
   }, []);
 
   const startWork = () => {
@@ -84,12 +84,7 @@ export default function FlowTimer({
   return (
     <div className="ftWrap">
       <header className="ftHeader">
-        {/* <div className="ftBrand">
-          <div className="ftLogo" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18">
-              <path d="M13 2L3 14h7l-1 8 12-14h-7l-1-6z" fill="currentColor" />
-            </svg>
-          </div>
+        <div className="ftBrand">
           <div className="ftBrandText">
             <div className="ftBrandName">{appName}</div>
             <div className="ftBrandTagline">{tagline}</div>
@@ -98,9 +93,9 @@ export default function FlowTimer({
 
         <div className="ftGreeting">
           <div className="ftGreetingTitle">
-            {greeting} Redo att optimera din dag?
+            {greeting}
           </div>
-        </div> */}
+        </div>
       </header>
 
       <section className="ftCard">
