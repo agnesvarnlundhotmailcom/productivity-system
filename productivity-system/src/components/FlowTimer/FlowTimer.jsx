@@ -51,8 +51,8 @@ export default function FlowTimer({
 
   const greeting = useMemo(() => {
     const h = new Date().getHours();
-    if (h < 10) return "God morgon!";
-    if (h < 18) return "God eftermiddag!";
+    if (h < 12) return "God morgon!";
+    if (h >= 12) return "God eftermiddag!";
     return "God kväll!";
   }, []);
 
