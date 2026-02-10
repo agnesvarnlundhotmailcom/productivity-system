@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useContext } from "react";
 import "./FlowTimer.css";
 import { DataContext } from "../../contexts/DataContext";
+import { RotateCcw } from "lucide-react";
 
 function pad2(n) {
   return String(n).padStart(2, "0");
@@ -123,11 +124,12 @@ export default function FlowTimer({
           </button>
         </div>
 
-        <div className="ftMiniActions">
-          <button className="ftLinkBtn" onClick={resetAll}>
-            Återställ
-          </button>
-        </div>
+       <div className="ftMiniActions">
+        <button className="ftResetBtn" onClick={resetAll}>
+        <RotateCcw size={18} strokeWidth={2.5} />
+        Återställ tid
+        </button>
+       </div>
       </section>
 
       <section className="ftStats">
