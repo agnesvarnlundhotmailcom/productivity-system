@@ -14,16 +14,6 @@ function App() {
   return (
     <div>
       <header className="app-header">
-        <nav>
-          <Link to="/">Hem</Link>{" | "}
-          <Link to="/flow">FlowTimer</Link>{" | "}
-          <Link to="/todo">To‑Do</Link>{" | "}
-          <Link to="/calendar">Kalender</Link>{" | "}
-          <button type="button" onClick={() => setSettingsOpen(true)}>
-            Inställningar
-          </button>{" | "}
-          <Link to="/login">Log in</Link>
-        </nav>
       </header>
 
       <main>
@@ -32,15 +22,26 @@ function App() {
             path="/"
             element={<CalendarPage selectedDate={selectedTs} setSelectedDate={setSelectedTs} />}
           />
-          <Route path="/flow" element={<FlowTimerPage />} />
-          <Route path="/todo" element={<TodoPage selectedDate={selectedTs} />} />
           <Route
             path="/calendar"
             element={<CalendarPage selectedDate={selectedTs} setSelectedDate={setSelectedTs} />}
           />
+          <Route path="/flow" element={<FlowTimerPage />} />
+          <Route path="/todo" element={<TodoPage selectedDate={selectedTs} />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </main>
+
+        <nav className= "navBar">
+          <Link to="/">Hem</Link>{" | "}
+          <Link to="/calendar">Kalender</Link>{" | "}
+          <Link to="/todo">To‑Do</Link>{" | "}
+          <Link to="/flow">FlowTimer</Link>{" | "}
+          <Link to="/login">Log in</Link>
+          <button type="button" onClick={() => setSettingsOpen(true)}>
+            Inställningar
+          </button>{" | "}
+        </nav>
 
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>

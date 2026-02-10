@@ -17,15 +17,15 @@
 }
 
 .card {
-  background-color: var(--surface-2); 
-  border: 1px solid var(--surface-3); 
+  background-color: var(--surface-2);
+  border: 1px solid var(--surface-3);
   border-radius: 16px;
   padding: var(--space-lg);
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .btn-primary {
-  background-color: rgba(14, 211, 172, 0.1); 
+  background-color: rgba(14, 211, 172, 0.1);
   color: var(--accent-primary);
   border: 1px solid var(--accent-primary);
   padding: var(--space-sm) var(--space-lg);
@@ -60,7 +60,7 @@
 
 .schedule-wrapper > div,
 .todo-wrapper > div {
-  max-width: none !important; 
+  max-width: none !important;
   width: 100% !important;
   margin-bottom: 0 !important;
 }
@@ -78,3 +78,15 @@
   }
 }
 
+.navBar {
+  background-color: var(--surface-2);
+  border-bottom: 1px solid var(--surface-3);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
