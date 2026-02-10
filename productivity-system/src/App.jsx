@@ -1,54 +1,52 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
+// Layout & Modaler
 import Header from './components/Layout/Header';
-import UserLogin from "./components/UserLogin/userLogin";
-import Calendar from "./components/Calendar/Calendar";
-import RoutineSection from './components/RoutineSection/RoutineSection';
-import TodoWidget from './components/ToDo/TodoWidget';
-import DailySchedule from './components/Schedule/DailySchedule';
-import FlowTimerPage from "./pages/FlowTimerPage"; 
 import SettingsModal from "./components/Settings/SettingsModal";
+
+// Sidor
+import CalendarPage from "./pages/CalendarPage"; // Denna sköter nu Kalender + Schema + ToDo
+import FlowTimerPage from "./pages/FlowTimerPage"; 
+import UserLogin from "./components/UserLogin/userLogin";
+
+// Widgets (om du vill ha dem på egna separata sidor också)
+import TodoWidget from './components/ToDo/TodoWidget';
 
 import './App.css';
 
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  
+  // Skapa datum-state här så att Kalender och Schema alltid är synkade
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
     <div className="app-container">
-      {/* 1. Header ligger alltid kvar på toppen */}
+      {/* Headern sköter navigeringen via <Link> */}
       <Header onOpenSettings={() => setSettingsOpen(true)} />
 
-      {/* 2. Här byter vi ut innehållet beroende på vilken länk vi klickat på */}
       <main className="dashboard-container">
         <Routes>
-          {/* DIN STARTSIDA (Hem / Kalender) */}
-          <Route path="/" element={
-            <>
-              <p>Välkommen! Här är dina dagliga mål och rutiner.</p>
-              <div className="calendar-wrapper">
-                <Calendar />
-              </div>
-              <div className="grid-layout">
-                <div className="schedule-wrapper">
-                  <DailySchedule />
-                </div>
-                <div className="todo-wrapper">
-                  <TodoWidget />
-                </div>
-              </div>
-              <RoutineSection />
-            </>
-          } />
+          {/* STARTSIDAN & KALENDERSIDAN */}
+          <Route 
+            path="/" 
+            element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} 
+          />
+          <Route 
+            path="/calendar" 
+            element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} 
+          />
 
-          {/* DINA ANDRA SIDOR */}
-          <Route path="/calendar" element={<Calendar />} />
+          {/* FLOWTIMER-SIDAN */}
           <Route path="/flow" element={<FlowTimerPage />} />
+
+          {/* LOGIN */}
           <Route path="/login" element={<UserLogin />} />
         </Routes>
       </main>
 
+      {/* Inställningar */}
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
