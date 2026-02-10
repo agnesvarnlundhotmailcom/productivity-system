@@ -1,17 +1,17 @@
 import React, { useState, useContext } from 'react';
-import { ListTodo, CircleCheck, Circle, Plus, Pencil, Trash2, Check, X } from 'lucide-react'; 
+import { ListTodo, CircleCheck, Circle, Plus, Pencil, Trash2, Check, X } from 'lucide-react';
 import { DataContext } from "../../contexts/DataContext";
 import styles from './TodoWidget.module.css';
 
 const TodoWidget = ({ selectedDate }) => {
   const { data, setData } = useContext(DataContext);
-  
+
   // Skapar datumnyckel baserat på valda dagen i kalendern
   const dateKey = new Date(selectedDate).toLocaleDateString('sv-SE');
-  
+
   // Hämtar tasks för valt datum
   const tasks = data[dateKey]?.tasks ?? [];
-  
+
   const [inputValue, setInputValue] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
@@ -38,13 +38,13 @@ const TodoWidget = ({ selectedDate }) => {
   };
 
   const toggleTask = (id) => {
-    updateTasks(tasks.map(t => 
+    updateTasks(tasks.map(t =>
       t.id === id ? { ...t, completed: !t.completed } : t
     ));
   };
 
   const deleteTask = (e, id) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     updateTasks(tasks.filter(t => t.id !== id));
   };
 
@@ -61,7 +61,7 @@ const TodoWidget = ({ selectedDate }) => {
 
   const saveEdit = (e) => {
     e.stopPropagation();
-    updateTasks(tasks.map(t => 
+    updateTasks(tasks.map(t =>
       t.id === editingId ? { ...t, text: editText } : t
     ));
     setEditingId(null);
@@ -103,7 +103,7 @@ const TodoWidget = ({ selectedDate }) => {
         )}
 
         {tasks.map((task) => (
-          <div 
+          <div
             key={task.id}
             className={`${styles.item} ${task.completed ? styles.completedItem : ''}`}
           >
@@ -111,10 +111,10 @@ const TodoWidget = ({ selectedDate }) => {
               <div className={`${styles.checkIcon} ${task.completed ? styles.checked : ''}`}>
                 {task.completed ? <CircleCheck size={20} /> : <Circle size={20} />}
               </div>
-              
+
               {editingId === task.id ? (
                 <div className={styles.editWrapper}>
-                  <input 
+                  <input
                     className={styles.editInput}
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
