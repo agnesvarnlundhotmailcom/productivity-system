@@ -84,7 +84,7 @@ export default function FlowTimer({
   return (
     <div className="ftWrap">
       <header className="ftHeader">
-        <div className="ftBrand">
+        {/* <div className="ftBrand">
           <div className="ftLogo" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="18" height="18">
               <path d="M13 2L3 14h7l-1 8 12-14h-7l-1-6z" fill="currentColor" />
@@ -100,7 +100,7 @@ export default function FlowTimer({
           <div className="ftGreetingTitle">
             {greeting} Redo att optimera din dag?
           </div>
-        </div>
+        </div> */}
       </header>
 
       <section className="ftCard">
