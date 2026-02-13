@@ -1,60 +1,78 @@
-// Här kan du senare byta ut till din riktiga URL, t.ex. från .env-fil
-const API_URL = "http://localhost:5000/api/auth";
+import { createClient } from '@supabase/supabase-js';
+
+// BYT UT DESSA TVÅ MOT DINA EGNA NYCKLAR FRÅN SUPABASE
+const SUPABASE_URL = 'https://gqhzvbxrbwspbjblvbje.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxaHp2YnhyYndzcGJqYmx2YmplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5OTQzNDEsImV4cCI6MjA4NjU3MDM0MX0.OmxDmIv6Nl4HfxpAy3C8JLeGBJXQxVdOGUm_gZQ9f9U';
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export interface AuthResponse {
-  token: string;
+  token: string | null;
   user: {
-    id: string;
-    username: string;
+    id: string | undefined;
+    username: string | undefined;
   };
-  message?: string;
 }
 
 export const authService = {
-  // Logga in användare
-  login: async (username: string, password: string): Promise<AuthResponse> => {
-    const response = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+  // LOGGA IN
+  login: async (email: string, password: string): Promise<AuthResponse> => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Inloggningen misslyckades");
-    }
+    if (error) throw new Error(error.message);
 
-    return response.json();
+    return {
+      token: data.session?.access_token || null,
+      user: {
+        id: data.user?.id,
+        username: data.user?.email,
+      }
+    };
   },
 
-  // Registrera ny användare
-  register: async (username: string, password: string): Promise<AuthResponse> => {
-    const response = await fetch(`${API_URL}/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+  // Hämta inloggad användare vid sidladdning
+  getCurrentUser: async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    return {
+      id: user.id,
+      username: user.email
+    };
+  },
+
+  // REGISTRERA
+  register: async (email: string, password: string): Promise<AuthResponse> => {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Registreringen misslyckades");
+    if (error) throw new Error(error.message);
+
+    return {
+      token: data.session?.access_token || null,
+      user: {
+        id: data.user?.id,
+        username: data.user?.email,
+      }
+    };
+  },
+
+  // SPARA TOKEN (Valfritt, Supabase sköter mycket själv)
+  saveToken: (token: string | null) => {
+    if (token) {
+      localStorage.setItem("authToken", token);
     }
-
-    return response.json();
   },
 
-  // Spara token i localStorage
-  saveToken: (token: string) => {
-    localStorage.setItem("authToken", token);
-  },
-
-  // Hämta token
-  getToken: () => {
-    return localStorage.getItem("authToken");
-  },
-
-  // Logga ut
-  logout: () => {
+  // LOGGA UT
+  logout: async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw new Error(error.message);
     localStorage.removeItem("authToken");
   }
 };
