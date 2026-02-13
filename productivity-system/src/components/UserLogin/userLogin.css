@@ -1,5 +1,4 @@
 .login-wrapper{
-  border: green solid 2px;
   display: flex;
   flex-direction: column;
   align-items: center; /* Centrerar allt innehåll horisontellt */
