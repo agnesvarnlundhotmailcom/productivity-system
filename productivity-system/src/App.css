@@ -78,13 +78,15 @@
   }
 }
 
-.input {
-  width: 40%;
-  border: none;
-  font-size: 1.1rem;
-  outline: none;
-  padding: 10px;
-  color: var(--text-primary);
-  background: transparent;
-  transition: border-color 0.2s;
+.navBar {
+  background-color: var(--surface-2);
+  border-bottom: 1px solid var(--surface-3);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

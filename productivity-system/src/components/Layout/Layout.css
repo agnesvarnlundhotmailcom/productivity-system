@@ -2,15 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  /* Header ska använda surface-1 */
   background-color: var(--surface-1);
-
+  border-bottom: 1px solid var(--surface-3);
   height: 80px;
   padding: 0 var(--space-xl);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-/* Vänster sida */
+/* Vänster sida: Logo & Titel */
 .header-left {
   display: flex;
   align-items: center;
@@ -18,39 +19,100 @@
 }
 
 .logo-icon {
-  font-size: 1.5rem;
   color: var(--accent-primary);
-  text-shadow: 0 0 12px rgba(14, 211, 172, 0.4);
+  display: flex;
+  align-items: center;
+  /* Din snygga glow-effekt */
+  filter: drop-shadow(0 0 8px rgba(14, 211, 172, 0.4));
 }
 
 .app-title {
   font-size: 1.25rem;
+  font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  margin: 0;
 }
 
-.header-right {
+/* MITTEN: Navigation (Pill-design) */
+.header-nav {
   display: flex;
-  align-items: center;
-  gap: var(--space-lg);
-}
-
-/* Navigation */
-.header-right nav {
-  display: flex;
-  align-items: center;
-  gap: var(--space-lg);
+  gap: 8px;
+  background: var(--surface-2);
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid var(--surface-3);
 }
 
 .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
   text-decoration: none;
   color: var(--text-secondary);
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nav-link:hover,
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--surface-3);
+}
+
 .nav-link.active {
+  background: var(--surface-1);
   color: var(--accent-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* HÖGER SIDA: Ikoner & Toggle */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.nav-icon-link, 
+.settings-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.nav-icon-link:hover, 
+.settings-btn:hover {
+  background: var(--surface-2);
+  color: var(--accent-primary);
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--surface-3);
+  margin: 0 4px;
+}
+
+/* Responsivitet för mobilen */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0 var(--space-md);
+  }
+  
+  .nav-link span, 
+  .app-title {
+    display: none; /* Visa bara ikoner på mobilen för att spara plats */
+  }
+  
+  .header-nav {
+    gap: 2px;
+  }
 }

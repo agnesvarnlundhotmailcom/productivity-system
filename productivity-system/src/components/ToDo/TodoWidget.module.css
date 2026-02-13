@@ -1,144 +1,186 @@
+/* Grundbehållaren för hela widgeten */
 .container {
     background-color: var(--surface-2);
-    padding: var(--space-lg);
-    border-radius: 1rem;
-    color: var(--text-primary);
-    width: 100%;
-    max-width: 500px;
-    font-family: 'Inter', sans-serif;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
     border: 1px solid var(--surface-3);
-    margin-bottom: var(--space-lg);
-  }
+    padding: var(--space-lg);  
+    border-radius: 16px;
+    color: var(--text-primary);
+    max-width: 100%;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: var(--space-md);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
   
-  .header {
+/* Headern med titel och räknare */
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--space-lg);
-  }
-  
-  .titleGroup {
+    margin-bottom: var(--space-md);
+    padding: 0 5px;
+}
+
+.titleGroup {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
-  }
-  
-  .headerIcon {
+    gap: 12px;
+}
+
+.headerIcon {
+    display: flex;
+    align-items: center;
     color: var(--accent-primary);
-    display: flex;
-    align-items: center;
-  }
-  
-  .title {
-    font-size: 1.125rem;
-    font-weight: 600;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 500;
     margin: 0;
-    color: var(--text-primary);
-  }
-  
-  .counter {
-    font-size: 0.875rem;
+}
+
+.counter {
+    font-size: 12px;
     color: var(--text-secondary);
-  }
-  
-  .inputWrapper {
-    position: relative;
-    margin-bottom: var(--space-lg);
-  }
-  
-  .inputField {
-    width: 100%;
-    background-color: var(--surface-3);
+}
+
+/* Inmatningsfältet längst upp */
+.inputWrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.inputField {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
     border: 1px solid var(--surface-3);
-    padding: 0.75rem 3rem 0.75rem 1rem;
-    border-radius: 0.75rem;
+    background-color: var(--bg-main);
     color: var(--text-primary);
-    font-size: 0.875rem;
     outline: none;
-    box-sizing: border-box;
-    transition: all 0.2s;
-  }
-  
-  .inputField:focus {
+    font-size: 14px;
+}
+
+.inputField:focus {
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.1);
-  }
-  
-  .addButton {
-    position: absolute;
-    right: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
+}
+
+.addButton {
     background-color: var(--accent-primary);
     color: var(--text-on-accent);
     border: none;
-    border-radius: 0.5rem;
-    width: 28px;
-    height: 28px;
+    width: 42px;
+    border-radius: 8px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .addButton:hover {
-    filter: brightness(1.1);
-  }
-  
-  .list {
+    transition: filter 0.2s;
+}
+
+/* Listan och de enskilda raderna */
+.list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-  }
-  
-  .item {
-    background-color: var(--surface-3);
-    padding: 0.75rem;
-    border-radius: 0.75rem;
+    gap: 8px;
+}
+
+.item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
-    user-select: none;
+    justify-content: space-between; /* Skjuter ut actions till höger */
+    background-color: var(--surface-1);
+    padding: 12px 16px;
+    border-radius: 12px;
     border: 1px solid transparent;
-  }
-  
-  .item:hover {
-    background-color: var(--surface-3);
-  }
-  
-  .completedItem {
-    background-color: rgba(24, 24, 39, 0.4);
-    border-color: transparent;
-  }
-  
-  .itemText {
-    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.itemMain {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1; /* Tar upp all ledig plats till vänster */
+    cursor: pointer;
+    min-width: 0;
+}
+
+.itemText {
+    font-size: 14px;
     color: var(--text-primary);
-  }
-  
-  .completedItem .itemText {
+    text-align: left;
+}
+
+.completedItem .itemText {
     text-decoration: line-through;
     color: var(--text-secondary);
-  }
-  
-  .checkIcon {
+}
+
+.checkIcon {
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
-  
-  .unchecked {
     color: var(--text-secondary);
-  }
-  
-  .item:hover .unchecked {
-    color: var(--text-primary);
-  }
-  
-  .checked {
+    flex-shrink: 0;
+}
+
+.checked {
     color: var(--accent-primary);
-  }
+}
+
+/* FIXEN FÖR ATT HÅLLA IKONERNA PÅ EN RAD */
+.actions {
+    display: flex;
+    flex-direction: row; /* Tvingar ikonerna att ligga sida vid sida */
+    gap: 4px;
+    margin-left: 10px;
+    flex-shrink: 0; /* Hindrar dem från att tryckas ihop */
+    align-items: center;
+}
+
+.iconBtn, .deleteBtn {
+    background: transparent;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.iconBtn:hover {
+    background-color: var(--surface-3);
+    color: var(--accent-primary);
+}
+
+.deleteBtn:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Redigeringsläge */
+.editWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.editInput {
+    flex: 1;
+    background-color: var(--bg-main);
+    border: 1px solid var(--accent-primary);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.emptyText {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}

@@ -1,262 +1,226 @@
-.screen{
-  margin-bottom: 12px;
-}
-.viewSwitch{
-  display:flex;
-  gap: 14px;
-  margin: 18px 0 24px;
-}
-
-.viewBtn{
-  width: 56px;
-  height: 56px;
+.card {
+  background-color: var(--surface-2);
+  border: 1px solid var(--surface-3);
   border-radius: 16px;
-  border: 1px solid var(--cardBorder);
-  background: rgba(255,255,255,0.03);
-  color: var(--muted);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  cursor: pointer;
-}
-.viewBtn.isActive{
-  background: rgba(31,231,198,0.20);
-  border-color: rgba(31,231,198,0.25);
-  color: #05221c;
-}
-.viewIcon{ font-size: 20px; }
-
-.stack{
-  display:flex;
-  flex-direction:column;
-  gap: 18px;
-  padding: 15px;
-
-}
-.card{
-  background: var(--card);
-  border: 1px solid var(--cardBorder);
-  border-radius: var(--radius);
-  padding: 18px;
-  box-shadow: var(--shadow);
+  padding: var(--space-lg);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
 }
 
-.cardHeader{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-  margin-bottom: 16px;
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px; /* Minimalt gap mellan titel och knappar */
+  width: 100%;
+  flex-wrap: nowrap !important;
 }
 
-.cardTitleWrap{
-  padding: 0;
-  display:flex;
-  flex-direction: column;
-  align-items:left;
-  min-width: 0; /* SUPERviktigt */
+.cardTitleWrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px; 
+  flex: 1;
+  min-width: 0;
 }
 
-.cardTitle, .cardTitleYear{
-  margin:0;
-  font-size: 16px;
-  letter-spacing: 0.2px;
+.cardTitle, .cardTitleYear {
+  font-size: 1.1rem;
+  font-weight: 700;
+  white-space: nowrap; 
 }
 
-.cardActions{
-  display:flex;
-  align-items:center;
-  gap: 6px;
-  border: #05221c 2px solid;
-  justify-content: end;
-
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 2px; 
+  flex-shrink: 0;
 }
 
-.iconBtn{
-  width: 25px;
-  height: 25px;
-  border-radius: 14px;
-  border: 1px solid var(--cardBorder);
-  background: rgba(255,255,255,0.04);
-  color: var(--text);
-  cursor:pointer;
+
+.logo-icon {
+  font-size: 1.5rem;
+  color: var(--accent-primary);
+  text-shadow: 0 0 12px rgba(14, 211, 172, 0.4);
+  filter: drop-shadow(0 0 5px var(--accent-primary));
 }
 
-.pillBtn{
-  height: 25px;
-  padding: 0 16px;
-  border-radius: 14px;
-  border: 1px solid var(--cardBorder);
-  background: rgba(255,255,255,0.04);
-  color: var(--text);
-  cursor:pointer;
-}
-
-.calendarRow{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-}
-
-.dayPill{
-  width: 62px;
-  border-radius: 18px;
-  padding: 12px 10px 10px;
-    align-items: center;
+.iconBtn, 
+.pillBtn {
+  border: 1px solid var(--surface-3);
+  background: var(--surface-1);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  display:flex;
-  flex-direction:column;
-  gap: 6px;
-  border: 1px solid var(--cardBorder);
-  background: rgba(255,255,255,0.03);
+  transition: background 0.2s;
 }
 
-.dayPill.isSelected{
-  background: rgba(31,231,198,0.20);
-  border-color: rgba(31,231,198,0.25);
-  color: #05221c;
-  padding: 0px;
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
 }
 
-.dayCell{
-  min-width: 42px;
-  text-align:center;
-  padding-bottom: 10px;
+.pillBtn {
+  height: 32px;
+  padding: 0 var(--space-md);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
-.dow{
-  font-size: 12px;
-  margin-bottom: 8px;
-  text-transform: lowercase;
-}
-.dow.isMuted{ color: var(--muted2); }
+/* kalender och schema */
 
-.dom{
-  font-size: 22px;
-  letter-spacing: 0.2px;
+.calendarRow {
+  display: flex;
+  align-items: flex;
+  justify-content: space-between;
+  justify-content: space-evenly;  
+  gap: 10px;
 }
 
-/* .dot{
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(5,34,28,0.6);
-  margin-top: 8px;
-} */
-
-.scheduleHeader{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-  margin-bottom: 18px;
+.dayPill {
+  border-radius: 18px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--surface-3);
+  background: var(--surface-1);
+  transition: all 0.2s;
 }
 
-.scheduleTitleWrap{
-  display:flex;
-  align-items:center;
-  gap: 12px;
+.dayPill.isSelected {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--text-on-accent);
 }
 
-.scheduleTitle{
-  margin:0;
-  font-size: 26px;
+/* Justering för textfärg inuti vald pill */
+.dayPill.isSelected .dow,
+.dayPill.isSelected .dom {
+  color: var(--text-on-accent);
 }
 
-.scheduleEmpty{
-  text-align:center;
-  padding: 34px 8px 18px;
-  color: var(--muted2);
-  font-size: 18px;
+.dow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
+.dom {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
 
-.monthDowRow {
+.scheduleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.scheduleTitle {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.scheduleEmpty {
+  text-align: center;
+  padding: var(--space-xl) var(--space-sm);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* månads grid*/
+
+.monthDowRow, .monthGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
-  margin-bottom: 8px;
 }
 
 .monthDowCell {
-  opacity: 0.7;
-  font-size: 12px;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
   text-align: center;
-}
-
-.monthGrid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  text-transform: uppercase;
+  padding-bottom: 8px;
 }
 
 .monthCell {
-  padding: 2px 2px;
-  text-align: center;
-  border-radius: 10px;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
   cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  background: var(--surface-1);
+  border: 1px solid transparent;
 }
 
 .monthCell.isOutside {
-  opacity: 0.35;
+  opacity: 0.25;
 }
 
 .monthCell.isSelected {
-  outline: 2px solid #0ed3ac;
+  background: rgba(14, 211, 172, 0.2);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  font-weight: 700;
 }
 
+/* (Desktop)*/
 
-
-/* //SKÄRMAR BREDARE ÄN 700PX */
-
-@media (min-width: 700px){
-
-  /* * {
-    border: red solid
-    border:#0ed3ac 2px solid;
-  } */
-
-  .iconBtn{
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
+@media (min-width: 900px) {
+  .iconBtn {
+    width: 40px;
+    height: 40px;
   }
 
-  .pillBtn{
-    height: 50px;
-    font-size: 30px;
-
+  .pillBtn {
+    height: 40px;
   }
 
-/* VECKOVY */
-.dow{
-  font-size: 30px;
-  margin-top: 40px;
+  .cardTitle, .cardTitleYear {
+    font-size: 1.5rem;
+  }
 
-}
-.dow.isMuted{ color: var(--muted2); }
-
-.dom{
-  font-size: 30px;
-  letter-spacing: 0.2px;
+  .dom {
+    font-size: 1.5rem;
+  }
 }
 
+@media (max-width: 700px) {
+  .cardTitle, .cardTitleYear {
+    font-size: 0.95rem; 
+  }
+
+  
+  .pillBtn {
+    padding: 0 5px !important;
+    height: 26px !important;
+    font-size: 10px !important;
+    letter-spacing: -0.5px; /* Drar ihop bokstäverna lite */
+  }
+
+  .iconBtn {
+    width: 26px !important;
+    height: 26px !important;
+  }
 
 
-/* MÅNADSVY */
-.cardTitle, .cardTitleYear{
-  font-size: 40px;
+  .cardTitleWrap svg, .calendarIcon {
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+  }
 }
-
-/* storlek på veckodagar */
-.monthDowCell {
-  margin-top: 40px;
-  font-size: 30px;
-}
-/* storlek på datum */
-.monthCell {
-  font-size: 30px;
-}
-
-
-}
-

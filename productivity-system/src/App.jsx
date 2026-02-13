@@ -1,42 +1,53 @@
-import UserLogin from "./components/UserLogin/userLogin";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+
+// Layout & Modaler
 import Header from './components/Layout/Header';
-import Calendar from "./components/Calendar/Calendar";
-import RoutineSection from './components/RoutineSection/RoutineSection';
+import SettingsModal from "./components/Settings/SettingsModal";
+
+// Sidor
+import CalendarPage from "./pages/CalendarPage"; // Denna sköter nu Kalender + Schema + ToDo
+import FlowTimerPage from "./pages/FlowTimerPage"; 
+import UserLogin from "./components/UserLogin/userLogin";
+
+// Widgets (om du vill ha dem på egna separata sidor också)
 import TodoWidget from './components/ToDo/TodoWidget';
-import DailySchedule from './components/Schedule/DailySchedule';
+
 import './App.css';
 
 function App() {
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  
+  // Skapa datum-state här så att Kalender och Schema alltid är synkade
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   return (
-    <div>
-            <UserLogin />
-
-
-
-          <div className="calendar-wrapper">
-            <Calendar />
-          </div>
+    <div className="app-container">
+      {/* Headern sköter navigeringen via <Link> */}
+      <Header onOpenSettings={() => setSettingsOpen(true)} />
 
       <main className="dashboard-container">
-        <p>Här är dina dagliga mål och rutiner.</p>
+        <Routes>
+          {/* STARTSIDAN & KALENDERSIDAN */}
+          <Route 
+            path="/" 
+            element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} 
+          />
+          <Route 
+            path="/calendar" 
+            element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} 
+          />
 
-        {/* Här laddar vi in din nya komponent */}
+          {/* FLOWTIMER-SIDAN */}
+          <Route path="/flow" element={<FlowTimerPage />} />
 
-        <div className="grid-layout">
-
-          <div className="schedule-wrapper">
-            <DailySchedule />
-          </div>
-
-          <div className="todo-wrapper">
-            <TodoWidget />
-          </div>
-        </div>
-
-        <RoutineSection />
-
+          {/* LOGIN */}
+          <Route path="/login" element={<UserLogin />} />
+        </Routes>
       </main>
-      <Header />
+
+      {/* Inställningar */}
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 }
