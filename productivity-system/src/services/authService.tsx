@@ -62,6 +62,15 @@ export const authService = {
     };
   },
 
+  // Skicka återställningsmejl
+resetPassword: async (email: string) => {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'http://localhost:5173/update-password', // Sidan där användaren skriver in sitt nya lösenord
+  });
+  if (error) throw new Error(error.message);
+  return true;
+},
+
   // SPARA TOKEN (Valfritt, Supabase sköter mycket själv)
   saveToken: (token: string | null) => {
     if (token) {
