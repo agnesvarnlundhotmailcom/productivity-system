@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useContext } from "react";
 import "./FlowTimer.css";
-import { DataContext } from "../../contexts/DataContext";
+import { DataContext } from "../../context/DataContext";
 import { RotateCcw } from "lucide-react";
 
 function pad2(n) {

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Clock, Coffee, RefreshCcw, BarChart2 } from 'lucide-react';
 import './Statistics.css';
-import { DataContext } from "../../contexts/DataContext";
+import { DataContext } from "../../context/DataContext";
 
 const StatCard = (props) => {
   const { title, value, Icon, colorClass } = props;

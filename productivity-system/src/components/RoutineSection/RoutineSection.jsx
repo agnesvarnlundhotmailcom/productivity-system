@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 
-import { 
-  Plus, Trash2, Check, 
-  Heart, Sparkles, FolderPlus, Dumbbell, BookOpen, 
+import {
+  Plus, Trash2, Check,
+  Heart, Sparkles, FolderPlus, Dumbbell, BookOpen,
   Briefcase, Coffee, Moon, Sun, Music, Gamepad2, Code, Zap
 } from 'lucide-react';
 import './RoutineSection.css';
-import { DataContext } from "../../contexts/DataContext";
+import { DataContext } from "../../context/DataContext";
 
 const RoutineSection = () => {
 
@@ -18,13 +18,13 @@ const RoutineSection = () => {
   const [selectedColor, setSelectedColor] = useState('var(--accent-primary)');
 
   const colorOptions = [
-    { id: 'cyan',   value: 'var(--accent-primary)' }, 
-    { id: 'orange', value: 'var(--accent-warning)' }, 
-    { id: 'pink',   value: 'var(--accent-danger)' },  
-    { id: 'purple', value: 'var(--accent-purple)' },               
-    { id: 'blue',   value: 'var(--accent-blue)' },               
-    { id: 'green',  value: 'var(--accent-green)' },               
-    { id: 'yellow', value: 'var(--accent-yellow)' },               
+    { id: 'cyan',   value: 'var(--accent-primary)' },
+    { id: 'orange', value: 'var(--accent-warning)' },
+    { id: 'pink',   value: 'var(--accent-danger)' },
+    { id: 'purple', value: 'var(--accent-purple)' },
+    { id: 'blue',   value: 'var(--accent-blue)' },
+    { id: 'green',  value: 'var(--accent-green)' },
+    { id: 'yellow', value: 'var(--accent-yellow)' },
   ];
 
   const iconOptions = [
@@ -57,7 +57,7 @@ const RoutineSection = () => {
       id: Date.now(),
       title: newCategoryName,
       iconName: selectedIconName,
-      color: selectedColor, 
+      color: selectedColor,
       routines: []
     };
 
@@ -109,10 +109,10 @@ const RoutineSection = () => {
     <div className="routine-section-container">
 
       <div className="creation-area">
-        <input 
+        <input
           className="creation-input"
-          type="text" 
-          placeholder="Vad ska rutinen heta?" 
+          type="text"
+          placeholder="Vad ska rutinen heta?"
           value={newCategoryName}
           onChange={(e) => setNewCategoryName(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
@@ -123,14 +123,14 @@ const RoutineSection = () => {
             <span className="label-text">Välj ikon:</span>
             <div className="scroll-wrapper">
               {iconOptions.map((opt) => (
-                <button 
+                <button
                   key={opt.name}
                   className={`icon-choice-btn ${selectedIconName === opt.name ? 'active' : ''}`}
                   onClick={() => setSelectedIconName(opt.name)}
                   style={selectedIconName === opt.name ? { backgroundColor: selectedColor, borderColor: selectedColor } : {}}
                 >
-                  {React.cloneElement(opt.component, { 
-                    color: selectedIconName === opt.name ? '#0a0c16' : 'var(--text-secondary)' 
+                  {React.cloneElement(opt.component, {
+                    color: selectedIconName === opt.name ? '#0a0c16' : 'var(--text-secondary)'
                   })}
                 </button>
               ))}
@@ -152,8 +152,8 @@ const RoutineSection = () => {
           </div>
         </div>
 
-        <button 
-          className="create-btn" 
+        <button
+          className="create-btn"
           onClick={handleAddCategory}
           style={{ backgroundColor: newCategoryName ? selectedColor : 'var(--surface-3)', color: '#0a0c16' }}
           disabled={!newCategoryName}
@@ -186,13 +186,13 @@ const RoutineSection = () => {
             </div>
 
             <div className="progress-bar-bg">
-              <div 
-                className="progress-fill" 
-                style={{ 
+              <div
+                className="progress-fill"
+                style={{
                   backgroundColor: category.color,
-                  width: category.routines.length > 0 
-                    ? `${(category.routines.filter(r => r.completed).length / category.routines.length) * 100}%` 
-                    : '0%' 
+                  width: category.routines.length > 0
+                    ? `${(category.routines.filter(r => r.completed).length / category.routines.length) * 100}%`
+                    : '0%'
                 }}
               />
             </div>
@@ -200,7 +200,7 @@ const RoutineSection = () => {
             <ul className="task-list">
               {category.routines.map((item) => (
                 <li key={item.id} className={`task-item ${item.completed ? 'completed' : ''}`}>
-                  <div 
+                  <div
                     className="checkbox"
                     onClick={() => toggleRoutine(category.id, item.id)}
                     style={{
@@ -216,14 +216,14 @@ const RoutineSection = () => {
             </ul>
 
             <div style={{marginTop: 'auto'}}>
-              <input 
+              <input
                 type="text"
                 placeholder="+ Lägg till uppgift..."
-                className="inner-card-input" 
+                className="inner-card-input"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     handleAddRoutineToCategory(category.id, e.target.value);
-                    e.target.value = ''; 
+                    e.target.value = '';
                   }
                 }}
               />

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { ListTodo, CircleCheck, Circle, Plus, Pencil, Trash2, Check, X } from 'lucide-react';
-import { DataContext } from "../../contexts/DataContext";
+import { DataContext } from "../../context/DataContext";
 import styles from './TodoWidget.module.css';
 
 const TodoWidget = ({ selectedDate }) => {

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Zap, Activity } from 'lucide-react';
 import './EnergyCare.css';
-import { DataContext } from "../../contexts/DataContext";
+import { DataContext } from "../../context/DataContext";
 
 const EnergyCare = () => {
   const { data, setData } = useContext(DataContext);
@@ -18,9 +18,9 @@ const EnergyCare = () => {
   };
 
   const getBarColor = (level) => {
-    if (level >= 4) return 'var(--accent-primary)'; 
-    if (level === 3) return 'var(--accent-warning)'; 
-    return 'var(--accent-danger)'; 
+    if (level >= 4) return 'var(--accent-primary)';
+    if (level === 3) return 'var(--accent-warning)';
+    return 'var(--accent-danger)';
   };
 
   const emojis = [
@@ -54,8 +54,8 @@ const EnergyCare = () => {
 
       <div className="emoji-selector-grid">
         {emojis.map((item) => (
-          <button 
-            key={item.val} 
+          <button
+            key={item.val}
             onClick={() => handleSelectLevel(item.val)}
             className={`emoji-button ${currentLevel === item.val ? 'is-active' : ''}`}
           >
@@ -70,20 +70,20 @@ const EnergyCare = () => {
           <Activity size={12} />
           <span>Idag</span>
         </div>
-        
+
         <div className="bar-chart-area">
           {energyHistory.map((level, i) => (
-            <div 
-              key={i} 
-              className="chart-bar" 
-              style={{ 
-                height: `${(level / 5) * 100}%`, 
-                backgroundColor: getBarColor(level) 
+            <div
+              key={i}
+              className="chart-bar"
+              style={{
+                height: `${(level / 5) * 100}%`,
+                backgroundColor: getBarColor(level)
               }}
             />
           ))}
         </div>
-        
+
         <div className="chart-labels">
           <span>Tidigare</span>
           <span className="chart-avg">Live Graf</span>

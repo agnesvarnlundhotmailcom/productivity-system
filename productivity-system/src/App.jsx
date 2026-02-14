@@ -1,54 +1,48 @@
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import CalendarPage from './pages/CalendarPage';
+import UserLogin from './components/UserLogin/userLogin';
 
-// Layout & Modaler
+// 1. IMPORTERA DIN HEADER HÄR
+// (Kontrollera sökvägen så den stämmer med ditt filnamn!)
 import Header from './components/Layout/Header';
-import SettingsModal from "./components/Settings/SettingsModal";
 
-// Sidor
-import CalendarPage from "./pages/CalendarPage"; // Denna sköter nu Kalender + Schema + ToDo
-import FlowTimerPage from "./pages/FlowTimerPage"; 
-import UserLogin from "./components/UserLogin/userLogin";
+const PrivateRoute = ({ children }) => {
+  const { user, loading } = useAuth();
 
-// Widgets (om du vill ha dem på egna separata sidor också)
-import TodoWidget from './components/ToDo/TodoWidget';
+  if (loading) return <div style={{ padding: '20px' }}>Laddar...</div>;
 
-import './App.css';
+  if (!user) return <Navigate to="/login" replace />;
+
+  // 2. LÄGG TILL HEADERN HÄR INUTI PRIVATEROUTE
+  return (
+    <div className="app-layout">
+      <Header />
+      <main className="content-area">
+        {children}
+      </main>
+    </div>
+  );
+};
 
 function App() {
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  
-  // Skapa datum-state här så att Kalender och Schema alltid är synkade
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
   return (
-    <div className="app-container">
-      {/* Headern sköter navigeringen via <Link> */}
-      <Header onOpenSettings={() => setSettingsOpen(true)} />
+    <Routes>
+      {/* Inloggningssidan visas oftast UTAN header */}
+      <Route path="/login" element={<UserLogin />} />
 
-      <main className="dashboard-container">
-        <Routes>
-          {/* STARTSIDAN & KALENDERSIDAN */}
-          <Route 
-            path="/" 
-            element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} 
-          />
-          <Route 
-            path="/calendar" 
-            element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} 
-          />
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <CalendarPage />
+          </PrivateRoute>
+        }
+      />
 
-          {/* FLOWTIMER-SIDAN */}
-          <Route path="/flow" element={<FlowTimerPage />} />
-
-          {/* LOGIN */}
-          <Route path="/login" element={<UserLogin />} />
-        </Routes>
-      </main>
-
-      {/* Inställningar */}
-      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
-    </div>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 

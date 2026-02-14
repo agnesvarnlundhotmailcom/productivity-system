@@ -1,15 +1,15 @@
 import { useState, useContext } from 'react';
 import ScheduleItem from './ScheduleItem';
 import styles from './Schedule.module.css';
-import { Clock } from 'lucide-react'; 
-import { DataContext } from "../../contexts/DataContext";
+import { Clock } from 'lucide-react';
+import { DataContext } from "../../context/DataContext";
 
 export default function DailySchedule({ selectedDate }) {
   const { data, setData } = useContext(DataContext);
-  
+
   // Skapar en unik nyckel för varje datum: YYYY-MM-DD
   const dateKey = new Date(selectedDate).toLocaleDateString('sv-SE');
-  
+
   // Hämtar data för just detta datum, annars tom lista
   const activities = data[dateKey]?.schedule ?? [];
 
@@ -18,8 +18,8 @@ export default function DailySchedule({ selectedDate }) {
   const [newTitle, setNewTitle] = useState("");
   const [newCategory, setNewCategory] = useState("Arbete");
 
-  const displayDate = new Date(selectedDate).toLocaleDateString('sv-SE', { 
-    weekday: 'long', day: 'numeric', month: 'long' 
+  const displayDate = new Date(selectedDate).toLocaleDateString('sv-SE', {
+    weekday: 'long', day: 'numeric', month: 'long'
   });
 
   const getColorForCategory = (cat) => {
