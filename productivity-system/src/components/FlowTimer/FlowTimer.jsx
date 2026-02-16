@@ -80,18 +80,20 @@ const startBreak = () => {
   const pause = () => setIsRunning(false);
 
 const resetAll = () => {
-  setIsRunning(false);
-  setMode("work");
-  setData(prev => ({
-    ...prev,
-    settings: {
-      ...prev.settings,
-      secondsWork: 0,
-      secondsBreak: 0,
-      sessions: 0, // Nollställer sessionsräknaren
-    }
-  }));
-};
+    setIsRunning(false);
+    setMode("work");
+    setData(prev => ({
+      ...prev,
+      settings: {
+        ...prev.settings,
+        secondsWork: 0,
+        secondsBreak: 0,
+        sessions: 0,
+      }
+    }));
+    // När setData körs här, kommer useEffect i Contexten 
+    // automatiskt att skriva över localStorage med nollorna.
+  };
 
   return (
     <div className="ftWrap">
