@@ -277,7 +277,7 @@
     gap: 12px;
     padding: 10px 16px;
     background-color: var(--surface-2);
-    border-radius: 100px; /* Pillerform */
+    border-radius: 12px;
     cursor: pointer;
     border: 1px solid transparent;
 }
@@ -320,7 +320,7 @@
     border: 1px solid var(--surface-3);
     color: var(--text-primary);
     padding: 10px 16px;
-    border-radius: 100px;
+    border-radius: 12px;
     outline: none;
     font-size: 13px;
 }
@@ -328,7 +328,7 @@
 .miniInputGroup button {
     background-color: var(--accent-primary);
     border: none;
-    border-radius: 8px; /* Ändrat från 100px till 8px för en fyrkantig look med rundade hörn */
+    border-radius: 8px;
     width: 36px;
     height: 36px;
     display: flex;
