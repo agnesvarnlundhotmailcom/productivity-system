@@ -131,7 +131,7 @@ export default function FlowTimer({
         </button>
        </div>
       </section>
-
+      {/*
       <section className="ftStats">
         <h3 className="ftStatsTitle">Dagens statistik</h3>
 
@@ -147,6 +147,7 @@ export default function FlowTimer({
           </div>
         </div>
       </section>
+      */}
     </div>
   );
 }
