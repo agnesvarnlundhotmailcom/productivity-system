@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./FlowTimer.css";
 import { DataContext } from "../../contexts/DataContext";
 import { RotateCcw } from "lucide-react";
+import CurrentTaskView from "../Taskview/CurrentTaskView";
 
 function pad2(n) {
   return String(n).padStart(2, "0");
@@ -13,10 +14,7 @@ function formatMMSS(totalSeconds) {
   return `${pad2(m)}:${pad2(s)}`;
 }
 
-export default function FlowTimer({
-  appName = "",
-  tagline = "",
-}) {
+export default function FlowTimer() {
   const { data, setData } = useContext(DataContext);
 
   const secondsWork = data.settings.secondsWork ?? 0;
@@ -50,67 +48,49 @@ export default function FlowTimer({
     return () => clearInterval(id);
   }, [isRunning, mode, setData]);
 
-  const greeting = useMemo(() => {
-    const h = new Date().getHours();
-    if (h < 12) return "";
-    if (h >= 12) return "";
-    if (h >=18) return "";
-  }, []);
-
   const startWork = () => {
     setMode("work");
     setIsRunning(true);
   };
 
-const startBreak = () => {
-  // Om vi byter från arbete till paus medan timern körs = En session avklarad!
-  if (mode === "work" && isRunning) {
-    setData(prev => ({
-      ...prev,
-      settings: {
-        ...prev.settings,
-        sessions: (prev.settings.sessions ?? 0) + 1
-      }
-    }));
-  }
-  setMode("break");
-  setIsRunning(true);
-};
+  const startBreak = () => {
+    if (mode === "work" && isRunning) {
+      setData(prev => ({
+        ...prev,
+        settings: {
+          ...prev.settings,
+          sessions: (prev.settings.sessions ?? 0) + 1
+        }
+      }));
+    }
+    setMode("break");
+    setIsRunning(true);
+  };
 
   const pause = () => setIsRunning(false);
 
-const resetAll = () => {
-    setIsRunning(false);
-    setMode("work");
-    setData(prev => ({
-      ...prev,
-      settings: {
-        ...prev.settings,
-        secondsWork: 0,
-        secondsBreak: 0,
-        sessions: 0,
-      }
-    }));
+  const resetAll = () => {
+    if (window.confirm("Vill du återställa all tid för idag?")) {
+      setIsRunning(false);
+      setMode("work");
+      setData(prev => ({
+        ...prev,
+        settings: {
+          ...prev.settings,
+          secondsWork: 0,
+          secondsBreak: 0,
+          sessions: 0,
+        }
+      }));
+    }
   };
 
   return (
     <div className="ftWrap">
-      <header className="ftHeader">
-        <div className="ftBrand">
-          <div className="ftBrandText">
-            <div className="ftBrandName">{appName}</div>
-            <div className="ftBrandTagline">{tagline}</div>
-          </div>
-        </div>
-
-        <div className="ftGreeting">
-          <div className="ftGreetingTitle">
-            {greeting}
-          </div>
-        </div>
-      </header>
-
       <section className="ftCard">
+        {/* Aktiviteten från schemat visas här */}
+        <CurrentTaskView />
+
         <div className="ftDial">
           <div className="ftRing" />
           <div className="ftTime">{formatMMSS(displaySeconds)}</div>
@@ -135,30 +115,13 @@ const resetAll = () => {
           </button>
         </div>
 
-       <div className="ftMiniActions">
-        <button className="ftResetBtn" onClick={resetAll}>
-        <RotateCcw size={18} strokeWidth={2.5} />
-        Återställ tid
-        </button>
-       </div>
-      </section>
-      {/*
-      <section className="ftStats">
-        <h3 className="ftStatsTitle">Dagens statistik</h3>
-
-        <div className="ftStatsGrid">
-          <div className="ftStatCard ftStatCardWork">
-            <div className="ftStatLabel">Total arbetstid</div>
-            <div className="ftStatValue">{formatMMSS(secondsWork)}</div>
-          </div>
-
-          <div className="ftStatCard ftStatCardBreak">
-            <div className="ftStatLabel">Total paustid</div>
-            <div className="ftStatValue">{formatMMSS(secondsBreak)}</div>
-          </div>
+        <div className="ftMiniActions">
+          <button className="ftResetBtn" onClick={resetAll}>
+            <RotateCcw size={18} strokeWidth={2.5} />
+            Återställ tid
+          </button>
         </div>
       </section>
-      */}
     </div>
   );
 }
