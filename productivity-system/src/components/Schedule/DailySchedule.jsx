@@ -6,15 +6,12 @@ import { DataContext } from "../../contexts/DataContext";
 
 export default function DailySchedule({ selectedDate }) {
   const { data, setData } = useContext(DataContext);
-  
-  // Skapar en unik nyckel för varje datum: YYYY-MM-DD
   const dateKey = new Date(selectedDate).toLocaleDateString('sv-SE');
-  
-  // Hämtar data för just detta datum, annars tom lista
   const activities = data[dateKey]?.schedule ?? [];
 
   const [isAdding, setIsAdding] = useState(false);
-  const [newTime, setNewTime] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState(""); // NYTT: Stopptid
   const [newTitle, setNewTitle] = useState("");
   const [newCategory, setNewCategory] = useState("Arbete");
 
@@ -34,38 +31,37 @@ export default function DailySchedule({ selectedDate }) {
   const updateGlobalData = (newList) => {
     setData(prev => ({
       ...prev,
-      [dateKey]: {
-        ...prev[dateKey],
-        schedule: newList
-      }
+      [dateKey]: { ...prev[dateKey], schedule: newList }
     }));
   };
 
   const handleAdd = () => {
-    if (!newTime || !newTitle) return;
+    if (!startTime || !endTime || !newTitle) return; // Kräver båda tiderna
     const newItem = {
       id: Date.now(),
-      time: newTime,
+      startTime,
+      endTime, // Sparar stopptid
       title: newTitle,
       category: newCategory,
-      color: getColorForCategory(newCategory)
+      color: getColorForCategory(newCategory),
+      tasks: [] // Varje aktivitet får en egen lista med tasks!
     };
-    const updatedList = [...activities, newItem].sort((a, b) => a.time.localeCompare(b.time));
+    const updatedList = [...activities, newItem].sort((a, b) => a.startTime.localeCompare(b.startTime));
     updateGlobalData(updatedList);
     setIsAdding(false);
-    setNewTime("");
+    setStartTime("");
+    setEndTime("");
     setNewTitle("");
   };
 
   const handleDelete = (id) => {
-    const updatedList = activities.filter(item => item.id !== id);
-    updateGlobalData(updatedList);
+    updateGlobalData(activities.filter(item => item.id !== id));
   };
 
   const handleUpdate = (id, updatedData) => {
     const updatedList = activities.map(item =>
-      item.id === id ? { ...item, ...updatedData, color: getColorForCategory(updatedData.category || item.category) } : item
-    ).sort((a, b) => a.time.localeCompare(b.time));
+      item.id === id ? { ...item, ...updatedData } : item
+    ).sort((a, b) => (a.startTime || a.time).localeCompare(b.startTime || b.time));
     updateGlobalData(updatedList);
   };
 
@@ -84,7 +80,11 @@ export default function DailySchedule({ selectedDate }) {
       {isAdding && (
         <div className={styles.form}>
           <div className={styles.formRow}>
-            <input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} className={styles.input} />
+            <div className={styles.timeInputGroup}>
+              <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className={styles.input} title="Starttid" />
+              <span>till</span>
+              <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className={styles.input} title="Sluttid" />
+            </div>
             <select value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className={styles.select}>
               <option value="Arbete">Arbete</option>
               <option value="Paus">Paus</option>
@@ -93,16 +93,19 @@ export default function DailySchedule({ selectedDate }) {
             </select>
           </div>
           <input type="text" placeholder="Aktivitet..." value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className={styles.input} />
-          <button onClick={handleAdd} className={styles.saveBtn}>Lägg till</button>
+          <button onClick={handleAdd} className={styles.saveBtn}>Skapa block</button>
         </div>
       )}
 
       <div className={styles.list}>
-        {activities.length === 0 && !isAdding && (
-          <div className={styles.emptyState}>Inga aktiviteter för denna dag.</div>
-        )}
         {activities.map((item) => (
-          <ScheduleItem key={item.id} item={item} onDelete={handleDelete} onUpdate={handleUpdate} />
+          <ScheduleItem 
+            key={item.id} 
+            item={item} 
+            onDelete={handleDelete} 
+            onUpdate={handleUpdate}
+            dateKey={dateKey} // Skickas med för att kunna uppdatera tasks inuti
+          />
         ))}
       </div>
     </div>
