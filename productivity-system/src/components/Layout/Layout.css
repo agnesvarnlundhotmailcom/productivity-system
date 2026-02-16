@@ -105,14 +105,51 @@
 @media (max-width: 768px) {
   .header-container {
     padding: 0 var(--space-md);
+    height: 60px; 
   }
   
-  .nav-link span, 
+ 
   .app-title {
-    display: none; /* Visa bara ikoner på mobilen för att spara plats */
+    display: none; 
   }
-  
+
+  /* FLYTTA NER NAVIGERINGEN */
   .header-nav {
-    gap: 2px;
+    position: fixed;    
+    bottom: 20px;       
+    left: 50%;
+    transform: translateX(-50%); 
+    width: calc(100% - 40px);    
+    max-width: 400px;           
+    justify-content: space-around;
+    background: var(--surface-1); 
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
+    padding: 10px;
+    z-index: 9999;
+    border: 1px solid var(--surface-3);
+  }
+
+  /* Gör länkarna mer "tumb-vänliga" */
+  .nav-link {
+    flex-direction: column; 
+    gap: 4px;
+    padding: 8px;
+    flex: 1;
+    justify-content: center;
+  }
+
+
+  .nav-link span {
+    display: none; 
+  }
+
+  .nav-link svg {
+    width: 24px; 
+    height: 24px;
+  }
+
+  /* Justera marginalen längst ner på sidan så inte innehållet hamnar bakom navbaren */
+  body {
+    padding-bottom: 100px;
   }
 }

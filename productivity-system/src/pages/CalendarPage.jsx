@@ -2,7 +2,6 @@ import React from "react";
 import Calendar from "../components/Calendar/Calendar";
 import DailySchedule from "../components/Schedule/DailySchedule";
 import TodoWidget from "../components/ToDo/TodoWidget";
-import RoutineSection from "../components/RoutineSection/RoutineSection";
 
 export default function CalendarPage({ selectedDate, setSelectedDate }) {
   // 1. Säkerställ att vi har ett giltigt Date-objekt för visning
@@ -37,8 +36,6 @@ export default function CalendarPage({ selectedDate, setSelectedDate }) {
         </div>
       </div>
 
-      {/* Rutiner längst ner */}
-      <RoutineSection />
     </div>
   );
 }

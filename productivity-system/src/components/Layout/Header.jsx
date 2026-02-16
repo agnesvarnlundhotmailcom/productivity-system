@@ -22,13 +22,13 @@ const Header = ({ onOpenSettings }) => {
 
       {/* Mitten/Höger: Navigation */}
       <nav className="header-nav">
-        <Link to="/" className={isActive("/")}>
-          <Calendar size={18} />
-          <span>Kalender</span>
-        </Link>
         <Link to="/flow" className={isActive("/flow")}>
           <Timer size={18} />
           <span>FlowTimer</span>
+        </Link>
+        <Link to="/" className={isActive("/")}>
+          <Calendar size={18} />
+          <span>Kalender</span>
         </Link>
       </nav>
 
