@@ -1,6 +1,5 @@
-// src/hooks/useTimer.js
 import { useEffect, useContext } from 'react';
-import { DataContext } from "../../contexts/DataContext";
+import { DataContext } from "../contexts/DataContext";
 
 export function useFlowTimer(isRunning, mode) {
   const { setData } = useContext(DataContext);
@@ -11,44 +10,38 @@ export function useFlowTimer(isRunning, mode) {
     const id = setInterval(() => {
       setData(prev => {
         const currentWork = prev.settings.secondsWork ?? 0;
-        const newWork = mode === "work" ? currentWork + 1 : currentWork;
+        const currentBreak = prev.settings.secondsBreak ?? 0;
         
-<<<<<<< HEAD
-        // LOGIK FÖR LJUD: Spela ett ljud var 25:e minut (1500 sekunder)
-        // Detta visar logik inuti en state-uppdatering.
-        if (mode === "work" && newWork > 0 && newWork % 1500 === 0) {
-          const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
-          audio.play().catch(e => console.log("Ljudet kunde inte spelas: ", e));
-=======
-        // LOGIK FÖR LJUD: Spelar ett pling var 25:e minut (1500 sekunder)
-        if (mode === "work" && newWork > 0 && newWork % 1500 === 0) {
-          new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play().catch(() => {});
->>>>>>> 7af2075 ( fixar custom hooks och rensa lite kod)
+        // Målet hämtas från kalenderhändelsen (t.ex. 1800 sekunder för 30 min)
+        const goal = prev.settings.activeTaskDuration ?? 0;
+
+        let nextWork = mode === "work" ? currentWork + 1 : currentWork;
+        let nextBreak = mode === "break" ? currentBreak + 1 : currentBreak;
+        let shouldStop = false;
+
+        // Kontrollera om arbetstiden har nått målet från kalendern
+        if (mode === "work" && goal > 0 && nextWork >= goal) {
+          // Spela ljud
+          new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg')
+            .play()
+            .catch(() => {});
+          
+          shouldStop = true; // Flagga för att stoppa
         }
 
         return {
           ...prev,
           settings: {
             ...prev.settings,
-            secondsWork: newWork,
-<<<<<<< HEAD
-            secondsBreak:
-              mode === "break"
-                ? (prev.settings.secondsBreak ?? 0) + 1
-                : prev.settings.secondsBreak ?? 0,
-=======
-            secondsBreak: mode === "break" ? (prev.settings.secondsBreak ?? 0) + 1 : prev.settings.secondsBreak ?? 0,
->>>>>>> 7af2075 ( fixar custom hooks och rensa lite kod)
+            secondsWork: nextWork,
+            secondsBreak: nextBreak,
+            // Om shouldStop är true sätts isRunning till false (stoppar useEffect)
+            isRunning: shouldStop ? false : prev.settings.isRunning 
           }
         };
       });
     }, 1000);
 
-<<<<<<< HEAD
-   
-=======
-    // CLEANUP: Stoppar klockan när man lämnar sidan (Viktigt krav!)
->>>>>>> 7af2075 ( fixar custom hooks och rensa lite kod)
     return () => clearInterval(id);
   }, [isRunning, mode, setData]);
 }
