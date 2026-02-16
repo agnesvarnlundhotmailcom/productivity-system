@@ -28,19 +28,15 @@ function App() {
 
       <main className="dashboard-container">
         <Routes>
-          {/* STARTSIDAN & KALENDERSIDAN */}
+           {/* STARTSIDAN - FLOWTIMER-SIDAN */}
+          <Route path="/flow" element={<FlowTimerPage />} />
+
+         {/** KALENDERSIDAN */}
           <Route 
             path="/" 
             element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} 
           />
-          <Route 
-            path="/calendar" 
-            element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} 
-          />
-
-          {/* FLOWTIMER-SIDAN */}
-          <Route path="/flow" element={<FlowTimerPage />} />
-
+    
           {/* LOGIN */}
           <Route path="/login" element={<UserLogin />} />
         </Routes>

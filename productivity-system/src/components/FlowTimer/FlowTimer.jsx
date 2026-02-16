@@ -1,73 +1,34 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import "./FlowTimer.css";
 import { DataContext } from "../../contexts/DataContext";
 import { RotateCcw } from "lucide-react";
 import CurrentTaskView from "../Taskview/CurrentTaskView";
+import { useFlowTimer } from "../../hooks/useTimer";
 
-function pad2(n) {
-  return String(n).padStart(2, "0");
-}
-
-function formatMMSS(totalSeconds) {
-  const m = Math.floor(totalSeconds / 60);
-  const s = totalSeconds % 60;
-  return `${pad2(m)}:${pad2(s)}`;
-}
+// Hjälpfunktioner kan ligga utanför för att inte skräpa ner
+const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
 export default function FlowTimer() {
   const { data, setData } = useContext(DataContext);
-
-  const secondsWork = data.settings.secondsWork ?? 0;
-  const secondsBreak = data.settings.secondsBreak ?? 0;
-
   const [mode, setMode] = useState("work");
   const [isRunning, setIsRunning] = useState(false);
 
+  // Koppla på "hjärnan" - den tickar i bakgrunden
+  useFlowTimer(isRunning, mode);
+
+  const secondsWork = data.settings.secondsWork ?? 0;
+  const secondsBreak = data.settings.secondsBreak ?? 0;
   const displaySeconds = mode === "work" ? secondsWork : secondsBreak;
 
-  useEffect(() => {
-    if (!isRunning) return;
-
-    const id = setInterval(() => {
-      setData(prev => ({
-        ...prev,
-        settings: {
-          ...prev.settings,
-          secondsWork:
-            mode === "work"
-              ? (prev.settings.secondsWork ?? 0) + 1
-              : prev.settings.secondsWork ?? 0,
-          secondsBreak:
-            mode === "break"
-              ? (prev.settings.secondsBreak ?? 0) + 1
-              : prev.settings.secondsBreak ?? 0,
-        }
-      }));
-    }, 1000);
-
-    return () => clearInterval(id);
-  }, [isRunning, mode, setData]);
-
-  const startWork = () => {
-    setMode("work");
-    setIsRunning(true);
-  };
-
+  const startWork = () => { setMode("work"); setIsRunning(true); };
+  
   const startBreak = () => {
     if (mode === "work" && isRunning) {
-      setData(prev => ({
-        ...prev,
-        settings: {
-          ...prev.settings,
-          sessions: (prev.settings.sessions ?? 0) + 1
-        }
-      }));
+      setData(prev => ({ ...prev, settings: { ...prev.settings, sessions: (prev.settings.sessions ?? 0) + 1 } }));
     }
     setMode("break");
     setIsRunning(true);
   };
-
-  const pause = () => setIsRunning(false);
 
   const resetAll = () => {
     if (window.confirm("Vill du återställa all tid för idag?")) {
@@ -75,12 +36,7 @@ export default function FlowTimer() {
       setMode("work");
       setData(prev => ({
         ...prev,
-        settings: {
-          ...prev.settings,
-          secondsWork: 0,
-          secondsBreak: 0,
-          sessions: 0,
-        }
+        settings: { ...prev.settings, secondsWork: 0, secondsBreak: 0, sessions: 0 }
       }));
     }
   };
@@ -88,12 +44,9 @@ export default function FlowTimer() {
   return (
     <div className="ftWrap">
       <section className="ftCard">
-        {/* Vi skickar ner timer-status och kontroller till CurrentTaskView 
-            så att den fungerar som en fjärrkontroll.
-        */}
         <CurrentTaskView 
           onStartTimer={startWork} 
-          onPauseTimer={pause}
+          onPauseTimer={() => setIsRunning(false)}
           isRunning={isRunning}
           timerMode={mode}
         />
@@ -109,14 +62,14 @@ export default function FlowTimer() {
         <div className="ftButtons">
           <button
             className={`ftBtn ftBtnWork ${mode === "work" && isRunning ? "isSelected" : ""}`}
-            onClick={isRunning && mode === "work" ? pause : startWork}
+            onClick={isRunning && mode === "work" ? () => setIsRunning(false) : startWork}
           >
             {isRunning && mode === "work" ? "Pausa arbete" : "Starta arbete"}
           </button>
 
           <button
             className={`ftBtn ftBtnBreak ${mode === "break" && isRunning ? "isSelected" : ""}`}
-            onClick={isRunning && mode === "break" ? pause : startBreak}
+            onClick={isRunning && mode === "break" ? () => setIsRunning(false) : startBreak}
           >
             {isRunning && mode === "break" ? "Pausa paus" : "Ta paus"}
           </button>
