@@ -79,18 +79,19 @@ const startBreak = () => {
 
   const pause = () => setIsRunning(false);
 
-  const resetAll = () => {
-    setIsRunning(false);
-    setMode("work");
-    setData(prev => ({
-      ...prev,
-      settings: {
-        ...prev.settings,
-        secondsWork: 0,
-        secondsBreak: 0,
-      }
-    }));
-  };
+const resetAll = () => {
+  setIsRunning(false);
+  setMode("work");
+  setData(prev => ({
+    ...prev,
+    settings: {
+      ...prev.settings,
+      secondsWork: 0,
+      secondsBreak: 0,
+      sessions: 0, // Nollställer sessionsräknaren
+    }
+  }));
+};
 
   return (
     <div className="ftWrap">
