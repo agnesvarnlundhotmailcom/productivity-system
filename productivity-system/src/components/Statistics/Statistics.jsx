@@ -28,18 +28,16 @@ const formatMMSS = (seconds = 0) => {
 const Statistics = () => {
   const { data } = useContext(DataContext);
 
+  // Hämta värden från context (med fallback till 0)
   const workSeconds = data.settings.secondsWork ?? 0;
   const breakSeconds = data.settings.secondsBreak ?? 0;
+  const sessions = data.settings.sessions ?? 0; 
 
-  const sessions = Math.min(
-    Math.floor(workSeconds / 1500),
-    Math.floor(breakSeconds / 300)
-  );
-
-  const ratio =
-    workSeconds + breakSeconds > 0
-      ? Math.round((workSeconds / (workSeconds + breakSeconds)) * 100)
-      : 0;
+  // Beräkna Arbetsratio: (Arbetstid / Total tid) * 100
+  const totalSeconds = workSeconds + breakSeconds;
+  const ratio = totalSeconds > 0 
+    ? Math.round((workSeconds / totalSeconds) * 100) 
+    : 0;
 
   return (
     <div className="stats-box">
