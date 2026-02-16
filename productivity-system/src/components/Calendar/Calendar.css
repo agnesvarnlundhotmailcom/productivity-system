@@ -5,6 +5,7 @@
   padding: var(--space-lg);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
+  margin-bottom: 16px;
 }
 
 .cardHeader {
