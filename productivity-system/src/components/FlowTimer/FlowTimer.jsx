@@ -62,10 +62,20 @@ export default function FlowTimer({
     setIsRunning(true);
   };
 
-  const startBreak = () => {
-    setMode("break");
-    setIsRunning(true);
-  };
+const startBreak = () => {
+  // Om vi byter från arbete till paus medan timern körs = En session avklarad!
+  if (mode === "work" && isRunning) {
+    setData(prev => ({
+      ...prev,
+      settings: {
+        ...prev.settings,
+        sessions: (prev.settings.sessions ?? 0) + 1
+      }
+    }));
+  }
+  setMode("break");
+  setIsRunning(true);
+};
 
   const pause = () => setIsRunning(false);
 
