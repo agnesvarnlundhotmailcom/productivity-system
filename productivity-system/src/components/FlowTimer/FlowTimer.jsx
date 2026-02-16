@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import "./FlowTimer.css";
 import { DataContext } from "../../contexts/DataContext";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Coffee } from "lucide-react";
 import CurrentTaskView from "../Taskview/CurrentTaskView";
 import { useFlowTimer } from "../../hooks/useTimer";
 
@@ -46,7 +46,12 @@ export default function FlowTimer() {
       <section className="ftCard">
         <CurrentTaskView 
           onStartTimer={startWork} 
+<<<<<<< HEAD
+          onPauseTimer={pause}
+          onStartBreak={startBreak}
+=======
           onPauseTimer={() => setIsRunning(false)}
+>>>>>>> 425ea16 ( fixar custom hooks och rensa lite kod)
           isRunning={isRunning}
           timerMode={mode}
         />
@@ -59,6 +64,9 @@ export default function FlowTimer() {
           </div>
         </div>
 
+<<<<<<< HEAD
+        {/* Vi har tagit bort ftButtons helt för att göra plats åt den kombinerade raden under */}
+=======
         <div className="ftButtons">
           <button
             className={`ftBtn ftBtnWork ${mode === "work" && isRunning ? "isSelected" : ""}`}
@@ -66,19 +74,34 @@ export default function FlowTimer() {
           >
             {isRunning && mode === "work" ? "Pausa arbete" : "Starta arbete"}
           </button>
+>>>>>>> 425ea16 ( fixar custom hooks och rensa lite kod)
 
-          <button
+        <div className="ftMiniActions" style={{ gap: '12px' }}>
+          <button 
             className={`ftBtn ftBtnBreak ${mode === "break" && isRunning ? "isSelected" : ""}`}
+<<<<<<< HEAD
+            onClick={isRunning && mode === "break" ? pause : startBreak}
+            style={{ 
+                padding: '12px 24px', 
+                fontSize: '13px', 
+                margin: 0, 
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+            }}
+=======
             onClick={isRunning && mode === "break" ? () => setIsRunning(false) : startBreak}
+>>>>>>> 425ea16 ( fixar custom hooks och rensa lite kod)
           >
-            {isRunning && mode === "break" ? "Pausa paus" : "Ta paus"}
+            <Coffee size={18} />
+            {isRunning && mode === "break" ? "Stäng av paus" : "Ta paus"}
           </button>
-        </div>
 
-        <div className="ftMiniActions">
-          <button className="ftResetBtn" onClick={resetAll}>
+          <button className="ftResetBtn" onClick={resetAll} style={{ flex: 1, margin: 0 }}>
             <RotateCcw size={18} strokeWidth={2.5} />
-            Återställ tid
+            Återställ
           </button>
         </div>
       </section>
