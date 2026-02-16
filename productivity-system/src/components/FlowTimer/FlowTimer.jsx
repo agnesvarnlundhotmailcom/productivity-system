@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
 import "./FlowTimer.css";
 import { DataContext } from "../../contexts/DataContext";
 import { RotateCcw } from "lucide-react";
@@ -16,6 +16,7 @@ function formatMMSS(totalSeconds) {
 
 export default function FlowTimer() {
   const { data, setData } = useContext(DataContext);
+  const today = new Date().toLocaleDateString('sv-SE');
 
   const secondsWork = data.settings.secondsWork ?? 0;
   const secondsBreak = data.settings.secondsBreak ?? 0;
@@ -24,6 +25,25 @@ export default function FlowTimer() {
   const [isRunning, setIsRunning] = useState(false);
 
   const displaySeconds = mode === "work" ? secondsWork : secondsBreak;
+
+  // --- BERÄKNA DAGENS FRAMSTEG ---
+  const dailyProgress = useMemo(() => {
+    const schedule = data[today]?.schedule || [];
+    let totalTasks = 0;
+    let completedTasks = 0;
+
+    schedule.forEach(activity => {
+      if (activity.tasks && activity.tasks.length > 0) {
+        activity.tasks.forEach(task => {
+          totalTasks++;
+          if (task.completed) completedTasks++;
+        });
+      }
+    });
+
+    if (totalTasks === 0) return 0;
+    return Math.round((completedTasks / totalTasks) * 100);
+  }, [data, today]);
 
   useEffect(() => {
     if (!isRunning) return;
@@ -88,8 +108,22 @@ export default function FlowTimer() {
   return (
     <div className="ftWrap">
       <section className="ftCard">
-        {/* Aktiviteten från schemat visas här */}
+        {/* Aktiviteten från schemat */}
         <CurrentTaskView />
+
+        {/* DAGENS PROGRESS BAR */}
+        <div className="dailyProgressContainer">
+          <div className="progressLabel">
+            <span>Dagens mål</span>
+            <span>{dailyProgress}%</span>
+          </div>
+          <div className="progressBarBg">
+            <div 
+              className="progressBarFill" 
+              style={{ width: `${dailyProgress}%` }}
+            />
+          </div>
+        </div>
 
         <div className="ftDial">
           <div className="ftRing" />
