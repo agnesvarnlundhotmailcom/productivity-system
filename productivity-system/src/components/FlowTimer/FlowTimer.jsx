@@ -1,30 +1,41 @@
 import { useState, useContext } from "react";
 import "./FlowTimer.css";
 import { DataContext } from "../../contexts/DataContext";
-import { RotateCcw, Coffee } from "lucide-react";
+import { RotateCcw, Coffee, Target } from "lucide-react";
 import CurrentTaskView from "../Taskview/CurrentTaskView";
 import { useFlowTimer } from "../../hooks/useTimer";
 
-// Hjälpfunktioner kan ligga utanför för att inte skräpa ner
 const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
 export default function FlowTimer() {
   const { data, setData } = useContext(DataContext);
+  
+  // Vi läser isRunning och mode från Context om vi vill att den ska köras i bakgrunden,
+  // men här behåller vi lokala states för enkelhetens skull.
   const [mode, setMode] = useState("work");
   const [isRunning, setIsRunning] = useState(false);
 
-  // Koppla på "hjärnan" - den tickar i bakgrunden
+  // Aktivera motorn
   useFlowTimer(isRunning, mode);
 
   const secondsWork = data.settings.secondsWork ?? 0;
   const secondsBreak = data.settings.secondsBreak ?? 0;
-  const displaySeconds = mode === "work" ? secondsWork : secondsBreak;
+  const taskGoal = data.settings.activeTaskDuration ?? 0;
+
+  // LOGIK: Om vi har ett mål från kalendern -> visa nedräkning. Annars -> uppräkning.
+  const timeToShow = (mode === "work" && taskGoal > 0) 
+    ? Math.max(0, taskGoal - secondsWork) 
+    : (mode === "work" ? secondsWork : secondsBreak);
 
   const startWork = () => { setMode("work"); setIsRunning(true); };
+  const pause = () => setIsRunning(false);
   
   const startBreak = () => {
     if (mode === "work" && isRunning) {
-      setData(prev => ({ ...prev, settings: { ...prev.settings, sessions: (prev.settings.sessions ?? 0) + 1 } }));
+      setData(prev => ({ 
+        ...prev, 
+        settings: { ...prev.settings, sessions: (prev.settings.sessions ?? 0) + 1 } 
+      }));
     }
     setMode("break");
     setIsRunning(true);
@@ -36,7 +47,13 @@ export default function FlowTimer() {
       setMode("work");
       setData(prev => ({
         ...prev,
-        settings: { ...prev.settings, secondsWork: 0, secondsBreak: 0, sessions: 0 }
+        settings: { 
+          ...prev.settings, 
+          secondsWork: 0, 
+          secondsBreak: 0, 
+          sessions: 0,
+          activeTaskDuration: 0 
+        }
       }));
     }
   };
@@ -46,40 +63,33 @@ export default function FlowTimer() {
       <section className="ftCard">
         <CurrentTaskView 
           onStartTimer={startWork} 
-<<<<<<< HEAD
           onPauseTimer={pause}
           onStartBreak={startBreak}
-=======
-          onPauseTimer={() => setIsRunning(false)}
->>>>>>> 425ea16 ( fixar custom hooks och rensa lite kod)
           isRunning={isRunning}
           timerMode={mode}
         />
 
         <div className="ftDial">
           <div className="ftRing" />
-          <div className="ftTime">{formatMMSS(displaySeconds)}</div>
+          <div className="ftTime">{formatMMSS(timeToShow)}</div>
           <div className="ftModePill">
-            {mode === "work" ? "Arbete" : "Paus"} {isRunning ? "• Pågår" : "• Pausad"}
+            {mode === "work" ? <Target size={14} /> : <Coffee size={14} />}
+            <span>
+              {mode === "work" ? "Arbete" : "Paus"} {isRunning ? "• Pågår" : "• Pausad"}
+            </span>
           </div>
+          
+          {/* Visar målet tydligt om det finns en kalenderhändelse */}
+          {taskGoal > 0 && mode === "work" && (
+            <div style={{ fontSize: '11px', marginTop: '8px', opacity: 0.6, fontWeight: 'bold' }}>
+              MÅL: {Math.floor(taskGoal / 60)} MIN
+            </div>
+          )}
         </div>
 
-<<<<<<< HEAD
-        {/* Vi har tagit bort ftButtons helt för att göra plats åt den kombinerade raden under */}
-=======
-        <div className="ftButtons">
-          <button
-            className={`ftBtn ftBtnWork ${mode === "work" && isRunning ? "isSelected" : ""}`}
-            onClick={isRunning && mode === "work" ? () => setIsRunning(false) : startWork}
-          >
-            {isRunning && mode === "work" ? "Pausa arbete" : "Starta arbete"}
-          </button>
->>>>>>> 425ea16 ( fixar custom hooks och rensa lite kod)
-
-        <div className="ftMiniActions" style={{ gap: '12px' }}>
+        <div className="ftMiniActions" style={{ gap: '12px', display: 'flex', marginTop: '20px' }}>
           <button 
             className={`ftBtn ftBtnBreak ${mode === "break" && isRunning ? "isSelected" : ""}`}
-<<<<<<< HEAD
             onClick={isRunning && mode === "break" ? pause : startBreak}
             style={{ 
                 padding: '12px 24px', 
@@ -91,12 +101,9 @@ export default function FlowTimer() {
                 justifyContent: 'center',
                 gap: '8px'
             }}
-=======
-            onClick={isRunning && mode === "break" ? () => setIsRunning(false) : startBreak}
->>>>>>> 425ea16 ( fixar custom hooks och rensa lite kod)
           >
             <Coffee size={18} />
-            {isRunning && mode === "break" ? "Stäng av paus" : "Ta paus"}
+            {isRunning && mode === "break" ? "Stoppa paus" : "Ta paus"}
           </button>
 
           <button className="ftResetBtn" onClick={resetAll} style={{ flex: 1, margin: 0 }}>
