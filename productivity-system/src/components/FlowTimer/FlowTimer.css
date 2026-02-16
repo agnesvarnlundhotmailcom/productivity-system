@@ -1,7 +1,6 @@
 .ftWrap {
   min-height: auto; 
   padding: var(--space-md);
-  /* Använder din globala textfärg */
   color: var(--text-primary);
   font-family: inherit;
 }
@@ -13,32 +12,40 @@
   gap: 10px;
 }
 
-.ftLogo {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  /* Använder din accentfärg och text-on-accent för kontrast */
-  background: var(--accent-primary);
-  color: var(--text-on-accent);
-  box-shadow: 0 4px 15px rgba(14, 211, 172, 0.2);
+/* --- NYTT: Progress Bar (Dagens mål) --- */
+.dailyProgressContainer {
+    margin: 10px 0 30px 0;
+    width: 100%;
 }
 
-.ftBrandName {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text-primary);
+.progressLabel {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
 }
 
-.ftBrandTagline, .ftGreetingTitle {
-  color: var(--text-secondary);
+.progressBarBg {
+    height: 10px;
+    background: var(--surface-3);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progressBarFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), #4ade80);
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 15px rgba(14, 211, 172, 0.3);
 }
 
 .ftCard {
   max-width: 600px;
   margin: 0 auto var(--space-xl);
-  /* Använder din yta-färg (surface-2) för att matcha dina andra kort */
   background: var(--surface-2);
   border: 1px solid var(--surface-3);
   border-radius: 24px;
@@ -46,6 +53,8 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .ftDial {
@@ -59,7 +68,6 @@
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  /* Subtil cirkel som använder din border-färg */
   border: 4px solid var(--surface-3);
 }
 
@@ -80,12 +88,12 @@
   border: 1px solid var(--surface-3);
   background: var(--surface-1);
 }
-/* Knappar (Work & Break) */
+
 .ftButtons {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .ftBtn {
@@ -109,16 +117,66 @@
   box-shadow: 0 8px 25px rgba(244, 158, 12, 0.25);
 }
 
-.ftBtn:hover {
-  transform: translateY(-3px);
-  filter: brightness(1.1);
+/* --- NYTT: Historik-stolpar --- */
+.historySection {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid var(--surface-3);
+    width: 100%;
 }
 
-.ftBtn.isSelected {
-  box-shadow: 0 0 0 4px var(--surface-3), 0 10px 20px rgba(0,0,0,0.2);
+.historyHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* DESIGNAD ÅTERSTÄLL-KNAPP */
+.historyChart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 60px;
+    gap: 12px;
+}
+
+.chartColumnWrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.chartColumn {
+    width: 100%;
+    height: 45px;
+    background: var(--surface-1);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--surface-3);
+}
+
+.chartFill {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: var(--accent-primary);
+    transition: height 0.6s ease;
+}
+
+.chartDate {
+    font-size: 10px;
+    color: var(--text-secondary);
+    font-family: monospace;
+}
+
 .ftMiniActions {
   margin-top: 30px;
   display: flex;
@@ -136,47 +194,19 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
-  
-  /* Flexbox fixar centrering av ikonen bredvid texten */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 6px 15px rgba(251, 113, 133, 0.3);
 }
 
 .ftResetBtn:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 25px rgba(251, 113, 133, 0.5);
   filter: brightness(1.1);
 }
 
-/* Animation när man hovrar - får ikonen att rotera lite snyggt */
-.ftResetBtn:hover svg {
-  transform: rotate(-45deg);
-  transition: transform 0.3s ease;
-}
-
-.ftStatCard {
-  border-radius: 16px;
-  padding: var(--space-md);
-  background: var(--surface-1);
-  border: 1px solid var(--surface-3);
-}
-
-/* Stats-specifika färger baserat på dina accents */
-.ftDotWork { background: var(--accent-primary); }
-.ftDotBreak { background: var(--accent-warning); }
-
-.ftStatValue {
-  color: var(--text-primary);
-  font-size: 32px;
-  font-weight: 700;
-}
-
-/* Mobile tweaks */
 @media (max-width: 520px) {
   .ftRing { width: 260px; height: 260px; }
   .ftTime { font-size: 52px; }
