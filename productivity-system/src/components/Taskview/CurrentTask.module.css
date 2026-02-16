@@ -9,7 +9,7 @@
     font-family: 'Inter', sans-serif;
     margin-bottom: var(--space-md);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    text-align: left; /* Säkerställer vänsterställd text */
+    text-align: left;
 }
   
 /* Headern med titel och tid */
@@ -27,15 +27,36 @@
     gap: 12px;
 }
 
-.headerIcon {
+/* Play-knappen som startar FlowTimer */
+.playButton {
+    background: var(--accent-primary);
+    color: var(--text-on-accent);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    color: var(--accent-primary);
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.playButton:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+/* Visuell centrering av Play-triangeln */
+.playButton svg {
+    margin-left: 2px;
 }
 
 .title {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600; /* Lite fetare för att markera aktivitet */
     margin: 0;
     color: var(--text-primary);
 }
@@ -44,6 +65,25 @@
     font-size: 12px;
     color: var(--text-secondary);
     font-family: monospace;
+    background: var(--surface-3);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* --- Tidsbaserad Progress Bar --- */
+.timeProgressBar {
+    width: 100%;
+    height: 6px;
+    background: var(--surface-3);
+    border-radius: 10px;
+    margin: 8px 0 20px 0; /* Placerad mellan header och lista */
+    overflow: hidden;
+}
+
+.timeBarFill {
+    height: 100%;
+    transition: width 1s linear;
+    border-radius: 10px;
 }
 
 /* Listan och de enskilda raderna */
@@ -63,11 +103,6 @@
     border: 1px solid transparent;
     transition: all 0.2s;
     cursor: pointer;
-}
-
-.item:hover {
-    border-color: var(--surface-3);
-    background-color: var(--surface-2);
 }
 
 .itemMain {
@@ -106,9 +141,4 @@
     font-size: 0.875rem;
     margin-top: 1rem;
     font-style: italic;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
 }

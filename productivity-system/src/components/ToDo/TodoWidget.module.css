@@ -126,8 +126,6 @@
 .checked {
     color: var(--accent-primary);
 }
-
-/* FIXEN FÖR ATT HÅLLA IKONERNA PÅ EN RAD */
 .actions {
     display: flex;
     flex-direction: row; /* Tvingar ikonerna att ligga sida vid sida */

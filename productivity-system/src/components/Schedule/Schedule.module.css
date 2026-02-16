@@ -1,3 +1,4 @@
+/* Grundbehållaren för hela widgeten */
 .container {
     background-color: var(--surface-2);
     border: 1px solid var(--surface-3);
@@ -8,8 +9,10 @@
     font-family: 'Inter', sans-serif;
     margin-bottom: var(--space-md);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    text-align: left;
 }
   
+/* Headern med titel och tid */
 .header {
     display: flex;
     justify-content: space-between;
@@ -35,6 +38,7 @@
     cursor: pointer;
     line-height: 1;
     padding: 0 10px;
+    transition: color 0.2s;
 }
   
 .addButton:hover {
@@ -89,30 +93,23 @@
     font-weight: bold;
     cursor: pointer;
     margin-top: 5px;
-    transition: background-color 0.2s;
+    transition: filter 0.2s;
 }
   
 .saveBtn:hover {
     filter: brightness(1.1);
 }
 
+/* --- LISTAN OCH KORTEN --- */
 .list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
   
-.emptyState {
-    text-align: center;
-    color: var(--text-secondary);
-    margin-top: 20px;
-    font-size: 14px;
-    font-style: italic;
-}
-  
 .card {
     display: flex;
-    flex-direction: column; /* Nu kolumn för att stödja expansion */
+    flex-direction: column; 
     background-color: var(--surface-1);
     padding: 16px;
     border-radius: 12px;
@@ -156,45 +153,17 @@
     margin-right: 16px;
     min-width: 90px;
 }
-  
-.actions, .miniActions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: auto;
-    opacity: 0; /* Helt osynliga */
-    transition: opacity 0.2s ease;
-    pointer-events: none; /* Hindrar klick när de är osynliga */
-}
-
-/* Visar ikonerna när man hovrar över kortet */
-.card:hover .actions {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Visar ikonerna när man hovrar över en specifik liten task */
-.miniTask:hover .miniActions {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Specialfall: Om vi är i redigeringsläge ska ikonerna alltid synas */
-.editRow .actions {
-    opacity: 1;
-    pointer-events: auto;
-}
 
 .time {
     color: var(--text-secondary);
-    font-family: monospace; /* Återställd monospace */
+    font-family: monospace;
     font-size: 14px;
 }
   
 .title {
     color: var(--text-primary);
     font-weight: 500;
-    font-size: 15px;
+    font-size: 14px;
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
@@ -202,59 +171,7 @@
     margin-right: 15px;
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.iconBtn, .deleteBtn {
-  background: transparent;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  transition: all 0.2s ease;
-}
-
-.iconBtn:hover {
-  background-color: var(--surface-3);
-  color: var(--accent-primary);
-}
-
-.deleteBtn:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-}
-
-.editRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-}
-
-.editInput {
-  background-color: var(--surface-2);
-  border: 1px solid var(--surface-3);
-  color: var(--text-primary);
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
-}
-
-.editInputTitle {
-  flex: 1;
-}
-
-/* --- NYA MINI-TASKS (RUND STIL) --- */
+/* --- TASK SEKTION (EXPANDERAD) --- */
 .taskSection {
     margin-top: 12px;
     padding-top: 16px;
@@ -275,39 +192,68 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 16px;
+    padding: 8px 16px; /* Något mer kompakt padding */
     background-color: var(--surface-2);
     border-radius: 12px;
     cursor: pointer;
     border: 1px solid transparent;
+    font-size: 13px; /* Mindre textstorlek enligt önskemål */
+    transition: transform 0.1s;
 }
 
-.miniCheckWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+.miniTask:hover {
+    background-color: var(--surface-3);
 }
 
 .taskDone {
     text-decoration: line-through;
     color: var(--text-secondary);
     opacity: 0.7;
-    font-size: 14px;
+    font-size: 13px; /* Samma mindre storlek här */
 }
 
-.miniActions {
+/* --- IKONER OCH KNAPPAR --- */
+.actions, .miniActions {
     display: flex;
+    align-items: center;
     gap: 4px;
     margin-left: auto;
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
 }
 
-.miniTask:hover .miniActions {
+.card:hover .actions,
+.miniTask:hover .miniActions,
+.editRow .actions {
     opacity: 1;
+    pointer-events: auto;
 }
 
+.iconBtn, .deleteBtn {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.iconBtn:hover {
+    background-color: var(--surface-3);
+    color: var(--accent-primary);
+}
+
+.deleteBtn:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* --- INPUTS FÖR UNDERUPPGIFTER --- */
 .miniInputGroup {
     display: flex;
     gap: 10px;
@@ -322,7 +268,7 @@
     padding: 10px 16px;
     border-radius: 12px;
     outline: none;
-    font-size: 13px;
+    font-size: 12px; /* Lite mindre input för att matcha stilen */
 }
 
 .miniInputGroup button {
@@ -335,23 +281,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: filter 0.2s;
     color: var(--text-on-accent);
-}
-
-.miniInputGroup button:hover {
-    filter: brightness(1.1);
-}
-
-.miniEditInput {
-    flex: 1;
-    background-color: var(--bg-main);
-    border: 1px solid var(--accent-primary);
-    color: var(--text-primary);
-    padding: 6px 12px;
-    border-radius: 100px;
-    outline: none;
-    font-size: 13px;
 }
 
 @keyframes fadeIn {

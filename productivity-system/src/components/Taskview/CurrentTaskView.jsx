@@ -1,9 +1,9 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, } from 'react';
 import { DataContext } from "../../contexts/DataContext";
-import { CheckCircle2, Circle, Clock } from 'lucide-react';
+import { CheckCircle2, Circle, Play, Pause } from 'lucide-react';
 import styles from './CurrentTask.module.css';
 
-export default function CurrentTaskView() {
+export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning, timerMode }) {
   const { data, setData } = useContext(DataContext);
   const today = new Date().toLocaleDateString('sv-SE');
 
@@ -24,6 +24,24 @@ export default function CurrentTaskView() {
         return (aH * 60 + aM) - (bH * 60 + bM);
       })[0];
   }, [data, today]);
+
+  // Beräkna total tid för aktiviteten i sekunder
+  const totalActivitySeconds = useMemo(() => {
+    if (!taskToShow) return 0;
+    const [sH, sM] = taskToShow.startTime.split(':').map(Number);
+    const [eH, eM] = taskToShow.endTime.split(':').map(Number);
+    return ((eH * 60 + eM) - (sH * 60 + sM)) * 60;
+  }, [taskToShow]);
+
+  // Progress baseras nu på faktiskt arbetad tid (från data.settings)
+  const progress = useMemo(() => {
+    if (totalActivitySeconds === 0) return 0;
+    // Vi kollar hur många sekunder användaren har arbetat idag totalt
+    // (Alternativt kan man nollställa sekunder per aktivitet, men här kör vi på dagens arbete)
+    const workedSeconds = data.settings.secondsWork || 0;
+    const p = Math.min((workedSeconds / totalActivitySeconds) * 100, 100);
+    return Math.round(p);
+  }, [data.settings.secondsWork, totalActivitySeconds]);
 
   const toggleTask = (taskId) => {
     if (!taskToShow) return;
@@ -46,22 +64,34 @@ export default function CurrentTaskView() {
 
   if (!taskToShow) return null;
 
-  const isOngoing = taskToShow.startTime.split(':')[0] * 60 + parseInt(taskToShow.startTime.split(':')[1]) <= new Date().getHours() * 60 + new Date().getMinutes();
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.titleGroup}>
-          <div className={styles.headerIcon}>
-            <Clock size={18} />
-          </div>
-          <h2 className={styles.title}>
-            {isOngoing ? "Just nu: " : "Kommande: "} {taskToShow.title}
-          </h2>
+          <button 
+            className={styles.playButton} 
+            onClick={isRunning && timerMode === 'work' ? onPauseTimer : onStartTimer}
+          >
+            {/* Byter ikon baserat på status */}
+            {isRunning && timerMode === 'work' ? (
+              <Pause size={14} fill="currentColor" />
+            ) : (
+              <Play size={14} fill="currentColor" />
+            )}
+          </button>
+          <h2 className={styles.title}>{taskToShow.title}</h2>
         </div>
-        <div className={styles.counter}>
-            {taskToShow.startTime} - {taskToShow.endTime}
-        </div>
+        <div className={styles.counter}>{taskToShow.startTime} - {taskToShow.endTime}</div>
+      </div>
+
+      <div className={styles.timeProgressBar}>
+        <div 
+          className={styles.timeBarFill} 
+          style={{ 
+            width: `${progress}%`,
+            backgroundColor: taskToShow.color || 'var(--accent-primary)' 
+          }} 
+        />
       </div>
 
       <div className={styles.list}>
@@ -79,9 +109,6 @@ export default function CurrentTaskView() {
             </div>
           </div>
         ))}
-        {(!taskToShow.tasks || taskToShow.tasks.length === 0) && (
-            <div className={styles.emptyText}>Inga underuppgifter planerade</div>
-        )}
       </div>
     </div>
   );
