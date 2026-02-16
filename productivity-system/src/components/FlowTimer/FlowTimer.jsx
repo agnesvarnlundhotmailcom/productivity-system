@@ -9,25 +9,26 @@ const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${Stri
 
 export default function FlowTimer() {
   const { data, setData } = useContext(DataContext);
-  
-  // Vi läser isRunning och mode från Context om vi vill att den ska köras i bakgrunden,
-  // men här behåller vi lokala states för enkelhetens skull.
   const [mode, setMode] = useState("work");
   const [isRunning, setIsRunning] = useState(false);
 
-  // Aktivera motorn
+  // Aktivera klock-motorn
   useFlowTimer(isRunning, mode);
 
   const secondsWork = data.settings.secondsWork ?? 0;
   const secondsBreak = data.settings.secondsBreak ?? 0;
   const taskGoal = data.settings.activeTaskDuration ?? 0;
 
-  // LOGIK: Om vi har ett mål från kalendern -> visa nedräkning. Annars -> uppräkning.
+  // Visa nedräkning om mål finns i kalendern, annars vanlig tid
   const timeToShow = (mode === "work" && taskGoal > 0) 
     ? Math.max(0, taskGoal - secondsWork) 
     : (mode === "work" ? secondsWork : secondsBreak);
 
-  const startWork = () => { setMode("work"); setIsRunning(true); };
+  const startWork = () => {
+    setMode("work");
+    setIsRunning(true);
+  };
+
   const pause = () => setIsRunning(false);
   
   const startBreak = () => {
@@ -79,7 +80,6 @@ export default function FlowTimer() {
             </span>
           </div>
           
-          {/* Visar målet tydligt om det finns en kalenderhändelse */}
           {taskGoal > 0 && mode === "work" && (
             <div style={{ fontSize: '11px', marginTop: '8px', opacity: 0.6, fontWeight: 'bold' }}>
               MÅL: {Math.floor(taskGoal / 60)} MIN
