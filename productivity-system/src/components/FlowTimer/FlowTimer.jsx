@@ -91,8 +91,6 @@ const resetAll = () => {
         sessions: 0,
       }
     }));
-    // När setData körs här, kommer useEffect i Contexten 
-    // automatiskt att skriva över localStorage med nollorna.
   };
 
   return (
