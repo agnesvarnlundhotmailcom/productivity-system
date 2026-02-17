@@ -14,8 +14,6 @@ export default function CalendarPage({ selectedDate, setSelectedDate }) {
 
   return (
     <div className="calendar-page-content">
-      {/* Nu kraschar inte denna rad eftersom safeDate alltid är ett Date-objekt */}
-      <p>Här är dina dagliga mål och rutiner för {safeDate.toLocaleDateString("sv-SE")}.</p>
 
       {/* Kalendern överst */}
       <div className="calendar-wrapper">
