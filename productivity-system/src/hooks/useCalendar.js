@@ -11,7 +11,7 @@ export const sameDay = (a, b) =>
 
 export function useCalendar(selectedTs) {
   // States för att hålla koll på vyn
-  const [currentTs, setCurrentTs] = useState(Date.now());
+  const [currentTs, setCurrentTs] = useState(new Date());
   const [view, setView] = useState("week");
 
   const currentDate = new Date(currentTs);
