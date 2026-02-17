@@ -4,11 +4,10 @@ import { CheckCircle2, Circle, Play, Pause } from 'lucide-react';
 import styles from './CurrentTask.module.css';
 
 export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning, timerMode }) {
-  // 1. Hämta data och den centrala funktionen för att bocka av uppgifter
   const { data, toggleScheduleTask } = useContext(DataContext);
   const today = new Date().toLocaleDateString('sv-SE');
 
-  // 2. Hitta vilken aktivitet som pågår just nu
+  // 1. Hitta aktuell aktivitet baserat på nuvarande tid
   const taskToShow = useMemo(() => {
     const schedule = data[today]?.schedule || [];
     const now = new Date();
@@ -27,6 +26,18 @@ export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning,
       })[0];
   }, [data, today]);
 
+  // 2. Beräkna framsteg (progress bar baserat på tid)
+  const progress = useMemo(() => {
+    if (!taskToShow) return 0;
+    const [sH, sM] = taskToShow.startTime.split(':').map(Number);
+    const [eH, eM] = taskToShow.endTime.split(':').map(Number);
+    const totalSeconds = ((eH * 60 + eM) - (sH * 60 + sM)) * 60;
+    
+    if (totalSeconds <= 0) return 0;
+    const workedSeconds = data.settings.secondsWork || 0;
+    return Math.min(Math.round((workedSeconds / totalSeconds) * 100), 100);
+  }, [data.settings.secondsWork, taskToShow]);
+
   if (!taskToShow) return null;
 
   const isWorking = isRunning && timerMode === 'work';
@@ -40,15 +51,27 @@ export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning,
           </button>
           <h2 className={styles.title}>{taskToShow.title}</h2>
         </div>
+        <div className={styles.counter}>
+          {taskToShow.startTime} - {taskToShow.endTime}
+        </div>
+      </div>
+
+      <div className={styles.timeProgressBar}>
+        <div 
+          className={styles.timeBarFill} 
+          style={{ 
+            width: `${progress}%`, 
+            backgroundColor: taskToShow.color || '#0ed3ac' 
+          }} 
+        />
       </div>
 
       <div className={styles.list}>
-        {/* Här mappar vi ut de små att-göra-uppgifterna inuti det aktiva blocket */}
         {taskToShow.tasks?.map(task => (
           <div 
             key={task.id} 
             className={`${styles.item} ${task.completed ? styles.completedItem : ''}`} 
-            // 3. ANVÄND DEN CENTRALA FUNKTIONEN HÄR:
+            // HÄR ÄR ÄNDRINGEN: lade till taskToShow.id så att rätt block uppdateras
             onClick={() => toggleScheduleTask(today, taskToShow.id, task.id)}
           >
             <div className={styles.itemMain}>
