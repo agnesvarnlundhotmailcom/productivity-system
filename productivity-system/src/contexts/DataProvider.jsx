@@ -8,8 +8,9 @@ const defaultData = {
     theme: "light",
     secondsWork: 0,
     secondsBreak: 0,
-    sessions: 0, 
-  }
+    sessions: 0,
+  },
+  energyLogs: []
 };
 
 export const DataProvider = ({ children }) => {
@@ -24,25 +25,14 @@ export const DataProvider = ({ children }) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
-  // --- HJÄLPFUNKTIONER FÖR SCHEMAT ---
-
-  const addScheduleItem = useCallback((dayKey, newItem) => {
+  const addEnergyLog = useCallback((level) => {
+    const newEntry = {
+      level,
+      timestamp: new Date().toISOString()
+    };
     setData(prev => ({
       ...prev,
-      [dayKey]: {
-        ...prev[dayKey],
-        schedule: [...(prev[dayKey]?.schedule || []), { ...newItem, id: Date.now(), tasks: [] }]
-      }
-    }));
-  }, []);
-
-  const deleteScheduleItem = useCallback((dayKey, itemId) => {
-    setData(prev => ({
-      ...prev,
-      [dayKey]: {
-        ...prev[dayKey],
-        schedule: prev[dayKey].schedule.filter(item => item.id !== itemId)
-      }
+      energyLogs: [...(prev.energyLogs || []).slice(-14), newEntry]
     }));
   }, []);
 
@@ -51,26 +41,9 @@ export const DataProvider = ({ children }) => {
       ...prev,
       [dayKey]: {
         ...prev[dayKey],
-        schedule: prev[dayKey].schedule.map(item => 
+        schedule: (prev[dayKey]?.schedule || []).map(item =>
           item.id === itemId ? { ...item, ...updates } : item
         )
-      }
-    }));
-  }, []);
-
-  // Central funktion för att bocka av/på en sub-task
-  const toggleScheduleTask = useCallback((dayKey, itemId, taskId) => {
-    setData(prev => ({
-      ...prev,
-      [dayKey]: {
-        ...prev[dayKey],
-        schedule: prev[dayKey].schedule.map(item => {
-          if (item.id !== itemId) return item;
-          return {
-            ...item,
-            tasks: item.tasks.map(t => t.id === taskId ? { ...t, completed: !t.completed } : t)
-          };
-        })
       }
     }));
   }, []);
@@ -83,8 +56,12 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   return (
-    <DataContext.Provider value={{ 
-      data, setData, addScheduleItem, deleteScheduleItem, updateScheduleItem, toggleScheduleTask, resetStats 
+    <DataContext.Provider value={{
+      data,
+      setData,
+      addEnergyLog,
+      updateScheduleItem,
+      resetStats
     }}>
       {children}
     </DataContext.Provider>
