@@ -16,11 +16,6 @@ export default function FlowTimerPage() {
         <Statistics />
       </section>
 
-       {/* Sektion 3: Energy Care */}
-      <section className="energy-section" style={{ marginTop: '40px' }}>
-        <EnergyCare />
-      </section>
-
     </div>
   );
 }
