@@ -4,10 +4,10 @@ import { CheckCircle2, Circle, Play, Pause } from 'lucide-react';
 import styles from './CurrentTask.module.css';
 
 export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning, timerMode }) {
-  const { data, setData } = useContext(DataContext);
+  const { data, toggleScheduleTask } = useContext(DataContext);
   const today = new Date().toLocaleDateString('sv-SE');
 
-  // Hitta aktuell uppgift baserat på tid
+  // 1. Hitta aktuell aktivitet baserat på nuvarande tid
   const taskToShow = useMemo(() => {
     const schedule = data[today]?.schedule || [];
     const now = new Date();
@@ -26,7 +26,7 @@ export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning,
       })[0];
   }, [data, today]);
 
-  // Beräkna total tid och progress
+  // 2. Beräkna framsteg (progress bar)
   const progress = useMemo(() => {
     if (!taskToShow) return 0;
     const [sH, sM] = taskToShow.startTime.split(':').map(Number);
@@ -37,20 +37,6 @@ export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning,
     const workedSeconds = data.settings.secondsWork || 0;
     return Math.min(Math.round((workedSeconds / totalSeconds) * 100), 100);
   }, [data.settings.secondsWork, taskToShow]);
-
-  const toggleTask = (taskId) => {
-    setData(prev => ({
-      ...prev,
-      [today]: {
-        ...prev[today],
-        schedule: prev[today].schedule.map(item => 
-          item.id === taskToShow.id 
-            ? { ...item, tasks: item.tasks.map(t => t.id === taskId ? { ...t, completed: !t.completed } : t) }
-            : item
-        )
-      }
-    }));
-  };
 
   if (!taskToShow) return null;
 
@@ -65,19 +51,28 @@ export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning,
           </button>
           <h2 className={styles.title}>{taskToShow.title}</h2>
         </div>
-        <div className={styles.counter}>{taskToShow.startTime} - {taskToShow.endTime}</div>
+        <div className={styles.counter}>
+          {taskToShow.startTime} - {taskToShow.endTime}
+        </div>
       </div>
 
       <div className={styles.timeProgressBar}>
         <div 
           className={styles.timeBarFill} 
-          style={{ width: `${progress}%`, backgroundColor: taskToShow.color || 'var(--accent-primary)' }} 
+          style={{ 
+            width: `${progress}%`, 
+            backgroundColor: taskToShow.color || '#0ed3ac' 
+          }} 
         />
       </div>
 
       <div className={styles.list}>
         {taskToShow.tasks?.map(task => (
-          <div key={task.id} className={`${styles.item} ${task.completed ? styles.completedItem : ''}`} onClick={() => toggleTask(task.id)}>
+          <div 
+            key={task.id} 
+            className={`${styles.item} ${task.completed ? styles.completedItem : ''}`} 
+            onClick={() => toggleScheduleTask(today, task.id)}
+          >
             <div className={styles.itemMain}>
               <div className={`${styles.checkIcon} ${task.completed ? styles.checked : ''}`}>
                 {task.completed ? <CheckCircle2 size={18} /> : <Circle size={18} />}
