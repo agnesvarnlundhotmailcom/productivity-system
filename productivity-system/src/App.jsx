@@ -8,7 +8,7 @@ import CalendarPage from "./pages/CalendarPage";
 import FlowTimerPage from "./pages/FlowTimerPage";
 import EnergyCarePage from "./pages/EnergyCarePage";
 import StatisticsOverTimePage from "./pages/StatisticsOverTimePage";
-import UserLogin from "./components/UserLogin/userLogin";
+import UserLoginPage from "./pages/UserLoginPage";
 
 import "./App.css";
 
@@ -27,7 +27,7 @@ export default function App() {
           <Route path="/calendar" element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} />
           <Route path="/energy" element={<EnergyCarePage />} />
           <Route path="/stats" element={<StatisticsOverTimePage />} />
-          <Route path="/login" element={<UserLogin />} />
+          <Route path="/login" element={<UserLoginPage />} />
         </Routes>
       </main>
 
