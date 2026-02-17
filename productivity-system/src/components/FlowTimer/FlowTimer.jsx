@@ -80,7 +80,7 @@ export default function FlowTimer() {
             }}
           >
             <Coffee size={18} />
-            {isRunning && mode === "break" ? "Stoppa paus" : "Ta paus"}
+            {isRunning && mode === "break" ? "Stoppa paus" : "PAUSA"}
           </button>
 
           <button className="ftResetBtn" onClick={resetAll} style={{ flex: 1, margin: 0 }}>
