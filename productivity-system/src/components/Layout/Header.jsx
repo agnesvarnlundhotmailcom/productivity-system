@@ -1,49 +1,47 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import "./Layout.css"; 
-import { Zap, Calendar, CheckSquare, Timer, User, Settings } from "lucide-react";
+import "./Layout.css";
+import { Zap, Calendar, Timer, CheckSquare, User, Settings } from "lucide-react";
 import { ThemeToggle } from "../Theme/ThemeToggle";
 
 const Header = ({ onOpenSettings }) => {
   const location = useLocation();
 
-  // Funktion för att kolla om länken är aktiv
+  // Funktion som returnerar CSS-klass för aktiv länk
+  // Den används för att markera vilken sida användaren är på
   const isActive = (path) => location.pathname === path ? "nav-link active" : "nav-link";
 
   return (
     <header className="header-container">
-      {/* Vänster sida: Logga/Titel */}
+      {/* Vänster sida: Logo och App-titel */}
       <div className="header-left">
-        <span className="logo-icon">
-          <Zap size={24} fill="currentColor" />
-        </span>
+        {/* Ikon/logotyp */}
+        <span className="logo-icon"><Zap size={24} fill="currentColor" /></span>
+        {/* Apptitel */}
         <h1 className="app-title">FlowTime</h1>
       </div>
 
-      {/* Mitten/Höger: Navigation */}
+      {/* Navigation: Länkar till olika sidor */}
       <nav className="header-nav">
-        <Link to="/flow" className={isActive("/flow")}>
-          <Timer size={18} />
-          <span>FlowTimer</span>
-        </Link>
-        <Link to="/" className={isActive("/")}>
-          <Calendar size={18} />
-          <span>Kalender</span>
-        </Link>
+        {/* FlowTimer-sidan */}
+        <Link to="/flow" className={isActive("/flow")}><Timer size={18} /><span>FlowTimer</span></Link>
+        {/* Kalender-sidan */}
+        <Link to="/calendar" className={isActive("/calendar")}><Calendar size={18} /><span>Kalender</span></Link>
+        {/* Energi-sidan */}
+        <Link to="/energy" className={isActive("/energy")}><Zap size={18} /><span>Energi</span></Link>
+        {/* Statistik-sidan */}
+        <Link to="/stats" className={isActive("/stats")}><CheckSquare size={18} /><span>Statistik</span></Link>
       </nav>
 
-      {/* Höger sida: Actions + Theme */}
+      {/* Höger sida: Användarikoner, inställningar och temaväxling */}
       <div className="header-right">
-        <Link to="/login" className="nav-icon-link">
-          <User size={20} />
-        </Link>
-        
-        <button className="settings-btn" onClick={onOpenSettings}>
-          <Settings size={20} />
-        </button>
-
+        {/* Länk till login/användarsida */}
+        <Link to="/login" className="nav-icon-link"><User size={20} /></Link>
+        {/* Inställningar-knapp som öppnar modal */}
+        <button className="settings-btn" onClick={onOpenSettings}><Settings size={20} /></button>
+        {/* Visuell divider mellan knappar och temaväxling */}
         <div className="divider" />
-        
+        {/* Temaväxling mellan ljus/mörkt läge */}
         <ThemeToggle />
       </div>
     </header>

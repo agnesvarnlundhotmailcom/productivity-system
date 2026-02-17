@@ -1,15 +1,39 @@
-import React from 'react';
+import React from "react";
+import Calendar from "../components/Calendar/Calendar";
+import DailySchedule from "../components/Schedule/DailySchedule";
+import TodoWidget from "../components/ToDo/TodoWidget";
 
-const StatisticsOverTime = () => {
-  const data = [
-    { date: '2024-01-01', value: 10 },
-    { date: '2024-02-01', value: 20 },
-    { date: '2024-03-01', value: 15 },
-    { date: '2024-04-01', value: 25 },
-    { date: '2024-05-01', value: 30 },
-  ];
+export default function CalendarPage({ selectedDate, setSelectedDate }) {
+  // 1. Säkerställ att vi har ett giltigt Date-objekt för visning
+  const safeDate = selectedDate instanceof Date ? selectedDate : new Date(selectedDate);
 
-return (
+  // 2. Hantera klick från kalendern (omvandla timestamp till Date-objekt)
+  const handleDateChange = (newVal) => {
+    setSelectedDate(new Date(newVal));
+  };
 
-<h2>Statistics Over Time {StatisticsOverTime}</h2>
-)};
+  return (
+    <div className="calendar-page-content">
+
+      {/* Kalendern överst */}
+      <div className="calendar-wrapper">
+        <Calendar
+          selectedTs={safeDate}
+          onDateChange={handleDateChange}
+        />
+      </div>
+
+      {/* Schema och To-Do i en grid */}
+      <div className="grid-layout">
+        <div className="schedule-wrapper">
+          <DailySchedule selectedDate={safeDate} />
+        </div>
+
+        <div className="todo-wrapper">
+          <TodoWidget />
+        </div>
+      </div>
+
+    </div>
+  );
+}

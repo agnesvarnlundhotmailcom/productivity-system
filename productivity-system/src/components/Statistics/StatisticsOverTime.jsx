@@ -1,2 +1,5 @@
 import React from "react";
-const StatisticsOverTime = () => {
+
+export default function StatisticsOverTime() {
+  return <div>STATISTIK ÖVER TID</div>;
+}
