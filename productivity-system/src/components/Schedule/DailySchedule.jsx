@@ -23,7 +23,7 @@ export default function DailySchedule({ selectedDate }) {
   const getColorForCategory = (cat) => {
     switch(cat) {
       case 'Arbete': return '#0ed3ac';    // --accent-primary
-      case 'Rast': return '#f49e0c';      // --accent-warning (Du kallade den Paus i din kod, ändrat till Rast/Paus för att matcha)
+      case 'Rast': return '#f49e0c';      // --accent-warning 
       case 'Möte': return '#39bef8';      // --accent-blue
       case 'Personligt': return '#c083fc'; // --accent-purple
       default: return '#fb7185';          // --accent-danger
