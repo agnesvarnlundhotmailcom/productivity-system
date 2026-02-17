@@ -1,25 +1,13 @@
 import React, { useContext } from 'react';
-import { Zap, Activity } from 'lucide-react';
-import './EnergyCare.css';
+import { Zap, Activity, Clock } from 'lucide-react';
 import { DataContext } from "../../contexts/DataContext";
+import './EnergyCare.css';
 
 const EnergyCare = () => {
-  const { data, setData } = useContext(DataContext);
-  const energyHistory = data?.energyLogs || []; // fallback
-  const currentLevel = energyHistory.length ? energyHistory[energyHistory.length - 1] : 0;
-
-  const handleSelectLevel = (newLevel) => {
-    setData(prev => ({
-      ...prev,
-      energyLogs: [...(prev.energyLogs || []).slice(-14), newLevel] // säker fallback
-    }));
-  };
-
-  const getBarColor = (level) => {
-    if (level >= 4) return 'var(--accent-primary)';
-    if (level === 3) return 'var(--accent-warning)';
-    return 'var(--accent-danger)';
-  };
+  const { data, addEnergyLog } = useContext(DataContext);
+  const energyHistory = data?.energyLogs || [];
+  const lastEntry = energyHistory.length > 0 ? energyHistory[energyHistory.length - 1] : null;
+  const currentLevel = lastEntry ? lastEntry.level : 0;
 
   const emojis = [
     { icon: '😴', val: 1 },
@@ -32,61 +20,21 @@ const EnergyCare = () => {
   return (
     <div className="energy-card">
       <div className="card-header-row">
-        <div className="header-left-side">
-          <div className="zap-icon-wrapper">
-            <Zap size={20} className="zap-icon" />
-          </div>
-          <h3 className="card-title">Energinivå</h3>
-        </div>
+        <Zap size={20} />
+        <h3 className="card-title">Energinivå</h3>
       </div>
-
-      <div className="level-status-box">
-        <span className="status-label">Senaste nivå</span>
-        <div className="status-value">
-          <span className="current-emoji">
-            {emojis.find(e => e.val === currentLevel)?.icon}
-          </span>
-          <strong>{currentLevel}/5</strong>
-        </div>
-      </div>
-
-      <div className="emoji-selector-grid">
+      <div className="emoji-selector-grid" style={{ display: 'flex', gap: '10px', margin: '15px 0' }}>
         {emojis.map((item) => (
           <button
             key={item.val}
-            onClick={() => handleSelectLevel(item.val)}
+            onClick={() => addEnergyLog(item.val)}
             className={`emoji-button ${currentLevel === item.val ? 'is-active' : ''}`}
+            style={{ flex: 1, padding: '10px', border: currentLevel === item.val ? '2px solid var(--accent-primary)' : '1px solid transparent' }}
           >
-            <span className="emoji-img">{item.icon}</span>
-            <span className="emoji-num">{item.val}</span>
+            <span style={{ display: 'block', fontSize: '1.2rem' }}>{item.icon}</span>
+            <span>{item.val}</span>
           </button>
         ))}
-      </div>
-
-      <div className="chart-wrapper">
-        <div className="chart-info">
-          <Activity size={12} />
-          <span>Idag</span>
-        </div>
-
-        <div className="bar-chart-area">
-          {energyHistory.map((level, i) => (
-            <div
-              key={i}
-              className="chart-bar"
-              style={{
-                height: `${(level / 5) * 100}%`,
-                backgroundColor: getBarColor(level)
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="chart-labels">
-          <span>Tidigare</span>
-          <span className="chart-avg">Live Graf</span>
-          <span>Nu</span>
-        </div>
       </div>
     </div>
   );
