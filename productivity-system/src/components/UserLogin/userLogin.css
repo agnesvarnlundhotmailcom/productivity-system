@@ -1,6 +1,73 @@
-form {
-  padding: 15px;
+.login-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrerar allt innehåll horisontellt */
+  justify-content: center; /* Centrerar allt innehåll vertikalt */
+  height: 100vh; /* Gör att wrappern tar upp hela höjden av viewporten */
 }
-p{
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Detta centrerar allt innehåll horisontellt */
+  gap: 20px;
+  padding: 20px;
+  width: 100%; /* Se till att formen tar upp plats */
+}
+
+.input {
+  height: 35px; /* Lite högre för bättre känsla */
+  width: 60%;
+  max-width: 300px; /* Förhindrar att de blir för breda på stora skärmar */
+  padding: 0 10px; /* Texten inuti hamnar inte mot kanten */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  /* Tagit bort display: flex härifrån då det inte behövs på själva inputen */
+}
+
+.button-container {
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.LogInBtn {
+  width: 60%;
+  max-width: 300px;
   padding: 10px;
+  border-radius: 18px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+}
+
+
+.reg-link-btn,
+.forgot-password-link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 8px;
+
+  color: #394049;
+  text-decoration: underline;
+
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.reg-link-btn:hover,
+.forgot-password-link:hover {
+  opacity: 0.7;
+}
+
+.reg-link-btn:disabled,
+.forgot-password-link:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
