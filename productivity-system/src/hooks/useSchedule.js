@@ -1,48 +1,58 @@
 // src/hooks/useSchedule.js
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import { DataContext } from "../contexts/DataContext";
 
-export function useSchedule(selectedDate) {
+export function useSchedule(valtDatum) {
   const { data, setData } = useContext(DataContext);
-  const dateKey = useMemo(() => new Date(selectedDate).toLocaleDateString('sv-SE'), [selectedDate]);
-  
-  const activities = data[dateKey]?.schedule ?? [];
 
-  const getColorForCategory = (cat) => {
-    switch(cat) {
-      case 'Arbete': return '#39bef8';
-      case 'Paus': return '#f49e0c';
-      case 'Möte': return '#c093fc';
-      case 'Personligt': return '#fb7185';
-      default: return '#0ed3ac';
-    }
+  const datumNyckel = new Date(valtDatum).toLocaleDateString('sv-SE');
+  const dagensAktiviteter = data[datumNyckel]?.schedule ?? [];
+
+  // Enkel lista för att hitta rätt färg baserat på kategori
+  const färgKarta = {
+    'Arbete': '#39bef8',
+    'Paus': '#f49e0c',
+    'Möte': '#c093fc',
+    'Personligt': '#fb7185',
+    'default': '#0ed3ac'
   };
 
-  const updateSchedule = (newList) => {
-    // Sortera automatiskt på starttid
-    const sortedList = [...newList].sort((a, b) => a.startTime.localeCompare(b.startTime));
+  const sparaSchema = (nyLista) => {
+    const sorterad = [...nyLista].sort((a, b) => a.startTime.localeCompare(b.startTime));
     setData(prev => ({
       ...prev,
-      [dateKey]: { ...prev[dateKey], schedule: sortedList }
+      [datumNyckel]: { ...prev[datumNyckel], schedule: sorterad }
     }));
   };
 
-  const handleAdd = (newItem) => {
-    const activity = {
-      ...newItem,
+  const läggTill = (info) => {
+    const nyHändelse = {
+      ...info,
       id: Date.now(),
-      color: getColorForCategory(newItem.category),
+      // Hämtar färg från listan ovanför, eller väljer 'default' om kategorin inte finns
+      color: färgKarta[info.category] || färgKarta.default,
       tasks: []
     };
-    updateSchedule([...activities, activity]);
+    sparaSchema([...dagensAktiviteter, nyHändelse]);
   };
 
-  const handleDelete = (id) => updateSchedule(activities.filter(a => a.id !== id));
-
-  const handleUpdate = (id, updatedFields) => {
-    const newList = activities.map(a => a.id === id ? { ...a, ...updatedFields } : a);
-    updateSchedule(newList);
+  const taBort = (id) => {
+    const filtrerad = dagensAktiviteter.filter(h => h.id !== id);
+    sparaSchema(filtrerad);
   };
 
-  return { activities, handleAdd, handleDelete, handleUpdate, dateKey };
+  const uppdatera = (id, ändringar) => {
+    const uppdaterad = dagensAktiviteter.map(h => 
+      h.id === id ? { ...h, ...ändringar } : h
+    );
+    sparaSchema(uppdaterad);
+  };
+
+  return { 
+    activities: dagensAktiviteter, 
+    handleAdd: läggTill, 
+    handleDelete: taBort, 
+    handleUpdate: uppdatera, 
+    dateKey: datumNyckel 
+  };
 }

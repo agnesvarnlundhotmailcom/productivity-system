@@ -6,36 +6,53 @@ export function useFlowTimer(isRunning, mode) {
   const { setData } = useContext(DataContext);
 
   useEffect(() => {
-    if (!isRunning) return;
+   
+    if (isRunning === false) {
+      return;
+    }
 
-    const id = setInterval(() => {
-      setData(prev => {
-        const currentWork = prev.settings.secondsWork ?? 0;
-        const currentBreak = prev.settings.secondsBreak ?? 0;
-        const goal = prev.settings.activeTaskDuration ?? 0;
+    const klocka = setInterval(() => {
+      
+      setData((prev) => {
+       
+        const nuvarandeJobbTid = prev.settings.secondsWork ?? 0;
+        const nuvarandePausTid = prev.settings.secondsBreak ?? 0;
+        const måltidFrånKalender = prev.settings.activeTaskDuration ?? 0;
 
-        let nextWork = mode === "work" ? currentWork + 1 : currentWork;
-        let nextBreak = mode === "break" ? currentBreak + 1 : currentBreak;
-        let shouldStop = false;
+       
+        let nyJobbTid = nuvarandeJobbTid;
+        let nyPausTid = nuvarandePausTid;
+        let skaKlockanStanna = false;
 
-        // Kontroll: Stoppa automatiskt om vi har ett mål och det har uppnåtts
-        if (mode === "work" && goal > 0 && nextWork >= goal) {
-          shouldStop = true;
+    
+        if (mode === "work") {
+          nyJobbTid = nuvarandeJobbTid + 1;
+          
+          // Kolla om vi har nått målet från kalendern
+          if (måltidFrånKalender > 0 && nyJobbTid >= måltidFrånKalender) {
+            skaKlockanStanna = true;
+          }
+        } 
+      
+        else {
+          nyPausTid = nuvarandePausTid + 1;
         }
 
+        // Skicka tillbaka den uppdaterade datan till "data-banken"
         return {
           ...prev,
           settings: {
             ...prev.settings,
-            secondsWork: nextWork,
-            secondsBreak: nextBreak,
-            // Stänger av timern när målet är nått
-            isRunning: shouldStop ? false : prev.settings.isRunning
+            secondsWork: nyJobbTid,
+            secondsBreak: nyPausTid,
+            isRunning: skaKlockanStanna ? false : prev.settings.isRunning
           }
         };
       });
     }, 1000);
 
-    return () => clearInterval(id);
+    
+    return () => clearInterval(klocka);
+
   }, [isRunning, mode, setData]);
 }
