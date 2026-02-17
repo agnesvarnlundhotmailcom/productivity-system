@@ -12,17 +12,15 @@ export default function FlowTimer() {
   const [mode, setMode] = useState("work");
   const [isRunning, setIsRunning] = useState(false);
 
-  // Aktivera klock-motorn
+  // Startar klockans interna logik (setInterval)
   useFlowTimer(isRunning, mode);
 
+  // Hämtar tider direkt från context
   const secondsWork = data.settings.secondsWork ?? 0;
   const secondsBreak = data.settings.secondsBreak ?? 0;
-  const taskGoal = data.settings.activeTaskDuration ?? 0;
-
-  // Visa nedräkning om mål finns i kalendern, annars vanlig tid
-  const timeToShow = (mode === "work" && taskGoal > 0) 
-    ? Math.max(0, taskGoal - secondsWork) 
-    : (mode === "work" ? secondsWork : secondsBreak);
+  
+  // Förenklad logik: Visa sekunder baserat på läge (Arbete/Paus)
+  const timeToShow = mode === "work" ? secondsWork : secondsBreak;
 
   const startWork = () => {
     setMode("work");
@@ -32,12 +30,6 @@ export default function FlowTimer() {
   const pause = () => setIsRunning(false);
   
   const startBreak = () => {
-    if (mode === "work" && isRunning) {
-      setData(prev => ({ 
-        ...prev, 
-        settings: { ...prev.settings, sessions: (prev.settings.sessions ?? 0) + 1 } 
-      }));
-    }
     setMode("break");
     setIsRunning(true);
   };
@@ -51,9 +43,7 @@ export default function FlowTimer() {
         settings: { 
           ...prev.settings, 
           secondsWork: 0, 
-          secondsBreak: 0, 
-          sessions: 0,
-          activeTaskDuration: 0 
+          secondsBreak: 0
         }
       }));
     }
@@ -65,7 +55,6 @@ export default function FlowTimer() {
         <CurrentTaskView 
           onStartTimer={startWork} 
           onPauseTimer={pause}
-          onStartBreak={startBreak}
           isRunning={isRunning}
           timerMode={mode}
         />
@@ -79,12 +68,6 @@ export default function FlowTimer() {
               {mode === "work" ? "Arbete" : "Paus"} {isRunning ? "• Pågår" : "• Pausad"}
             </span>
           </div>
-          
-          {taskGoal > 0 && mode === "work" && (
-            <div style={{ fontSize: '11px', marginTop: '8px', opacity: 0.6, fontWeight: 'bold' }}>
-              MÅL: {Math.floor(taskGoal / 60)} MIN
-            </div>
-          )}
         </div>
 
         <div className="ftMiniActions" style={{ gap: '12px', display: 'flex', marginTop: '20px' }}>
