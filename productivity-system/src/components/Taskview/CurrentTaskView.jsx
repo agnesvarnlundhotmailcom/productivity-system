@@ -1,4 +1,4 @@
-import { useContext, useMemo, } from 'react';
+import { useContext, useMemo } from 'react';
 import { DataContext } from "../../contexts/DataContext";
 import { CheckCircle2, Circle, Play, Pause } from 'lucide-react';
 import styles from './CurrentTask.module.css';
@@ -7,16 +7,17 @@ export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning,
   const { data, setData } = useContext(DataContext);
   const today = new Date().toLocaleDateString('sv-SE');
 
+  // Hitta aktuell uppgift baserat på tid
   const taskToShow = useMemo(() => {
     const schedule = data[today]?.schedule || [];
     const now = new Date();
-    const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+    const currentMin = now.getHours() * 60 + now.getMinutes();
 
     return schedule
       .filter(item => {
         if (!item.startTime || !item.endTime) return false;
         const [eH, eM] = item.endTime.split(':').map(Number);
-        return (eH * 60 + eM) > currentTimeInMinutes;
+        return (eH * 60 + eM) > currentMin;
       })
       .sort((a, b) => {
         const [aH, aM] = a.startTime.split(':').map(Number);
@@ -25,59 +26,42 @@ export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning,
       })[0];
   }, [data, today]);
 
-  // Beräkna total tid för aktiviteten i sekunder
-  const totalActivitySeconds = useMemo(() => {
+  // Beräkna total tid och progress
+  const progress = useMemo(() => {
     if (!taskToShow) return 0;
     const [sH, sM] = taskToShow.startTime.split(':').map(Number);
     const [eH, eM] = taskToShow.endTime.split(':').map(Number);
-    return ((eH * 60 + eM) - (sH * 60 + sM)) * 60;
-  }, [taskToShow]);
-
-  // Progress baseras nu på faktiskt arbetad tid (från data.settings)
-  const progress = useMemo(() => {
-    if (totalActivitySeconds === 0) return 0;
-    // Vi kollar hur många sekunder användaren har arbetat idag totalt
-    // (Alternativt kan man nollställa sekunder per aktivitet, men här kör vi på dagens arbete)
+    const totalSeconds = ((eH * 60 + eM) - (sH * 60 + sM)) * 60;
+    
+    if (totalSeconds <= 0) return 0;
     const workedSeconds = data.settings.secondsWork || 0;
-    const p = Math.min((workedSeconds / totalActivitySeconds) * 100, 100);
-    return Math.round(p);
-  }, [data.settings.secondsWork, totalActivitySeconds]);
+    return Math.min(Math.round((workedSeconds / totalSeconds) * 100), 100);
+  }, [data.settings.secondsWork, taskToShow]);
 
   const toggleTask = (taskId) => {
-    if (!taskToShow) return;
-    setData(prev => {
-      const currentSchedule = prev[today]?.schedule || [];
-      const updatedSchedule = currentSchedule.map(item => {
-        if (item.id === taskToShow.id) {
-          return {
-            ...item,
-            tasks: item.tasks.map(t => 
-              t.id === taskId ? { ...t, completed: !t.completed } : t
-            )
-          };
-        }
-        return item;
-      });
-      return { ...prev, [today]: { ...prev[today], schedule: updatedSchedule } };
-    });
+    setData(prev => ({
+      ...prev,
+      [today]: {
+        ...prev[today],
+        schedule: prev[today].schedule.map(item => 
+          item.id === taskToShow.id 
+            ? { ...item, tasks: item.tasks.map(t => t.id === taskId ? { ...t, completed: !t.completed } : t) }
+            : item
+        )
+      }
+    }));
   };
 
   if (!taskToShow) return null;
+
+  const isWorking = isRunning && timerMode === 'work';
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.titleGroup}>
-          <button 
-            className={styles.playButton} 
-            onClick={isRunning && timerMode === 'work' ? onPauseTimer : onStartTimer}
-          >
-            {/* Byter ikon baserat på status */}
-            {isRunning && timerMode === 'work' ? (
-              <Pause size={14} fill="currentColor" />
-            ) : (
-              <Play size={14} fill="currentColor" />
-            )}
+          <button className={styles.playButton} onClick={isWorking ? onPauseTimer : onStartTimer}>
+            {isWorking ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
           </button>
           <h2 className={styles.title}>{taskToShow.title}</h2>
         </div>
@@ -87,20 +71,13 @@ export default function CurrentTaskView({ onStartTimer, onPauseTimer, isRunning,
       <div className={styles.timeProgressBar}>
         <div 
           className={styles.timeBarFill} 
-          style={{ 
-            width: `${progress}%`,
-            backgroundColor: taskToShow.color || 'var(--accent-primary)' 
-          }} 
+          style={{ width: `${progress}%`, backgroundColor: taskToShow.color || 'var(--accent-primary)' }} 
         />
       </div>
 
       <div className={styles.list}>
         {taskToShow.tasks?.map(task => (
-          <div 
-            key={task.id} 
-            className={`${styles.item} ${task.completed ? styles.completedItem : ''}`}
-            onClick={() => toggleTask(task.id)}
-          >
+          <div key={task.id} className={`${styles.item} ${task.completed ? styles.completedItem : ''}`} onClick={() => toggleTask(task.id)}>
             <div className={styles.itemMain}>
               <div className={`${styles.checkIcon} ${task.completed ? styles.checked : ''}`}>
                 {task.completed ? <CheckCircle2 size={18} /> : <Circle size={18} />}
