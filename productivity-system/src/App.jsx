@@ -10,9 +10,6 @@ import CalendarPage from "./pages/CalendarPage"; // Denna sköter nu Kalender + 
 import FlowTimerPage from "./pages/FlowTimerPage"; 
 import UserLogin from "./components/UserLogin/userLogin";
 
-// Widgets (om du vill ha dem på egna separata sidor också)
-import TodoWidget from './components/ToDo/TodoWidget';
-
 import './App.css';
 
 function App() {
