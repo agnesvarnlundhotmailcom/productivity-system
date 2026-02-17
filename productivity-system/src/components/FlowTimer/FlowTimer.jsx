@@ -8,7 +8,7 @@ import { useFlowTimer } from "../../hooks/useTimer";
 const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
 export default function FlowTimer() {
-  const { data, setData } = useContext(DataContext);
+  const { data, resetStats } = useContext(DataContext); // Lade till resetStats här
   const [mode, setMode] = useState("work");
   const [isRunning, setIsRunning] = useState(false);
 
@@ -34,18 +34,12 @@ export default function FlowTimer() {
     setIsRunning(true);
   };
 
+  // Använder nu den centrala resetStats-funktionen istället för manuell setData
   const resetAll = () => {
     if (window.confirm("Vill du återställa all tid för idag?")) {
       setIsRunning(false);
       setMode("work");
-      setData(prev => ({
-        ...prev,
-        settings: { 
-          ...prev.settings, 
-          secondsWork: 0, 
-          secondsBreak: 0
-        }
-      }));
+      resetStats(); 
     }
   };
 
