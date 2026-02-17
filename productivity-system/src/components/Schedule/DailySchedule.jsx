@@ -1,25 +1,71 @@
 import { useState, useContext } from 'react';
-import { Clock } from 'lucide-react';
-import { DataContext } from "../../contexts/DataContext"; // Hämta er "kanal"
-import ScheduleForm from './ScheduleForm';
 import ScheduleItem from './ScheduleItem';
 import styles from './Schedule.module.css';
+import { Clock } from 'lucide-react'; 
+import { DataContext } from "../../contexts/DataContext";
 
 export default function DailySchedule({ selectedDate }) {
-  // 1. Koppla upp oss mot vår gemensamma datakälla
-  const { data, addScheduleItem } = useContext(DataContext);
-  
-  const [isAdding, setIsAdding] = useState(false);
-
-  // 2. Skapa den unika nyckeln för det valda datumet (t.ex. "2024-05-20")
+  const { data, setData } = useContext(DataContext);
   const dateKey = new Date(selectedDate).toLocaleDateString('sv-SE');
+  const activities = data[dateKey]?.schedule ?? [];
 
-  // 3. Hämta aktiviteterna för just det här datumet från vår data
-  const activities = data[dateKey]?.schedule || [];
+  const [isAdding, setIsAdding] = useState(false);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState(""); 
+  const [newTitle, setNewTitle] = useState("");
+  const [newCategory, setNewCategory] = useState("Arbete");
 
   const displayDate = new Date(selectedDate).toLocaleDateString('sv-SE', { 
     weekday: 'long', day: 'numeric', month: 'long' 
   });
+
+  // Uppdaterad med dina exakta färgvariabler
+  const getColorForCategory = (cat) => {
+    switch(cat) {
+      case 'Arbete': return '#0ed3ac';    // --accent-primary
+      case 'Rast': return '#f49e0c';      // --accent-warning (Du kallade den Paus i din kod, ändrat till Rast/Paus för att matcha)
+      case 'Möte': return '#39bef8';      // --accent-blue
+      case 'Personligt': return '#c083fc'; // --accent-purple
+      default: return '#fb7185';          // --accent-danger
+    }
+  };
+
+  const updateGlobalData = (newList) => {
+    setData(prev => ({
+      ...prev,
+      [dateKey]: { ...prev[dateKey], schedule: newList }
+    }));
+  };
+
+  const handleAdd = () => {
+    if (!startTime || !endTime || !newTitle) return; 
+    const newItem = {
+      id: Date.now(),
+      startTime,
+      endTime, 
+      title: newTitle,
+      category: newCategory,
+      color: getColorForCategory(newCategory),
+      tasks: [] 
+    };
+    const updatedList = [...activities, newItem].sort((a, b) => a.startTime.localeCompare(b.startTime));
+    updateGlobalData(updatedList);
+    setIsAdding(false);
+    setStartTime("");
+    setEndTime("");
+    setNewTitle("");
+  };
+
+  const handleDelete = (id) => {
+    updateGlobalData(activities.filter(item => item.id !== id));
+  };
+
+  const handleUpdate = (id, updatedData) => {
+    const updatedList = activities.map(item =>
+      item.id === id ? { ...item, ...updatedData } : item
+    ).sort((a, b) => (a.startTime || a.time).localeCompare(b.startTime || b.time));
+    updateGlobalData(updatedList);
+  };
 
   return (
     <div className={styles.container}>
@@ -33,21 +79,34 @@ export default function DailySchedule({ selectedDate }) {
         </button>
       </div>
 
-      {/* Om isAdding är sant, visa formuläret */}
       {isAdding && (
-        <ScheduleForm onSave={(formData) => { 
-          addScheduleItem(dateKey, formData); 
-          setIsAdding(false); 
-        }} />
+        <div className={styles.form}>
+          <div className={styles.formRow}>
+            <div className={styles.timeInputGroup}>
+              <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className={styles.input} title="Starttid" />
+              <span>till</span>
+              <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className={styles.input} title="Sluttid" />
+            </div>
+            <select value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className={styles.select}>
+              <option value="Arbete">Arbete</option>
+              <option value="Rast">Rast</option>
+              <option value="Möte">Möte</option>
+              <option value="Personligt">Personligt</option>
+            </select>
+          </div>
+          <input type="text" placeholder="Aktivitet..." value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className={styles.input} />
+          <button onClick={handleAdd} className={styles.saveBtn}>Skapa block</button>
+        </div>
       )}
 
       <div className={styles.list}>
-        {/* Vi mappar ut våra aktiviteter och skickar med dateKey så att Item vet vilken dag den tillhör */}
-        {activities.map(item => (
+        {activities.map((item) => (
           <ScheduleItem 
             key={item.id} 
             item={item} 
-            dateKey={dateKey} 
+            onDelete={handleDelete} 
+            onUpdate={handleUpdate}
+            dateKey={dateKey}
           />
         ))}
       </div>
