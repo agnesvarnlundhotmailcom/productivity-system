@@ -1,16 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { DataContext } from "../../contexts/DataContext";
 import { History } from "lucide-react";
 
 export default function StatisticsOverTime() {
   const { data } = useContext(DataContext);
-  const energyHistory = data?.energyLogs || [];
 
-  const chartData = energyHistory.map((entry) => ({
-    time: new Date(entry.timestamp).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }),
-    level: entry.level
-  }));
+  // Vi flyttar in logiken för energyHistory i callbacken
+  const chartData = useMemo(() => {
+    // Om data saknas eller energyLogs inte finns, returnera tom lista
+    const logs = data?.energyLogs || [];
+
+    return logs.map((entry) => ({
+      time: new Date(entry.timestamp).toLocaleTimeString('sv-SE', {
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      level: entry.level
+    }));
+    // Nu beror useMemo bara på 'data', vilket är stabilt
+  }, [data]);
 
   return (
     <div className="statistics-card" style={{ padding: '20px', background: 'var(--card-bg)', borderRadius: '12px' }}>
@@ -19,16 +28,35 @@ export default function StatisticsOverTime() {
         <h3 style={{ margin: 0 }}>Energi över tid</h3>
       </div>
 
-      {/* FIX: Fast höjd förhindrar width(-1) / height(-1) felet */}
-      <div style={{ width: '100%', height: '300px', minHeight: '300px' }}>
+      <div style={{ width: '100%', height: 300, minWidth: 0 }}>
         {chartData.length > 0 ? (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
-              <XAxis dataKey="time" tick={{ fontSize: 10 }} tickLine={false} axisLine={false} />
-              <YAxis domain={[1, 5]} ticks={[1, 2, 3, 4, 5]} tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-              <Tooltip contentStyle={{ backgroundColor: '#222', border: 'none', borderRadius: '8px' }} />
-              <Line type="monotone" dataKey="level" stroke="var(--accent-primary)" strokeWidth={3} dot={{ r: 4 }} />
+              <XAxis
+                dataKey="time"
+                tick={{ fontSize: 10 }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                domain={[1, 5]}
+                ticks={[1, 2, 3, 4, 5]}
+                tick={{ fontSize: 12 }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <Tooltip
+                contentStyle={{ backgroundColor: '#222', border: 'none', borderRadius: '8px' }}
+                itemStyle={{ color: '#fff' }}
+              />
+              <Line
+                type="monotone"
+                dataKey="level"
+                stroke="var(--accent-primary, #39bef8)"
+                strokeWidth={3}
+                dot={{ r: 4, fill: 'var(--accent-primary, #39bef8)' }}
+              />
             </LineChart>
           </ResponsiveContainer>
         ) : (
