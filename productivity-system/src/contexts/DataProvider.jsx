@@ -9,7 +9,7 @@ const defaultData = {
     secondsWork: 0,
     secondsBreak: 0,
     sessions: 0,
-    activeTaskDuration: 0, // Matchar nu useTimer
+    activeTaskDuration: 0, // Tillagd för att matcha useTimer
     isRunning: false
   },
   energyLogs: []
@@ -23,7 +23,6 @@ export const DataProvider = ({ children }) => {
     } catch { return defaultData; }
   });
 
-  // Sparar automatiskt till localStorage vid varje ändring
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
