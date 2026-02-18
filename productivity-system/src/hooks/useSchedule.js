@@ -3,12 +3,11 @@ import { useContext } from 'react';
 import { DataContext } from "../contexts/DataContext";
 
 export function useSchedule(valtDatum) {
-  const { data, setData } = useContext(DataContext);
+  const { data, setData, updateScheduleItem } = useContext(DataContext);
 
   const datumNyckel = new Date(valtDatum).toLocaleDateString('sv-SE');
   const dagensAktiviteter = data[datumNyckel]?.schedule ?? [];
 
-  // Enkel lista för att hitta rätt färg baserat på kategori
   const färgKarta = {
     'Arbete': '#39bef8',
     'Paus': '#f49e0c',
@@ -29,7 +28,6 @@ export function useSchedule(valtDatum) {
     const nyHändelse = {
       ...info,
       id: Date.now(),
-      // Hämtar färg från listan ovanför, eller väljer 'default' om kategorin inte finns
       color: färgKarta[info.category] || färgKarta.default,
       tasks: []
     };
@@ -41,18 +39,16 @@ export function useSchedule(valtDatum) {
     sparaSchema(filtrerad);
   };
 
+  // Använder nu den centrala funktionen för att hålla koden ren
   const uppdatera = (id, ändringar) => {
-    const uppdaterad = dagensAktiviteter.map(h => 
-      h.id === id ? { ...h, ...ändringar } : h
-    );
-    sparaSchema(uppdaterad);
+    updateScheduleItem(datumNyckel, id, ändringar);
   };
 
-  return { 
-    activities: dagensAktiviteter, 
-    handleAdd: läggTill, 
-    handleDelete: taBort, 
-    handleUpdate: uppdatera, 
-    dateKey: datumNyckel 
+  return {
+    activities: dagensAktiviteter,
+    handleAdd: läggTill,
+    handleDelete: taBort,
+    handleUpdate: uppdatera,
+    dateKey: datumNyckel
   };
 }
