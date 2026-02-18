@@ -6,53 +6,40 @@ export function useFlowTimer(isRunning, mode) {
   const { setData } = useContext(DataContext);
 
   useEffect(() => {
-   
-    if (isRunning === false) {
-      return;
-    }
+    if (!isRunning) return;
 
     const klocka = setInterval(() => {
-      
       setData((prev) => {
-       
-        const nuvarandeJobbTid = prev.settings.secondsWork ?? 0;
-        const nuvarandePausTid = prev.settings.secondsBreak ?? 0;
-        const måltidFrånKalender = prev.settings.activeTaskDuration ?? 0;
+        const settings = prev.settings || {};
+        const nuvarandeJobbTid = settings.secondsWork ?? 0;
+        const nuvarandePausTid = settings.secondsBreak ?? 0;
+        const måltid = settings.activeTaskDuration ?? 0;
 
-       
         let nyJobbTid = nuvarandeJobbTid;
         let nyPausTid = nuvarandePausTid;
-        let skaKlockanStanna = false;
+        let skaStanna = false;
 
-    
         if (mode === "work") {
-          nyJobbTid = nuvarandeJobbTid + 1;
-          
-          // Kolla om vi har nått målet från kalendern
-          if (måltidFrånKalender > 0 && nyJobbTid >= måltidFrånKalender) {
-            skaKlockanStanna = true;
+          nyJobbTid += 1;
+          if (måltid > 0 && nyJobbTid >= måltid) {
+            skaStanna = true;
           }
-        } 
-      
-        else {
-          nyPausTid = nuvarandePausTid + 1;
+        } else {
+          nyPausTid += 1;
         }
 
-        // Skicka tillbaka den uppdaterade datan till "data-banken"
         return {
           ...prev,
           settings: {
-            ...prev.settings,
+            ...settings,
             secondsWork: nyJobbTid,
             secondsBreak: nyPausTid,
-            isRunning: skaKlockanStanna ? false : prev.settings.isRunning
+            isRunning: skaStanna ? false : isRunning
           }
         };
       });
     }, 1000);
 
-    
     return () => clearInterval(klocka);
-
   }, [isRunning, mode, setData]);
 }
