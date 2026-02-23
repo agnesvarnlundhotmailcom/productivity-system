@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { useFocusMode } from '../../contexts/FocusModeContext';
-import { useSession } from '../../contexts/SessionContext';
-import './EnergyModal.css';
+import React, { useState, useContext } from "react";
+import { X, PartyPopper, Coffee, Zap } from "lucide-react";
+import { DataContext } from "../../contexts/DataContext";
+import { useFocusMode } from "../../contexts/FocusModeContext";
+import { useSession } from "../../contexts/SessionContext";
+import "./EnergyModal.css";
 
 export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
   const { addEnergyLog } = useContext(DataContext); 
@@ -27,11 +29,20 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
       onClose();
       setSelectedEnergy(null);
     }
+  };
 
   const handleStartPause = () => {
     setActiveMode('break');
     onClose();
   };
+
+  const energyLevels = [
+    { id: 1, label: "Mycket låg", emoji: "😴" },
+    { id: 2, label: "Låg", emoji: "😔" },
+    { id: 3, label: "Neutral", emoji: "😐" },
+    { id: 4, label: "Bra", emoji: "😊" },
+    { id: 5, label: "Utmärkt", emoji: "🔥" },
+  ];
 
   return (
     <div className="em-overlay">
