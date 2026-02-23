@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { DataContext } from "./DataContext";
 
 const STORAGE_KEY = "boiler_app_data";
@@ -9,7 +9,7 @@ const defaultData = {
     secondsWork: 0,
     secondsBreak: 0,
     sessions: 0,
-    activeTaskDuration: 0, // Tillagd för att matcha useTimer
+    activeTaskDuration: 0,
     isRunning: false
   },
   energyLogs: []
@@ -20,13 +20,17 @@ export const DataProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       return saved ? JSON.parse(saved) : defaultData;
-    } catch { return defaultData; }
+    } catch { 
+      return defaultData; 
+    }
   });
 
+  // Sparar automatiskt till localStorage när 'data' ändras
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
+  // Loggar energinivåer
   const addEnergyLog = useCallback((level) => {
     const newEntry = {
       level,
@@ -38,6 +42,7 @@ export const DataProvider = ({ children }) => {
     }));
   }, []);
 
+  // Uppdaterar ett helt schemablock (t.ex. ändrar titel, färg eller markerar som klart)
   const updateScheduleItem = useCallback((dayKey, itemId, updates) => {
     setData(prev => ({
       ...prev,
@@ -50,6 +55,33 @@ export const DataProvider = ({ children }) => {
     }));
   }, []);
 
+  // NY: Togglar specifika 'Att göra'-punkter inuti ett schemablock
+  const toggleScheduleTask = useCallback((dayKey, itemId, taskId) => {
+    setData(prev => {
+      const dayData = prev[dayKey] || {};
+      const schedule = dayData.schedule || [];
+
+      const updatedSchedule = schedule.map(item => {
+        if (item.id === itemId) {
+          const updatedTasks = (item.tasks || []).map(task => 
+            task.id === taskId ? { ...task, completed: !task.completed } : task
+          );
+          return { ...item, tasks: updatedTasks };
+        }
+        return item;
+      });
+
+      return {
+        ...prev,
+        [dayKey]: {
+          ...dayData,
+          schedule: updatedSchedule
+        }
+      };
+    });
+  }, []);
+
+  // Nollställer statistik (för t.ex. en ny dag)
   const resetStats = useCallback(() => {
     setData(prev => ({
       ...prev,
@@ -69,6 +101,7 @@ export const DataProvider = ({ children }) => {
       setData,
       addEnergyLog,
       updateScheduleItem,
+      toggleScheduleTask, // Nu tillgänglig för DashboardSchedule
       resetStats
     }}>
       {children}
