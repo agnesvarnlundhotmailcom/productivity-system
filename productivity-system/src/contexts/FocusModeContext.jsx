@@ -47,7 +47,6 @@ export const FocusModeProvider = ({ children }) => {
   const value = useMemo(() => ({
     activeMode,
     setActiveMode: handleSetActiveMode,
-    setActiveModeId, // Lade till denna för flexibla byten
     modes: allModes,
     secondsElapsed,
     setSecondsElapsed,
