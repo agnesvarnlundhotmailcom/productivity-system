@@ -17,6 +17,22 @@ const defaultData = {
       pause: 15
     }
   },
+  // Exempeldata för att du ska se att schemat fungerar direkt
+  "2026-02-23": {
+    schedule: [
+      { 
+        id: "1", 
+        title: "Fokuspass: Programmering", 
+        startTime: "09:00", 
+        category: "Arbete", 
+        completed: false,
+        tasks: [
+          { id: "t1", text: "Fixa DataProvider", completed: true },
+          { id: "t2", text: "Uppdatera Timer-design", completed: false }
+        ] 
+      }
+    ]
+  },
   energyLogs: []
 };
 
@@ -30,37 +46,17 @@ export const DataProvider = ({ children }) => {
     }
   });
 
-  // Spara automatiskt till localStorage när 'data' ändras
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
- 
   const updateFocusSettings = useCallback((newSettings) => {
     setData(prev => ({
       ...prev,
-      settings: {
-        ...prev.settings,
-        focusSettings: { 
-          ...prev.settings.focusSettings, 
-          ...newSettings 
-        }
-      }
+      settings: { ...prev.settings, focusSettings: { ...prev.settings.focusSettings, ...newSettings } }
     }));
   }, []);
 
-  const addEnergyLog = useCallback((level) => {
-    const newEntry = {
-      level,
-      timestamp: new Date().toISOString()
-    };
-    setData(prev => ({
-      ...prev,
-      energyLogs: [...(prev.energyLogs || []).slice(-14), newEntry]
-    }));
-  }, []);
-
-  // Uppdaterar ett helt schemablock (t.ex. ändrar titel, färg eller markerar som klart)
   const updateScheduleItem = useCallback((dayKey, itemId, updates) => {
     setData(prev => ({
       ...prev,
@@ -73,13 +69,10 @@ export const DataProvider = ({ children }) => {
     }));
   }, []);
 
-  // NY: Togglar specifika 'Att göra'-punkter inuti ett schemablock
   const toggleScheduleTask = useCallback((dayKey, itemId, taskId) => {
     setData(prev => {
-      const dayData = prev[dayKey] || {};
-      const schedule = dayData.schedule || [];
-
-      const updatedSchedule = schedule.map(item => {
+      const dayData = prev[dayKey] || { schedule: [] };
+      const updatedSchedule = dayData.schedule.map(item => {
         if (item.id === itemId) {
           const updatedTasks = (item.tasks || []).map(task => 
             task.id === taskId ? { ...task, completed: !task.completed } : task
@@ -88,39 +81,20 @@ export const DataProvider = ({ children }) => {
         }
         return item;
       });
-
-      return {
-        ...prev,
-        [dayKey]: {
-          ...dayData,
-          schedule: updatedSchedule
-        }
-      };
+      return { ...prev, [dayKey]: { ...dayData, schedule: updatedSchedule } };
     });
   }, []);
 
-  // Nollställer statistik (för t.ex. en ny dag)
   const resetStats = useCallback(() => {
     setData(prev => ({
       ...prev,
-      settings: {
-        ...prev.settings,
-        secondsWork: 0,
-        secondsBreak: 0,
-        sessions: 0,
-        activeTaskDuration: 0
-      }
+      settings: { ...prev.settings, secondsWork: 0, secondsBreak: 0, sessions: 0 }
     }));
   }, []);
 
   return (
     <DataContext.Provider value={{
-      data,
-      setData,
-      addEnergyLog,
-      updateScheduleItem,
-      resetStats,
-      updateFocusSettings 
+      data, setData, updateScheduleItem, toggleScheduleTask, resetStats, updateFocusSettings 
     }}>
       {children}
     </DataContext.Provider>
