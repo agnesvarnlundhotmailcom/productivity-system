@@ -10,7 +10,12 @@ const defaultData = {
     secondsBreak: 0,
     sessions: 0,
     activeTaskDuration: 0,
-    isRunning: false
+    isRunning: false,
+    focusSettings: {
+      deepWork: 90,
+      meeting: 60,
+      pause: 15
+    }
   },
   energyLogs: []
 };
@@ -25,12 +30,25 @@ export const DataProvider = ({ children }) => {
     }
   });
 
-  // Sparar automatiskt till localStorage när 'data' ändras
+  // Spara automatiskt till localStorage när 'data' ändras
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
-  // Loggar energinivåer
+ 
+  const updateFocusSettings = useCallback((newSettings) => {
+    setData(prev => ({
+      ...prev,
+      settings: {
+        ...prev.settings,
+        focusSettings: { 
+          ...prev.settings.focusSettings, 
+          ...newSettings 
+        }
+      }
+    }));
+  }, []);
+
   const addEnergyLog = useCallback((level) => {
     const newEntry = {
       level,
@@ -101,8 +119,8 @@ export const DataProvider = ({ children }) => {
       setData,
       addEnergyLog,
       updateScheduleItem,
-      toggleScheduleTask, // Nu tillgänglig för DashboardSchedule
-      resetStats
+      resetStats,
+      updateFocusSettings 
     }}>
       {children}
     </DataContext.Provider>
