@@ -1,36 +1,31 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const SessionContext = createContext(undefined);
 
 export const SessionProvider = ({ children }) => {
   const [sessions, setSessions] = useState(() => {
-    try {
-      const saved = localStorage.getItem('flowtime-sessions');
-      if (saved) {
-        return JSON.parse(saved).map(s => ({
-          ...s,
-          startTime: new Date(s.startTime),
-          endTime: new Date(s.endTime)
-        }));
-      }
-    } catch (e) { console.error('Laddningsfel:', e); }
-    return [];
+    const saved = localStorage.getItem('flowtime-sessions');
+    return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
     localStorage.setItem('flowtime-sessions', JSON.stringify(sessions));
   }, [sessions]);
 
-  const addSession = useCallback((sessionData) => {
+  const addSession = useCallback((session) => {
     const newSession = {
-      ...sessionData,
-      id: crypto.randomUUID(),
+      ...session,
+      id: Date.now(), // Skapar ett unikt ID för att kunna radera senare
     };
     setSessions(prev => [...prev, newSession]);
   }, []);
 
+  const removeSession = useCallback((id) => {
+    setSessions(prev => prev.filter(s => s.id !== id));
+  }, []);
+
   return (
-    <SessionContext.Provider value={{ sessions, addSession }}>
+    <SessionContext.Provider value={{ sessions, addSession, removeSession }}>
       {children}
     </SessionContext.Provider>
   );

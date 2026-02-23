@@ -1,46 +1,42 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import "./FlowTimer.css"; 
 import { Play, Pause, RotateCcw } from "lucide-react";
 import { useFocusMode } from "../../contexts/FocusModeContext";
-import { useSession } from "../../contexts/SessionContext";
 import EnergyModal from "../Energy/EnergyModal";
 
 const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
 export default function FlowTimer() {
-  const { activeMode } = useFocusMode();
-  const { addSession } = useSession();
+  const { 
+    activeMode, 
+    secondsElapsed, 
+    setSecondsElapsed, 
+    isRunning, 
+    setIsRunning 
+  } = useFocusMode();
   
-  // Vi börjar alltid på 0 sekunder
-  const [secondsElapsed, setSecondsElapsed] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
   const [showEnergyModal, setShowEnergyModal] = useState(false);
-  const [prevActiveModeId, setPrevActiveModeId] = useState(activeMode.id);
+  const targetSeconds = (activeMode.defaultDuration || 0) * 60;
 
-
-  // så nollställer vi klockan och stoppar den.
-  if (activeMode.id !== prevActiveModeId) {
-    setPrevActiveModeId(activeMode.id);
-    setSecondsElapsed(0);
+  // Stoppar klockan och triggar modalen (sparandet sker i modalen)
+  const finishSession = useCallback(() => {
     setIsRunning(false);
-  }
-
-  const handleStop = useCallback(() => {
-    if (secondsElapsed > 0) {
-      // Sparar tiden du faktiskt kört till historiken
-      addSession({
-        startTime: new Date(Date.now() - secondsElapsed * 1000),
-        endTime: new Date(),
-        duration: secondsElapsed,
-        focusMode: activeMode.id
-      });
-      
+    setTimeout(() => {
       setShowEnergyModal(true);
+    }, 10);
+  }, [setIsRunning]);
+
+  // Auto-stopp när målet nås
+  useEffect(() => {
+    if (isRunning && targetSeconds > 0 && secondsElapsed >= targetSeconds) {
+      finishSession();
     }
-    setIsRunning(false);
-  }, [secondsElapsed, activeMode.id, addSession]);
+  }, [secondsElapsed, targetSeconds, isRunning, finishSession]);
 
   const handleToggle = () => {
+    if (!isRunning && targetSeconds > 0 && secondsElapsed >= targetSeconds) {
+      setSecondsElapsed(0);
+    }
     setIsRunning(prev => !prev);
   };
 
@@ -49,29 +45,16 @@ export default function FlowTimer() {
     setIsRunning(false);
   };
 
-  useEffect(() => {
-    let interval = null;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setSecondsElapsed((prev) => prev + 1); // RÄKNAR UPPÅT
-      }, 1000);
-    } else {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isRunning]);
-
   return (
     <div className="ft-container">
       <div className={`ft-card ${isRunning ? "is-active" : ""}`}>
-        {/* Visar vilket läge du kör (t.ex. Deep Work) */}
-        <div style={{textAlign: 'center', marginBottom: '10px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>
-          {activeMode.name}
+        
+        <div style={{ marginBottom: '15px', color: 'var(--text-secondary)', fontWeight: '500' }}>
+          {activeMode.name} — {activeMode.defaultDuration} min
         </div>
 
         <div className="ft-display-area">
           <div className="ft-circle-outline">
-            {/* Visar sekunder som räknas upp */}
             <span className="ft-timer-digits">{formatMMSS(secondsElapsed)}</span>
           </div>
         </div>
@@ -87,9 +70,8 @@ export default function FlowTimer() {
             </button>
 
             <button 
-              className="ft-btn-base" 
-              style={{backgroundColor: 'var(--surface-3)', color: 'var(--text-primary)'}}
-              onClick={handleStop}
+              className="ft-btn-base ft-btn-stop" 
+              onClick={() => secondsElapsed > 0 ? finishSession() : setIsRunning(false)}
             >
               <RotateCcw size={18} />
               <span>Avsluta</span>
@@ -97,7 +79,7 @@ export default function FlowTimer() {
           </div>
 
           <button className="ft-reset-link" onClick={resetClock}>
-            <RotateCcw size={14} />
+            <RotateCcw size={14} /> 
             Nollställ klockan
           </button>
         </div>
@@ -106,7 +88,7 @@ export default function FlowTimer() {
           isOpen={showEnergyModal} 
           onClose={() => {
             setShowEnergyModal(false);
-            setSecondsElapsed(0); // Nollställ när modalen stängs
+            setSecondsElapsed(0); 
           }} 
           workedSeconds={secondsElapsed} 
         />

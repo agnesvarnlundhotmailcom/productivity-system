@@ -1,22 +1,17 @@
-import React, { useContext } from "react";
-import { X, Brain, Users, Coffee, Settings,Database, Trash2 } from "lucide-react";
-import { DataContext } from "../../contexts/DataContext";
+import React from "react";
+import { X, Brain, Users, Coffee, Settings, Database, Trash2 } from "lucide-react";
+import { useFocusMode } from "../../contexts/FocusModeContext"; 
 import "./SettingsModal.css";
 
 export default function SettingsModal({ open, onClose }) {
-  const { data, updateFocusSettings } = useContext(DataContext);
-  
- 
-  const focusSettings = data.settings?.focusSettings || { deepWork: 90, meeting: 60, pause: 15 };
+  const { modes, updateModeDuration } = useFocusMode();
 
   if (!open) return null;
 
- 
-  const handleSliderChange = (key, value) => {
-    updateFocusSettings({ [key]: Number(value) });
-  };
+  
+  const getDuration = (id) => modes.find(m => m.id === id)?.defaultDuration || 0;
 
-  // Funktion för att rensa all data
+  // Rensar all data från localStorage (Fabriksåterställning)
   const clearAllData = () => {
     if (window.confirm("Är du säker på att du vill radera all sparad data? Detta kan inte ångras.")) {
       localStorage.clear();
@@ -37,48 +32,49 @@ export default function SettingsModal({ open, onClose }) {
         </header>
 
         <section className="modal-body">
-          {/* TIMER-INSTÄLLNINGAR */}
           <div className="settings-section card">
             <div className="section-title">
               <Brain className="section-icon" size={20} />
               <h3>Fokuslägen</h3>
             </div>
-            <p className="section-desc">Ändra standardtiden för de inbyggda fokuslägen.</p>
+            <p className="section-desc">Ändra måltiden för när klockan ska stanna automatiskt.</p>
             
             <div className="slider-group">
+              {/* Deep Work Slider - ID: deepWork */}
               <div className="slider-item">
                 <div className="label-box"><Brain size={18} /> <span>Deep Work</span></div>
                 <input 
                   type="range" min="5" max="120" step="5"
-                  value={focusSettings.deepWork} 
-                  onChange={(e) => handleSliderChange('deepWork', e.target.value)}
+                  value={getDuration('deepWork')} 
+                  onChange={(e) => updateModeDuration('deepWork', Number(e.target.value))}
                 />
-                <span className="value-display">{focusSettings.deepWork} min</span>
+                <span className="value-display">{getDuration('deepWork')} min</span>
               </div>
 
+              {/* Möte Slider - ID: meeting */}
               <div className="slider-item">
                 <div className="label-box"><Users size={18} /> <span>Möte</span></div>
                 <input 
                   type="range" min="5" max="120" step="5"
-                  value={focusSettings.meeting} 
-                  onChange={(e) => handleSliderChange('meeting', e.target.value)}
+                  value={getDuration('meeting')} 
+                  onChange={(e) => updateModeDuration('meeting', Number(e.target.value))}
                 />
-                <span className="value-display">{focusSettings.meeting} min</span>
+                <span className="value-display">{getDuration('meeting')} min</span>
               </div>
 
+              {/* Paus Slider - ID: break */}
               <div className="slider-item">
                 <div className="label-box"><Coffee size={18} /> <span>Paus</span></div>
                 <input 
                   type="range" min="1" max="60" step="1"
-                  value={focusSettings.pause} 
-                  onChange={(e) => handleSliderChange('pause', e.target.value)}
+                  value={getDuration('break')} 
+                  onChange={(e) => updateModeDuration('break', Number(e.target.value))}
                 />
-                <span className="value-display">{focusSettings.pause} min</span>
+                <span className="value-display">{getDuration('break')} min</span>
               </div>
             </div>
           </div>
 
-          {/* DATA-SEKTION (Radera allt) */}
           <div className="settings-section card danger-zone">
             <div className="section-title">
               <Database className="section-icon" size={20} />

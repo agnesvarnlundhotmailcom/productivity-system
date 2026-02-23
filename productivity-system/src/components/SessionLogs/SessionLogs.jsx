@@ -1,17 +1,24 @@
-// src/components/SessionLogs/SessionLogs.jsx
-import React, { useContext } from 'react';
-import { DataContext } from '../../contexts/DataContext';
-import { Clock, Zap, Trash2, History } from 'lucide-react';
+import React from 'react';
+import { useSession } from '../../contexts/SessionContext';
+import { Clock, Zap, Trash2, History, Calendar } from 'lucide-react';
 import styles from './SessionLogs.module.css';
 
 export default function SessionLogs() {
-  const { data, setData } = useContext(DataContext);
-  const logs = data.energyLogs || [];
+  const { sessions, removeSession } = useSession();
 
-  const handleDeleteLog = (index) => {
-    if (window.confirm("Vill du radera denna logg?")) {
-      const updatedLogs = logs.filter((_, i) => i !== index);
-      setData(prev => ({ ...prev, energyLogs: updatedLogs }));
+  const getEnergyEmoji = (level) => {
+    const emojis = { 1: "😴", 2: "😔", 3: "😐", 4: "😊", 5: "🔥" };
+    return emojis[level] || "😐";
+  };
+
+  const getModeName = (id) => {
+    const names = { deepWork: 'Deep Work', meeting: 'Möte', break: 'Paus' };
+    return names[id] || 'Arbetspass';
+  };
+
+  const handleDeleteLog = (id) => {
+    if (window.confirm("Vill du radera detta pass?")) {
+      removeSession(id);
     }
   };
 
@@ -24,29 +31,44 @@ export default function SessionLogs() {
         </div>
       </header>
 
-      {logs.length === 0 ? (
+      {!sessions || sessions.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>Inga loggade pass än. Kör igång ett pass för att fylla listan!</p>
+          <p>Inga loggade pass än. Kör igång timern!</p>
         </div>
       ) : (
         <div className={styles.logList}>
-          {logs.map((log, index) => (
-            <div key={index} className={styles.logCard}>
+          {[...sessions].reverse().map((log) => (
+            <div key={log.id} className={styles.logCard}>
               <div className={styles.logMain}>
-                <span className={styles.date}>{log.date}</span>
-                <h3 className={styles.activityTitle}>{log.activity || 'Slutfört pass'}</h3>
+                <div className={styles.dateRow}>
+                  <Calendar size={14} />
+                  <span className={styles.date}>
+                    {new Date(log.timestamp).toLocaleDateString('sv-SE')} kl {new Date(log.timestamp).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+                
+                <h3 className={styles.activityTitle}>{getModeName(log.modeId)}</h3>
+                
                 <div className={styles.metaRow}>
                   <div className={styles.metaItem}>
                     <Clock size={16} color="#0ed3ac" />
-                    <span>{log.duration} min</span>
+                    <span>
+                      {Math.floor(log.duration / 60)} min {log.duration % 60} sek
+                    </span>
                   </div>
-                  <div className={styles.metaItem}>
-                    <Zap size={16} color="#f49e0c" />
-                    <span>Energi: {log.energyLevel}/10</span>
-                  </div>
+                  {log.energyLevel && (
+                    <div className={styles.metaItem}>
+                      <Zap size={16} color="#f49e0c" />
+                      <span>Energi: {getEnergyEmoji(log.energyLevel)}</span>
+                    </div>
+                  )}
                 </div>
               </div>
-              <button className={styles.deleteBtn} onClick={() => handleDeleteLog(index)}>
+              
+              <button 
+                className={styles.deleteBtn} 
+                onClick={() => handleDeleteLog(log.id)}
+              >
                 <Trash2 size={18} />
               </button>
             </div>
