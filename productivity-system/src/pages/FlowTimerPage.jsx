@@ -13,11 +13,11 @@ export default function FlowTimerPage() {
         
         {/* Kolumn 1 & 2: Timer och Schema */}
         <div className="main-left-col" style={{ gridColumn: "span 2", display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <section className="card" style={{ background: 'white', borderRadius: '16px', padding: '24px' }}>
+          <section className="card">
             <FlowTimer />
           </section>
           
-          <section className="card" style={{ background: 'white', borderRadius: '16px', padding: '24px' }}>
+          <section className="card">
             <DashboardSchedule selectedDate={today} /> {/* Skickar datumet här! */}
           </section>
         </div>
