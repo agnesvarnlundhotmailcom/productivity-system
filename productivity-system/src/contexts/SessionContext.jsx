@@ -1,23 +1,11 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const SessionContext = createContext(undefined);
 
 export const SessionProvider = ({ children }) => {
   const [sessions, setSessions] = useState(() => {
-    try {
-      const saved = localStorage.getItem('flowtime-sessions');
-      if (saved) {
-        // Vi mappar om strängar till Date-objekt för att kunna använda datum-metoder senare
-        return JSON.parse(saved).map(s => ({
-          ...s,
-          startTime: new Date(s.startTime),
-          endTime: new Date(s.endTime)
-        }));
-      }
-    } catch (e) { 
-      console.error('Laddningsfel:', e); 
-    }
-    return [];
+    const saved = localStorage.getItem('flowtime-sessions');
+    return saved ? JSON.parse(saved) : [];
   });
 
   // Uppdatera localStorage varje gång sessions-listan ändras
@@ -25,19 +13,20 @@ export const SessionProvider = ({ children }) => {
     localStorage.setItem('flowtime-sessions', JSON.stringify(sessions));
   }, [sessions]);
 
-  const addSession = useCallback((sessionData) => {
+  const addSession = useCallback((session) => {
     const newSession = {
-      ...sessionData,
-      id: crypto.randomUUID(), // Skapar ett unikt ID för radering
-      startTime: sessionData.startTime || new Date(),
-      endTime: sessionData.endTime || new Date(),
+      ...session,
+      id: Date.now(), // Skapar ett unikt ID för att kunna radera senare
     };
     setSessions(prev => [...prev, newSession]);
   }, []);
 
-  // Vi skickar med setSessions så att vi kan radera direkt från logg-sidan
+  const removeSession = useCallback((id) => {
+    setSessions(prev => prev.filter(s => s.id !== id));
+  }, []);
+
   return (
-    <SessionContext.Provider value={{ sessions, addSession, setSessions }}>
+    <SessionContext.Provider value={{ sessions, addSession, removeSession }}>
       {children}
     </SessionContext.Provider>
   );
