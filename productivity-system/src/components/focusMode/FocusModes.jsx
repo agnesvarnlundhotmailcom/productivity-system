@@ -1,37 +1,29 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { Brain, Users, Coffee, Settings2 } from "lucide-react";
-import { DataContext } from "../../contexts/DataContext";
+import { useFocusMode } from "../../contexts/FocusModeContext"; 
 import "./FocusModes.css"; 
 
 export default function FocusModes() {
-  const { data } = useContext(DataContext);
-  const focusSettings = data.settings?.focusSettings || { deepWork: 90, meeting: 60, pause: 15 };
-  
-  const [activeMode, setActiveMode] = useState("meeting");
+  // Vi hämtar allt vi behöver från FocusModeContext
+  const { modes, activeMode, setActiveMode } = useFocusMode();
 
-  const modes = [
-    { 
-      id: "deep-work", 
-      title: "Deep Work", 
-      desc: "Intensivt fokusarbete utan avbrott", 
-      time: `${focusSettings.deepWork} min`, 
-      icon: <Brain size={20} /> 
-    },
-    { 
-      id: "meeting", 
-      title: "Möte", 
-      desc: "Samarbete och kommunikation", 
-      time: `${focusSettings.meeting} min`, 
-      icon: <Users size={20} /> 
-    },
-    { 
-      id: "break", 
-      title: "Paus", 
-      desc: "Vila och återhämtning", 
-      time: `${focusSettings.pause} min`, 
-      icon: <Coffee size={20} /> 
-    },
-  ];
+  const getIcon = (id) => {
+    switch (id) {
+      case 'deepWork': return <Brain size={20} />;
+      case 'meeting': return <Users size={20} />;
+      case 'break': return <Coffee size={20} />;
+      default: return <Brain size={20} />;
+    }
+  };
+
+  const getDesc = (id) => {
+    switch (id) {
+      case 'deepWork': return "Intensivt fokusarbete utan avbrott";
+      case 'meeting': return "Samarbete och kommunikation";
+      case 'break': return "Vila och återhämtning";
+      default: return "";
+    }
+  };
 
   return (
     <div className="card focus-modes-card">
@@ -44,24 +36,24 @@ export default function FocusModes() {
         {modes.map((mode) => (
           <button 
             key={mode.id} 
-            className={`mode-item ${activeMode === mode.id ? "active" : ""}`}
+            className={`mode-item ${activeMode.id === mode.id ? "active" : ""}`}
             onClick={() => setActiveMode(mode.id)}
           >
             <div className="mode-icon-wrapper">
-              {mode.icon}
+              {getIcon(mode.id)}
             </div>
             <div className="mode-text">
-              <span className="mode-title">{mode.title}</span>
-              <span className="mode-desc">{mode.desc}</span>
+              <span className="mode-title">{mode.name}</span>
+              <span className="mode-desc">{getDesc(mode.id)}</span>
             </div>
-            <span className="mode-duration">{mode.time}</span>
+            <span className="mode-duration">{mode.defaultDuration} min</span>
           </button>
         ))}
       </div>
 
       <div className="active-footer">
         <span className="status-dot"></span>
-        <p>Aktivt läge: <strong>{modes.find(m => m.id === activeMode)?.title}</strong></p>
+        <p>Aktivt läge: <strong>{activeMode.name}</strong></p>
       </div>
     </div>
   );

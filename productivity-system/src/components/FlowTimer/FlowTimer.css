@@ -9,7 +9,6 @@
   background: transparent; 
   border: none;
   box-shadow: none;
-  
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -28,6 +27,12 @@
   justify-content: center;
   margin-bottom: 30px;
   background: var(--surface-1); 
+  transition: border-color 0.3s ease;
+}
+
+/* Om timern körs kan vi ge cirkeln en subtil färg */
+.ft-card.is-active .ft-circle-outline {
+  border-color: var(--accent-primary);
 }
 
 .ft-timer-digits {
@@ -38,7 +43,6 @@
   letter-spacing: -1px;
 }
 
-/* Behåll knapparna och resten av kontrollerna */
 .ft-controls-wrapper {
   display: flex;
   flex-direction: column;
@@ -75,6 +79,27 @@
   box-shadow: 0 4px 12px rgba(237, 171, 77, 0.2);
 }
 
+/* Stil för Avsluta-knappen */
+.ft-btn-stop {
+  background-color: var(--accent-warning);
+  color: white;
+  border: 1px solid var(--surface-4);
+}
+
+.ft-btn-stop:hover {
+  background-color: var(--surface-4);
+  transform: translateY(-2px);
+}
+
+.ft-btn-base:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.ft-btn-base:active {
+  transform: translateY(0);
+}
+
 .ft-reset-link {
   background: none;
   border: none;
@@ -83,6 +108,9 @@
   margin-top: 10px;
   cursor: pointer;
   transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .ft-reset-link:hover {

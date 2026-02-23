@@ -4,11 +4,21 @@ import { Clock, Zap, Trash2, History, Calendar } from 'lucide-react';
 import styles from './SessionLogs.module.css';
 
 export default function SessionLogs() {
-  const { sessions, setSessions } = useSession();
+  const { sessions, removeSession } = useSession();
+
+  const getEnergyEmoji = (level) => {
+    const emojis = { 1: "😴", 2: "😔", 3: "😐", 4: "😊", 5: "🔥" };
+    return emojis[level] || "😐";
+  };
+
+  const getModeName = (id) => {
+    const names = { deepWork: 'Deep Work', meeting: 'Möte', break: 'Paus' };
+    return names[id] || 'Arbetspass';
+  };
 
   const handleDeleteLog = (id) => {
-    if (window.confirm("Vill du radera denna logg?")) {
-      setSessions(prev => prev.filter(session => session.id !== id));
+    if (window.confirm("Vill du radera detta pass?")) {
+      removeSession(id);
     }
   };
 
@@ -21,32 +31,35 @@ export default function SessionLogs() {
         </div>
       </header>
 
-      {sessions.length === 0 ? (
+      {!sessions || sessions.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>Inga loggade pass än. Kör igång ett pass för att fylla listan!</p>
+          <p>Inga loggade pass än. Kör igång timern!</p>
         </div>
       ) : (
         <div className={styles.logList}>
-          {/* Vi vänder på listan (.reverse) så de senaste passen hamnar överst */}
-          {[...sessions].reverse().map((session) => (
-            <div key={session.id} className={styles.logCard}>
+          {[...sessions].reverse().map((log) => (
+            <div key={log.id} className={styles.logCard}>
               <div className={styles.logMain}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#666', fontSize: '0.9rem' }}>
+                <div className={styles.dateRow}>
                   <Calendar size={14} />
-                  <span>{session.startTime.toLocaleDateString('sv-SE')}</span>
+                  <span className={styles.date}>
+                    {new Date(log.timestamp).toLocaleDateString('sv-SE')} kl {new Date(log.timestamp).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}
+                  </span>
                 </div>
                 
-                <h3 className={styles.activityTitle}>{session.activity || 'Slutfört pass'}</h3>
+                <h3 className={styles.activityTitle}>{getModeName(log.modeId)}</h3>
                 
                 <div className={styles.metaRow}>
                   <div className={styles.metaItem}>
                     <Clock size={16} color="#0ed3ac" />
-                    <span>{session.focusDuration || 0} min</span>
+                    <span>
+                      {Math.floor(log.duration / 60)} min {log.duration % 60} sek
+                    </span>
                   </div>
-                  {session.energyLevel && (
+                  {log.energyLevel && (
                     <div className={styles.metaItem}>
                       <Zap size={16} color="#f49e0c" />
-                      <span>Energi: {session.energyLevel}/5</span>
+                      <span>Energi: {getEnergyEmoji(log.energyLevel)}</span>
                     </div>
                   )}
                 </div>
@@ -54,8 +67,7 @@ export default function SessionLogs() {
               
               <button 
                 className={styles.deleteBtn} 
-                onClick={() => handleDeleteLog(session.id)}
-                title="Radera logg"
+                onClick={() => handleDeleteLog(log.id)}
               >
                 <Trash2 size={18} />
               </button>
