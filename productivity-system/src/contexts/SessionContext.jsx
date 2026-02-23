@@ -7,16 +7,20 @@ export const SessionProvider = ({ children }) => {
     try {
       const saved = localStorage.getItem('flowtime-sessions');
       if (saved) {
+        // Vi mappar om strängar till Date-objekt för att kunna använda datum-metoder senare
         return JSON.parse(saved).map(s => ({
           ...s,
           startTime: new Date(s.startTime),
           endTime: new Date(s.endTime)
         }));
       }
-    } catch (e) { console.error('Laddningsfel:', e); }
+    } catch (e) { 
+      console.error('Laddningsfel:', e); 
+    }
     return [];
   });
 
+  // Uppdatera localStorage varje gång sessions-listan ändras
   useEffect(() => {
     localStorage.setItem('flowtime-sessions', JSON.stringify(sessions));
   }, [sessions]);
@@ -24,13 +28,16 @@ export const SessionProvider = ({ children }) => {
   const addSession = useCallback((sessionData) => {
     const newSession = {
       ...sessionData,
-      id: crypto.randomUUID(),
+      id: crypto.randomUUID(), // Skapar ett unikt ID för radering
+      startTime: sessionData.startTime || new Date(),
+      endTime: sessionData.endTime || new Date(),
     };
     setSessions(prev => [...prev, newSession]);
   }, []);
 
+  // Vi skickar med setSessions så att vi kan radera direkt från logg-sidan
   return (
-    <SessionContext.Provider value={{ sessions, addSession }}>
+    <SessionContext.Provider value={{ sessions, addSession, setSessions }}>
       {children}
     </SessionContext.Provider>
   );
