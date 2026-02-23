@@ -3,7 +3,6 @@ import "./FlowTimer.css";
 import { Play, Pause, RotateCcw } from "lucide-react";
 import { useFocusMode } from "../../contexts/FocusModeContext";
 import EnergyModal from "../Energy/EnergyModal";
-import "./FlowTimer.css";
 
 const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
@@ -53,7 +52,6 @@ export default function FlowTimer() {
         <div style={{ marginBottom: '15px', color: 'var(--text-secondary)', fontWeight: '500' }}>
           {activeMode.name} — {activeMode.defaultDuration} min
         </div>
-      </div>
 
         <div className="ft-display-area">
           <div className="ft-circle-outline">
@@ -95,29 +93,6 @@ export default function FlowTimer() {
           workedSeconds={secondsElapsed} 
         />
       </div>
-
-      <EnergyModal 
-        isOpen={showEnergyModal} 
-        onClose={() => {
-          setShowEnergyModal(false);
-          setSecondsElapsed(0); 
-        }} 
-        workedSeconds={secondsElapsed} 
-      />
-    </div>
-  );
-}
-
-// Huvudkomponent som lyssnar på Context
-export default function FlowTimer() {
-  const { activeMode } = useFocusMode();
-
-  return (
-    <div className="ft-container">
-      {/* Genom att använda key={activeMode.id} nollställer React hela klockan automatiskt 
-          så fort du byter läge i menyn. Detta tar bort behovet av useEffect-nollställning 
-          och löser ESLint-felet permanent. */}
-      <TimerCore key={activeMode.id} activeMode={activeMode} />
     </div>
   );
 }
