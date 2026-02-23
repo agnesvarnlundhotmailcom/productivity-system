@@ -10,13 +10,12 @@ export default function DashboardSchedule({ selectedDate }) {
   const activities = data[dateKey]?.schedule ?? [];
 
   const handleToggleBlock = (e, itemId, currentStatus) => {
-    e.stopPropagation(); // Hindrar dropdown från att öppnas vid klick på stora cirkeln
+    e.stopPropagation();
     updateScheduleItem(dateKey, itemId, { completed: !currentStatus });
   };
 
   const handleToggleTask = (e, itemId, taskId) => {
     e.stopPropagation();
-    // Denna anropar din existerande logik i DataContext så det uppdateras överallt
     toggleScheduleTask(dateKey, itemId, taskId);
   };
 
@@ -89,7 +88,7 @@ export default function DashboardSchedule({ selectedDate }) {
                       onClick={(e) => handleToggleTask(e, item.id, task.id)}
                     >
                       <div className={`${styles.miniCheck} ${task.completed ? styles.miniCheckActive : ''}`}>
-                        {task.completed && <Check size={12} color="white" strokeWidth={3} />}
+                        {task.completed && <Check size={10} color="white" strokeWidth={4} />}
                       </div>
                       <span className={`${styles.taskText} ${task.completed ? styles.taskCompletedText : ''}`}>
                         {task.text}

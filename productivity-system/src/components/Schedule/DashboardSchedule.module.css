@@ -2,9 +2,8 @@
 
 .mainWrapper {
   width: 100%;
-  /* Ta bort bakgrund, border och box-shadow härifrån */
   margin: 0; 
-  padding: 0; /* Låt containern i FlowTimerPage sköta paddingen */
+  padding: 0;
 }
 
 .header {
@@ -24,7 +23,7 @@
 
 .counter {
   font-size: 0.95rem;
-  color: var(--text-secondary); /* Använd global variabel */
+  color: var(--text-secondary);
   font-weight: 700;
 }
 
@@ -51,7 +50,7 @@
 .cardContainer { display: flex; flex-direction: column; }
 
 .card {
-  background: var(--surface-1); /* Lite ljusare än bakgrunden för kontrast */
+  background: var(--surface-1);
   border: 1px solid var(--surface-3);
   border-radius: 12px;
   display: flex;
@@ -67,7 +66,11 @@
     border-color: var(--accent-primary);
 }
 
-.accentBar { width: 5px; height: 100%; }
+.accentBar { 
+  width: 5px; 
+  height: 100%; 
+  flex-shrink: 0; 
+}
 
 .cardContent {
   flex: 1;
@@ -89,6 +92,7 @@
   justify-content: center;
   background: transparent;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .circleDone { background-color: var(--accent-primary); border-color: var(--accent-primary) !important; }
@@ -98,7 +102,7 @@
 
 .categoryTag { font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
 
-/* Dropdown styling */
+/* Dropdown styling - Det är här magin händer */
 .taskDropdown {
   background: var(--surface-1);
   margin: -8px 8px 0 8px;
@@ -107,9 +111,17 @@
   border: 1px solid var(--surface-3);
   border-top: none;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: column; 
+  gap: 12px;
   z-index: 1;
+}
+
+/* Denna klass omsluter varje enskild sub-task-rad */
+.taskItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
 }
 
 .miniCheck {
@@ -121,6 +133,7 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-main);
+  flex-shrink: 0; /* Hindrar checkboxen från att bli mosad vid lång text */
 }
 
 .miniCheckActive {
@@ -128,6 +141,16 @@
   border-color: var(--accent-primary);
 }
 
-.taskCompletedText { text-decoration: line-through; color: var(--text-secondary); }
+.taskText {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.taskCompletedText { 
+  text-decoration: line-through; 
+  color: var(--text-secondary); 
+  opacity: 0.7;
+}
+
 .rowDone { opacity: 0.7; }
 .rowDone .title { text-decoration: line-through; }
