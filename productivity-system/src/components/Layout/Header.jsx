@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Layout.css";
-import { Zap, Calendar, Timer, User, Settings, BarChart } from "lucide-react";
+// Importera History-ikonen istället för Zap om du vill ha klock-pilen
+import { History, Calendar, Timer, User, Settings, BarChart, Zap } from "lucide-react";
 import { ThemeToggle } from "../Theme/ThemeToggle";
 
 const Header = ({ onOpenSettings }) => {
@@ -20,16 +21,33 @@ const Header = ({ onOpenSettings }) => {
 
       {/* Navigation */}
       <nav className="header-nav">
-        <Link to="/flow" className={isActive("/flow")}><Timer size={18} /><span>FlowTimer</span></Link>
-        <Link to="/calendar" className={isActive("/calendar")}><Calendar size={18} /><span>Kalender</span></Link>
-        <Link to="/energy" className={isActive("/energy")}><Zap size={18} /><span>Energi</span></Link>
-        <Link to="/stats" className={isActive("/stats")}><BarChart size={18} /><span>Statistik</span></Link>
+        <Link to="/flow" className={isActive("/flow")}>
+          <Timer size={18} />
+          <span>FlowTimer</span>
+        </Link>
+        <Link to="/calendar" className={isActive("/calendar")}>
+          <Calendar size={18} />
+          <span>Kalender</span>
+        </Link>
+        
+        {/* UPPDATERAD: Ändrad från /energy till /history */}
+        <Link to="/history" className={isActive("/history")}>
+          <History size={18} />
+          <span>Historik</span>
+        </Link>
+
+        <Link to="/stats" className={isActive("/stats")}>
+          <BarChart size={18} />
+          <span>Statistik</span>
+        </Link>
       </nav>
 
       {/* Höger: User, Settings, Theme */}
       <div className="header-right">
         <Link to="/login" className="nav-icon-link"><User size={20} /></Link>
-        <button className="settings-btn" onClick={onOpenSettings}><Settings size={20} /></button>
+        <button className="settings-btn" onClick={onOpenSettings}>
+          <Settings size={20} />
+        </button>
         <div className="divider" />
         <ThemeToggle />
       </div>
