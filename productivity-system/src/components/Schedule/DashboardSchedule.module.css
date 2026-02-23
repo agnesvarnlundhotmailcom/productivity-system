@@ -28,26 +28,48 @@
 }
 
 /* Progress bar */
-.progressSection { margin-bottom: 25px; }
-.progressLabel { 
-    display: flex; 
-    justify-content: space-between; 
-    font-size: 0.8rem; 
-    color: var(--text-secondary); 
-    margin-bottom: 8px; 
-    font-weight: 500; 
+.progressSection { 
+  margin-bottom: 25px; 
 }
-.percent { color: var(--accent-primary); font-weight: 700; }
-.progressBarBg { height: 8px; background: var(--surface-3); border-radius: 10px; overflow: hidden; }
+
+.progressLabel { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 0.8rem; 
+  color: var(--text-secondary); 
+  margin-bottom: 8px; 
+  font-weight: 500; 
+}
+
+.percent { 
+  color: var(--accent-primary); 
+  font-weight: 700; 
+}
+
+.progressBarBg { 
+  height: 8px; 
+  background: var(--surface-3); 
+  border-radius: 10px; 
+  overflow: hidden; 
+}
+
 .progressBarFill { 
-    height: 100%; 
-    background: var(--accent-primary); 
-    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); 
+  height: 100%; 
+  background: var(--accent-primary); 
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); 
 }
 
 /* Listan och raderna */
-.list { display: flex; flex-direction: column; gap: 12px; }
-.cardContainer { display: flex; flex-direction: column; }
+.list { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px; 
+}
+
+.cardContainer { 
+  display: flex; 
+  flex-direction: column; 
+}
 
 .card {
   background: var(--surface-1);
@@ -59,11 +81,13 @@
   min-height: 60px;
   position: relative;
   z-index: 2;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* HOVER-EFFEKT: Skugga, färg och lätt lyft */
 .card:hover {
-    border-color: var(--accent-primary);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1), 
+              0 0 0 1px rgba(14, 211, 172, 0.05);
 }
 
 .accentBar { 
@@ -80,7 +104,11 @@
   padding: 0 16px;
 }
 
-.left { display: flex; align-items: center; gap: 12px; }
+.left { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
 
 .statusCircle {
   width: 22px;
@@ -95,14 +123,36 @@
   flex-shrink: 0;
 }
 
-.circleDone { background-color: var(--accent-primary); border-color: var(--accent-primary) !important; }
+.circleDone { 
+  background-color: var(--accent-primary); 
+  border-color: var(--accent-primary) !important; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-.time { font-weight: 700; color: var(--text-secondary); font-size: 0.9rem; min-width: 50px; }
-.title { font-weight: 600; color: var(--text-primary); font-size: 0.95rem; }
+.time { 
+  font-family: monospace; 
+  color: var(--text-secondary); 
+  font-size: 0.8rem; 
+  min-width: 50px; 
+}
 
-.categoryTag { font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
+.title { 
+  font-family: 'Inter', sans-serif; 
+  font-weight: 500; 
+  color: var(--text-primary); 
+  font-size: 0.9rem; 
+}
 
-/* Dropdown styling - Det är här magin händer */
+.categoryTag { 
+  font-size: 0.7rem; 
+  color: var(--text-secondary); 
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Dropdown för underuppgifter */
 .taskDropdown {
   background: var(--surface-1);
   margin: -8px 8px 0 8px;
@@ -116,7 +166,6 @@
   z-index: 1;
 }
 
-/* Denna klass omsluter varje enskild sub-task-rad */
 .taskItem {
   display: flex;
   align-items: center;
@@ -133,7 +182,7 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-main);
-  flex-shrink: 0; /* Hindrar checkboxen från att bli mosad vid lång text */
+  flex-shrink: 0; 
 }
 
 .miniCheckActive {
@@ -152,5 +201,10 @@
   opacity: 0.7;
 }
 
-.rowDone { opacity: 0.7; }
-.rowDone .title { text-decoration: line-through; }
+.rowDone { 
+  opacity: 0.7; 
+}
+
+.rowDone .title { 
+  text-decoration: line-through; 
+}
