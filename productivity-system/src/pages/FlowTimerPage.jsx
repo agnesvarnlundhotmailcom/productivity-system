@@ -27,10 +27,6 @@ export default function FlowTimerPage() {
           <div className="focus-mode-wrapper">
              <FocusModes />
           </div>
-          
-          <section className="card">
-            <h3>Energinivå</h3>
-          </section>
 
           <Statistics />
         </div>
