@@ -1,10 +1,9 @@
 // src/components/Calendar/Calendar.jsx
 import "./Calendar.css";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCalendar, sameDay } from "../../hooks/useCalendar";
 
 export default function Calendar({ selectedTs, onDateChange }) {
-  // Vi hämtar allt vi behöver från vår hook
   const { 
     view, setView, currentDate, selectedDate, 
     weekDays, monthCells, navigate, DOW_SV 
@@ -19,20 +18,24 @@ export default function Calendar({ selectedTs, onDateChange }) {
         <section className="card">
           <div className="cardHeader">
             <div className="cardTitleWrap">
-              <h2 className="cardTitleYear">
-                <CalendarIcon size={35} color="#0ed3ac" />
-                {" " + yearLabel}
-              </h2>
-              <h2 className="cardTitle">{monthLabel}</h2>
+              <CalendarIcon size={32} color="#0ed3ac" />
+              <div className="dateLabelGroup">
+                <span className="monthLabel">{monthLabel}</span>
+                <span className="yearLabel">{yearLabel}</span>
+              </div>
             </div>
             
             <div className="cardActions">
-              <button className="iconBtn" onClick={() => navigate("prev")}>‹</button>
+              <button className="iconBtn" onClick={() => navigate("prev")}>
+                <ChevronLeft size={20} />
+              </button>
               <button className="pillBtn" onClick={() => onDateChange(Date.now())}>Idag</button>
               <button className="pillBtn" onClick={() => setView(v => v === "week" ? "month" : "week")}>
                 {view === "week" ? "Månad" : "Vecka"}
               </button>
-              <button className="iconBtn" onClick={() => navigate("next")}>›</button>
+              <button className="iconBtn" onClick={() => navigate("next")}>
+                <ChevronRight size={20} />
+              </button>
             </div>
           </div>
 
