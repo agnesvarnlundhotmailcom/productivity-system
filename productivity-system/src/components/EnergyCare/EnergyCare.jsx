@@ -1,36 +1,33 @@
 import React, { useMemo } from 'react';
 import { Zap, Activity } from 'lucide-react';
-import { useSession } from '../../contexts/SessionContext';
+import { useSession } from '../../contexts/SessionContext'; 
 import './EnergyCare.css';
 
 const EnergyCare = () => {
   const { sessions } = useSession();
 
   const energyTrend = useMemo(() => {
-    let history = [];
-    let lastLevel = 3;
+    if (!sessions || sessions.length === 0) return [];
 
-    sessions.slice(-15).forEach(session => {
-      const isBreak = session.modeId === 'break' || session.name === 'Paus' || session.modeName === 'Paus';
-      const newLevel = isBreak ? Math.min(5, lastLevel + 1) : Math.max(1, lastLevel - 0.5);
-      lastLevel = newLevel;
-
-      history.push({
-        level: newLevel,
-        modeName: session.modeName || session.name || 'Session',
-        time: new Date(session.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      });
+    return sessions.slice(-15).map(session => {
+      // Vi tvingar fram ett nummer för att beräkningen ska fungera
+      const level = Number(session.energyLevel || 3);
+      
+      return {
+        level: level,
+        modeId: session.modeId,
+        // Använder timestamp som vi såg i din modal/historik
+        time: session.timestamp 
+      };
     });
-
-    return history;
   }, [sessions]);
 
-  const latestLevel = energyTrend.length > 0 ? energyTrend[energyTrend.length - 1].level : 3;
+  const latestLevel = energyTrend.length > 0 ? energyTrend[energyTrend.length - 1].level : 0;
 
   const getStatusColor = (level) => {
-    if (level >= 4) return '#10b981'; 
-    if (level >= 2.5) return '#f59e0b'; 
-    return '#ef4444'; 
+    if (level >= 4) return '#10b981'; // Grön
+    if (level === 3) return '#f59e0b'; // Gul
+    return '#ef4444'; // Röd
   };
 
   return (
@@ -38,10 +35,10 @@ const EnergyCare = () => {
       <div className="energy-card-header">
         <div className="header-title">
           <Zap size={20} className="zap-icon" />
-          <h3>Beräknad Energi</h3>
+          <h3>Energinivå</h3>
         </div>
         <div className="energy-badge">
-          {latestLevel.toFixed(1)} / 5
+          {latestLevel > 0 ? `${latestLevel} / 5` : "Ingen data"}
         </div>
       </div>
 
@@ -53,7 +50,7 @@ const EnergyCare = () => {
         <div className="bar-chart-visual">
           {energyTrend.length > 0 ? (
             energyTrend.map((data, i) => (
-              <div key={i} className="bar-wrapper" title={`${data.modeName}: ${data.level.toFixed(1)}`}>
+              <div key={i} className="bar-wrapper">
                 <div 
                   className="bar-fill" 
                   style={{ 
@@ -64,7 +61,7 @@ const EnergyCare = () => {
               </div>
             ))
           ) : (
-            <div className="no-data-msg">Ingen data tillgänglig</div>
+            <div className="no-data-msg">Logga ett pass för att se grafen</div>
           )}
         </div>
         <div className="chart-x-axis">
@@ -75,9 +72,9 @@ const EnergyCare = () => {
 
       <div className="energy-footer-insight" style={{ borderLeftColor: getStatusColor(latestLevel) }}>
         <p>
-          {latestLevel < 2.5 
-            ? "Energinivån är låg. Kanske dags för en paus?" 
-            : "Du ser ut att ha bra fokusenergi just nu!"}
+          {latestLevel >= 4 ? "Hög fokusenergi loggad!" : 
+           latestLevel === 3 ? "Din energi är stabil." : 
+           latestLevel > 0 ? "Energinivån är låg." : "Välj en emoji efter nästa pass."}
         </p>
       </div>
     </div>

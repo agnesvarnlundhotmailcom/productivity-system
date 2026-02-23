@@ -4,7 +4,7 @@
   padding: 24px;
   color: #f3f4f6;
   font-family: ui-sans-serif, system-ui, sans-serif;
-  /* Ram borttagen härifrån */
+  /* Ingen border här */
 }
 
 .energy-card-header {
@@ -53,20 +53,26 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.bar-wrapper {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
 .bar-fill {
   width: 100%;
-  border-radius: 2px;
+  border-radius: 4px;
   transition: height 0.6s ease;
 }
 
 .chart-x-axis {
   display: flex;
   justify-content: space-between;
-  margin-top: 8px;
+  margin-top: 10px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   color: #6b7280;
-  letter-spacing: 0.05em;
 }
 
 .energy-footer-insight {
