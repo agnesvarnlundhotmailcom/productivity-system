@@ -46,7 +46,7 @@ export default function SessionLogs() {
                   {session.energyLevel && (
                     <div className={styles.metaItem}>
                       <Zap size={16} color="#f49e0c" />
-                      <span>Energi: {session.energyLevel}/10</span>
+                      <span>Energi: {session.energyLevel}/5</span>
                     </div>
                   )}
                 </div>
