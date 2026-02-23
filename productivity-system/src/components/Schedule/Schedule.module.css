@@ -266,7 +266,7 @@
     padding: 10px 16px;
     border-radius: 12px;
     outline: none;
-    font-size: 12px; /* Lite mindre input för att matcha stilen */
+    font-size: 12px; 
 }
 
 .miniInputGroup button {
@@ -280,6 +280,56 @@
     justify-content: center;
     cursor: pointer;
     color: var(--text-on-accent);
+}
+
+/* ============================================================
+   FIX FÖR MOBIL (LÄGG TILL & REDIGERA)
+   ============================================================ */
+@media (max-width: 600px) {
+    /* Gör containern lite smidigare på mobilen */
+    .container {
+        padding: 15px;
+    }
+
+    /* Staplar tid och kategori så de inte blöder ut (Fix för bild 2) */
+    .formRow {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Ser till att tidsväljarna tar upp plats snyggt */
+    .timeInputGroup {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* Gör dropdownen (Arbete/Paus) full bredd så den inte sticker ut */
+    .select {
+        width: 100%;
+    }
+
+    /* Spara-knappen full bredd för lättare tryck */
+    .saveBtn {
+        width: 100%;
+    }
+
+    /* Fixar rubriken så den syns med ... på mobilen (Fix för bild 1) */
+    .timeInfo {
+        min-width: 75px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .title {
+        min-width: 0;
+        margin-right: 10px;
+        font-size: 13px;
+    }
+
+    /* Förhindrar zoom på iPhone vid klick */
+    .input {
+        font-size: 16px;
+    }
 }
 
 @keyframes fadeIn {
