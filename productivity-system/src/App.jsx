@@ -6,7 +6,8 @@ import SettingsModal from "./components/Settings/SettingsModal";
 
 import CalendarPage from "./pages/CalendarPage";
 import FlowTimerPage from "./pages/FlowTimerPage";
-import EnergyCarePage from "./pages/EnergyCarePage";
+// 1. Se till att filnamnet här matchar vad filen faktiskt heter i din mapp!
+import SessionLogsPage from "./pages/SessionLogsPage"; 
 import StatisticsOverTimePage from "./pages/StatisticsOverTimePage";
 import UserLoginPage from "./pages/UserLoginPage";
 
@@ -25,7 +26,10 @@ export default function App() {
           <Route path="/" element={<Navigate to="/flow" replace />} />
           <Route path="/flow" element={<FlowTimerPage />} />
           <Route path="/calendar" element={<CalendarPage selectedDate={selectedDate} setSelectedDate={setSelectedDate} />} />
-          <Route path="/energy" element={<EnergyCarePage />} />
+          
+          {/* 2. Denna path måste vara EXAKT samma som 'to="/..."' i din Header.jsx */}
+          <Route path="/history" element={<SessionLogsPage />} />
+          
           <Route path="/stats" element={<StatisticsOverTimePage />} />
           <Route path="/login" element={<UserLoginPage />} />
         </Routes>
