@@ -3,6 +3,7 @@ import { DataContext } from "./DataContext";
 
 const STORAGE_KEY = "boiler_app_data";
 
+// defaultData deklareras HÖGST UPP så att den är tillgänglig för useState nedan
 const defaultData = {
   settings: {
     theme: "light",
@@ -17,22 +18,7 @@ const defaultData = {
       pause: 15
     }
   },
-  // Exempeldata för att du ska se att schemat fungerar direkt
-  "2026-02-23": {
-    schedule: [
-      { 
-        id: "1", 
-        title: "Fokuspass: Programmering", 
-        startTime: "09:00", 
-        category: "Arbete", 
-        completed: false,
-        tasks: [
-          { id: "t1", text: "Fixa DataProvider", completed: true },
-          { id: "t2", text: "Uppdatera Timer-design", completed: false }
-        ] 
-      }
-    ]
-  },
+  // Exempel på hur strukturen ser ut för att undvika undefined-fel
   energyLogs: []
 };
 
@@ -40,20 +26,42 @@ export const DataProvider = ({ children }) => {
   const [data, setData] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
+      // Om det finns sparat data används det, annars defaultData
       return saved ? JSON.parse(saved) : defaultData;
-    } catch { 
+    } catch (error) {
+      console.error("Kunde inte ladda data från localStorage", error);
       return defaultData; 
     }
   });
 
+  // Sparar automatiskt till localStorage varje gång 'data' ändras
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
+  // Funktion för att radera en kalenderhändelse
+  const deleteScheduleItem = useCallback((dayKey, itemId) => {
+    setData(prev => {
+      const dayData = prev[dayKey];
+      if (!dayData || !dayData.schedule) return prev;
+
+      return {
+        ...prev,
+        [dayKey]: {
+          ...dayData,
+          schedule: dayData.schedule.filter(item => item.id !== itemId)
+        }
+      };
+    });
+  }, []);
+
   const updateFocusSettings = useCallback((newSettings) => {
     setData(prev => ({
       ...prev,
-      settings: { ...prev.settings, focusSettings: { ...prev.settings.focusSettings, ...newSettings } }
+      settings: { 
+        ...prev.settings, 
+        focusSettings: { ...prev.settings.focusSettings, ...newSettings } 
+      }
     }));
   }, []);
 
@@ -94,7 +102,13 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider value={{
-      data, setData, updateScheduleItem, toggleScheduleTask, resetStats, updateFocusSettings 
+      data, 
+      setData, 
+      updateScheduleItem, 
+      toggleScheduleTask, 
+      resetStats, 
+      updateFocusSettings,
+      deleteScheduleItem // Exporterad för användning i dina komponenter
     }}>
       {children}
     </DataContext.Provider>
