@@ -42,7 +42,7 @@
 }
 
 .logCard {
-  background: var(--surface-1);
+  background: var(--surface-2);
   border: 1px solid var(--surface-3);
   border-radius: 16px;
   padding: 20px;
