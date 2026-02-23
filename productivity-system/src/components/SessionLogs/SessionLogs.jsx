@@ -1,13 +1,11 @@
 // src/components/SessionLogs/SessionLogs.jsx
 import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { DataContext } from '../../contexts/DataContext';
-import { Clock, Zap, Trash2, ChevronLeft, History } from 'lucide-react';
+import { Clock, Zap, Trash2, History } from 'lucide-react';
 import styles from './SessionLogs.module.css';
 
 export default function SessionLogs() {
   const { data, setData } = useContext(DataContext);
-  const navigate = useNavigate();
   const logs = data.energyLogs || [];
 
   const handleDeleteLog = (index) => {
@@ -19,12 +17,7 @@ export default function SessionLogs() {
 
   return (
     <div className={styles.fullPage}>
-      {/* Header direkt i komponenten */}
       <header className={styles.header}>
-        <button className={styles.backBtn} onClick={() => navigate('/')}>
-          <ChevronLeft size={20} />
-          <span>Tillbaka</span>
-        </button>
         <div className={styles.titleGroup}>
           <History size={32} color="#0ed3ac" />
           <h1>Historik</h1>
