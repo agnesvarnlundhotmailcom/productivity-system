@@ -2,6 +2,7 @@ import React from "react";
 import FlowTimer from "../components/FlowTimer/FlowTimer";
 import Statistics from "../components/Statistics/Statistics";
 import FocusModes from "../components/focusMode/FocusModes";
+import DashboardSchedule from "../components/Schedule/DashboardSchedule";
 
 export default function FlowTimerPage() {
   // Vi skickar med dagens datum som standard
@@ -19,6 +20,7 @@ export default function FlowTimerPage() {
           <section className="card schedule-card-area">
             <h3>Dagens schema</h3>
             {/* Din Schema-komponent här */}
+            <DashboardSchedule/>
           </section>
         </div>
 
