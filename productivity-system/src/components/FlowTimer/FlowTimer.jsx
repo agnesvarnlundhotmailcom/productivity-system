@@ -52,6 +52,72 @@ export default function FlowTimer() {
         <div style={{ marginBottom: '15px', color: 'var(--text-secondary)', fontWeight: '500' }}>
           {activeMode.name} — {activeMode.defaultDuration} min
         </div>
+      </div>
+
+        <div className="ft-display-area">
+          <div className="ft-circle-outline">
+            <span className="ft-timer-digits">{formatMMSS(secondsElapsed)}</span>
+          </div>
+        </div>
+
+        <div className="ft-controls-wrapper">
+          <div className="ft-btn-group">
+            <button 
+              className={`ft-btn-base ${isRunning ? "ft-btn-pause" : "ft-btn-start"}`}
+              onClick={handleToggle}
+            >
+              {isRunning ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+              <span>{isRunning ? "Pausa" : "Starta arbete"}</span>
+            </button>
+
+            <button 
+              className="ft-btn-base ft-btn-stop" 
+              onClick={() => secondsElapsed > 0 ? finishSession() : setIsRunning(false)}
+            >
+              <RotateCcw size={18} />
+              <span>Avsluta</span>
+            </button>
+          </div>
+
+          <button className="ft-reset-link" onClick={resetClock}>
+            <RotateCcw size={14} /> 
+            Nollställ klockan
+          </button>
+        </div>
+
+        <EnergyModal 
+          isOpen={showEnergyModal} 
+          onClose={() => {
+            setShowEnergyModal(false);
+            setSecondsElapsed(0); 
+          }} 
+          workedSeconds={secondsElapsed} 
+        />
+      </div>
+
+      <EnergyModal 
+        isOpen={showEnergyModal} 
+        onClose={() => {
+          setShowEnergyModal(false);
+          setSecondsElapsed(0); 
+        }} 
+        workedSeconds={secondsElapsed} 
+      />
+    </div>
+  );
+}
+
+// Huvudkomponent som lyssnar på Context
+export default function FlowTimer() {
+  const { activeMode } = useFocusMode();
+
+  return (
+    <div className="ft-container">
+      <div className={`ft-card ${isRunning ? "is-active" : ""}`}>
+        
+        <div style={{ marginBottom: '15px', color: 'var(--text-secondary)', fontWeight: '500' }}>
+          {activeMode.name} — {activeMode.defaultDuration} min
+        </div>
 
         <div className="ft-display-area">
           <div className="ft-circle-outline">

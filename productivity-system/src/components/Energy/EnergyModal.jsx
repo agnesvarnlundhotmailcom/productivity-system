@@ -5,6 +5,7 @@ import { useSession } from "../../contexts/SessionContext";
 import "./EnergyModal.css";
 
 export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
+  const { addEnergyLog } = useContext(DataContext); 
   const { activeMode, setActiveMode } = useFocusMode(); 
   const { addSession } = useSession(); 
   const [selectedEnergy, setSelectedEnergy] = useState(null);
@@ -13,12 +14,15 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
 
   const handleLogAndSave = () => {
     if (selectedEnergy) {
-      // Här sparas datan som EnergyCare-grafen läser av
+      
+      if (addEnergyLog) addEnergyLog(selectedEnergy);
+
+    
       addSession({
         duration: workedSeconds,
         modeId: activeMode.id,
-        energyLevel: selectedEnergy, // Detta läses av grafen
-        timestamp: new Date().toISOString() // Detta läses av grafen
+        energyLevel: selectedEnergy, // Energin sparas i samma objekt som tiden!
+        timestamp: new Date().toISOString()
       });
 
       onClose();
@@ -44,7 +48,7 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
       <div className="em-content">
         <button className="em-close-btn" onClick={onClose}><X size={20} /></button>
         <div className="em-header">
-          <div className="em-icon-circle"><PartyPopper size={32} color="#10b981" /></div>
+          <div className="em-icon-circle"><PartyPopper size={32} color="var(--accent-primary)" /></div>
           <h2>Bra jobbat!</h2>
           <p>Tid: <strong>{Math.floor(workedSeconds / 60)} min {workedSeconds % 60} sek</strong></p>
         </div>
