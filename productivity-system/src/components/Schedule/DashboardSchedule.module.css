@@ -1,12 +1,10 @@
+/* DashboardSchedule.module.css */
+
 .mainWrapper {
-    background-color: var(--surface-2);
-    border: 1px solid var(--surface-3);
-    border-radius: 16px;
-    padding: var(--space-lg);  
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 800px;
-  margin: 20px auto 0;
+  /* Ta bort bakgrund, border och box-shadow härifrån */
+  margin: 0; 
+  padding: 0; /* Låt containern i FlowTimerPage sköta paddingen */
 }
 
 .header {
@@ -20,38 +18,53 @@
   display: flex;
   align-items: center;
   font-weight: 700;
-    color: var(--text-primary);
+  color: var(--text-primary);
   font-size: 1.1rem;
 }
 
 .counter {
   font-size: 0.95rem;
-  color: #94a3b8;
+  color: var(--text-secondary); /* Använd global variabel */
   font-weight: 700;
 }
 
 /* Progress bar */
 .progressSection { margin-bottom: 25px; }
-.progressLabel { display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px; font-weight: 500; }
-.percent { color: #0ed3ac; font-weight: 700; }
-.progressBarBg { height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
-.progressBarFill { height: 100%; background: #0ed3ac; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.progressLabel { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 0.8rem; 
+    color: var(--text-secondary); 
+    margin-bottom: 8px; 
+    font-weight: 500; 
+}
+.percent { color: var(--accent-primary); font-weight: 700; }
+.progressBarBg { height: 8px; background: var(--surface-3); border-radius: 10px; overflow: hidden; }
+.progressBarFill { 
+    height: 100%; 
+    background: var(--accent-primary); 
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); 
+}
 
-/* Korten */
+/* Listan och raderna */
 .list { display: flex; flex-direction: column; gap: 12px; }
 .cardContainer { display: flex; flex-direction: column; }
 
 .card {
-  background: var(--surface-3);
-  border-radius: 16px;
+  background: var(--surface-1); /* Lite ljusare än bakgrunden för kontrast */
+  border: 1px solid var(--surface-3);
+  border-radius: 12px;
   display: flex;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  min-height: 65px;
+  min-height: 60px;
   position: relative;
   z-index: 2;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+    border-color: var(--accent-primary);
 }
 
 .accentBar { width: 5px; height: 100%; }
@@ -61,10 +74,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
-.left { display: flex; align-items: center; gap: 15px; }
+.left { display: flex; align-items: center; gap: 12px; }
 
 .statusCircle {
   width: 22px;
@@ -74,70 +87,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: transparent;
   transition: all 0.2s;
 }
 
-.circleDone { background-color: #0ed3ac; border-color: #0ed3ac !important; }
+.circleDone { background-color: var(--accent-primary); border-color: var(--accent-primary) !important; }
 
-.time { font-weight: 700; color: #64748b; font-size: 0.95rem; min-width: 55px; }
-.title { font-weight: 500; color: #1e293b; font-size: 1rem; }
-.rightSide { display: flex; align-items: center; gap: 12px; }
-.categoryTag { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
-.chevron { color: #cbd5e1; }
+.time { font-weight: 700; color: var(--text-secondary); font-size: 0.9rem; min-width: 50px; }
+.title { font-weight: 600; color: var(--text-primary); font-size: 0.95rem; }
 
-/* "Att göra"-punkter (Dropdown) */
+.categoryTag { font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; }
+
+/* Dropdown styling */
 .taskDropdown {
-  background: #ffffff;
-  margin: -10px 10px 0 10px;
-  padding: 22px 20px 15px 35px; /* Extra padding vänster för att linjera med titeln */
-  border-radius: 0 0 16px 16px;
-  border: 1px solid #f1f5f9;
+  background: var(--surface-1);
+  margin: -8px 8px 0 8px;
+  padding: 16px 16px 12px 30px;
+  border-radius: 0 0 12px 12px;
+  border: 1px solid var(--surface-3);
   border-top: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   z-index: 1;
-  animation: slideDown 0.2s ease-out;
 }
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.taskItem {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.9rem;
-  color: #475569;
-  cursor: pointer;
-  padding: 4px 0;
-  transition: color 0.2s ease;
-}
-
-.taskItem:hover { color: #1e293b; }
 
 .miniCheck {
   width: 18px;
   height: 18px;
-  border: 2px solid #e2e8f0;
-  border-radius: 6px; /* Snygg "squircle" form */
+  border: 2px solid var(--surface-3);
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
-  background: white;
+  background: var(--bg-main);
 }
 
 .miniCheckActive {
-  background-color: #0ed3ac;
-  border-color: #0ed3ac;
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
 }
 
-.taskText { flex: 1; }
-.taskCompletedText { text-decoration: line-through; color: #94a3b8; }
-
-.rowDone { opacity: 0.6; }
+.taskCompletedText { text-decoration: line-through; color: var(--text-secondary); }
+.rowDone { opacity: 0.7; }
 .rowDone .title { text-decoration: line-through; }
