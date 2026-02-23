@@ -1,53 +1,68 @@
+/* src/components/FlowTimer/FlowTimer.css */
+
 .ft-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  width: 100%;
+  /* Vi nollställer padding så den inte krockar med .card i FlowTimerPage */
+  padding: 0; 
 }
 
 .ft-card {
-  background: white;
+  /* HÄR ÄR ÄNDRINGEN: Gör bakgrunden transparent */
+  background: transparent; 
+  border: none;
+  box-shadow: none;
+  
   width: 100%;
-  max-width: 900px;
-  min-height: 420px;
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
-  border: 1px solid #f8fafc;
+  min-height: 400px;
 }
 
 .ft-circle-outline {
-  width: 250px;
-  height: 250px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
-  border: 3px solid #f1f3f6; 
+  /* Vi använder var(--surface-3) för en subtil cirkel som matchar temat */
+  border: 4px solid var(--surface-3); 
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 30px;
+  /* En svag nyansskillnad inuti cirkeln för djup */
+  background: var(--surface-1); 
 }
 
 .ft-timer-digits {
-  font-family: monospace;
-  font-size: 3rem;
-  color: #1e293b;
-  letter-spacing: 2px;
+  font-family: 'Inter', monospace;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+}
+
+/* Behåll knapparna och resten av kontrollerna */
+.ft-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 .ft-btn-group {
   display: flex;
   gap: 12px;
-  align-items: center;
 }
 
 .ft-btn-base {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 24px;
-  border-radius: 10px;
+  padding: 14px 28px;
+  border-radius: 12px;
   border: none;
   color: white;
   font-weight: 600;
@@ -58,65 +73,25 @@
 
 .ft-btn-start {
   background-color: var(--accent-primary);
-  box-shadow: 0 8px 16px rgba(82, 178, 146, 0.25);
-}
-
-.ft-btn-start:hover {
-  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 211, 172, 0.2);
 }
 
 .ft-btn-pause {
   background-color: var(--accent-warning);
-  box-shadow: 0 8px 16px rgba(237, 171, 77, 0.25);
-}
-
-.ft-btn-pause:hover {
-    transform: translateY(-2px);
-}
-
-.ft-btn-base:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.ft-controls-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.ft-btn-group {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.ft-btn-base.is-running {
-  transform: scale(0.98);
-  opacity: 0.9;
+  box-shadow: 0 4px 12px rgba(237, 171, 77, 0.2);
 }
 
 .ft-reset-link {
   background: none;
   border: none;
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 0.85rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  padding: 8px 16px;
-  transition: color 0.2s ease;
   margin-top: 10px;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
 .ft-reset-link:hover {
-  color: #64748b;
+  color: var(--text-primary);
   text-decoration: underline;
-}
-
-.ft-btn-base span {
-  white-space: nowrap;
 }
