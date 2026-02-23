@@ -1,0 +1,143 @@
+.mainWrapper {
+  background: white;
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto 0;
+  border: 1px solid #f1f5f9;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+.counter {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+/* Progress bar */
+.progressSection { margin-bottom: 25px; }
+.progressLabel { display: flex; justify-content: space-between; font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px; font-weight: 500; }
+.percent { color: #0ed3ac; font-weight: 700; }
+.progressBarBg { height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
+.progressBarFill { height: 100%; background: #0ed3ac; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Korten */
+.list { display: flex; flex-direction: column; gap: 12px; }
+.cardContainer { display: flex; flex-direction: column; }
+
+.card {
+  background: #fcfdfe;
+  border-radius: 16px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  min-height: 65px;
+  position: relative;
+  z-index: 2;
+  transition: background-color 0.2s;
+}
+
+.accentBar { width: 5px; height: 100%; }
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.left { display: flex; align-items: center; gap: 15px; }
+
+.statusCircle {
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  transition: all 0.2s;
+}
+
+.circleDone { background-color: #0ed3ac; border-color: #0ed3ac !important; }
+
+.time { font-weight: 700; color: #64748b; font-size: 0.95rem; min-width: 55px; }
+.title { font-weight: 500; color: #1e293b; font-size: 1rem; }
+.rightSide { display: flex; align-items: center; gap: 12px; }
+.categoryTag { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+.chevron { color: #cbd5e1; }
+
+/* "Att göra"-punkter (Dropdown) */
+.taskDropdown {
+  background: #ffffff;
+  margin: -10px 10px 0 10px;
+  padding: 22px 20px 15px 35px; /* Extra padding vänster för att linjera med titeln */
+  border-radius: 0 0 16px 16px;
+  border: 1px solid #f1f5f9;
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.taskItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #475569;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+}
+
+.taskItem:hover { color: #1e293b; }
+
+.miniCheck {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px; /* Snygg "squircle" form */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  background: white;
+}
+
+.miniCheckActive {
+  background-color: #0ed3ac;
+  border-color: #0ed3ac;
+}
+
+.taskText { flex: 1; }
+.taskCompletedText { text-decoration: line-through; color: #94a3b8; }
+
+.rowDone { opacity: 0.6; }
+.rowDone .title { text-decoration: line-through; }
