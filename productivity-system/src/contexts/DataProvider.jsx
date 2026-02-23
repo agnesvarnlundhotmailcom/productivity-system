@@ -3,14 +3,14 @@ import { DataContext } from "./DataContext";
 
 const STORAGE_KEY = "boiler_app_data";
 
-// defaultData deklareras HÖGST UPP så att den är tillgänglig för useState nedan
+// defaultData deklareras HÖGST UPP så att den är tillgänglig för useState nedan, och för att undvika problem med asynkrona uppdateringar.
 const defaultData = {
   settings: {
     theme: "light",
     secondsWork: 0,
     secondsBreak: 0,
     sessions: 0,
-    activeTaskDuration: 0,
+    activeTaskDuration: 1500,
     isRunning: false,
     focusSettings: {
       deepWork: 90,
@@ -18,7 +18,6 @@ const defaultData = {
       pause: 15
     }
   },
-  // Exempel på hur strukturen ser ut för att undvika undefined-fel
   energyLogs: []
 };
 
@@ -39,7 +38,43 @@ export const DataProvider = ({ children }) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
-  // Funktion för att radera en kalenderhändelse
+
+  // Uppdaterar timerns tid centralt (används av t.ex. FocusModes)
+  const setTimerMode = useCallback((minutes) => {
+    setData(prev => ({
+      ...prev,
+      settings: { 
+        ...prev.settings, 
+        activeTaskDuration: minutes * 60, // Omvandla till sekunder
+        isRunning: false 
+      }
+    }));
+  }, []);
+
+  // Sparar avslutad arbetstid till statistiken (används när timern stoppas)
+  const completeSession = useCallback((seconds) => {
+    setData(prev => ({
+      ...prev,
+      settings: {
+        ...prev.settings,
+        secondsWork: (prev.settings.secondsWork || 0) + seconds,
+        sessions: (prev.settings.sessions || 0) + 1
+      }
+    }));
+  }, []);
+
+  // Loggar energinivå till historiken (används av EnergyModal)
+  const addEnergyLog = useCallback((level) => {
+    const newEntry = { 
+      level, 
+      timestamp: new Date().toISOString() 
+    };
+    setData(prev => ({
+      ...prev,
+      energyLogs: [...(prev.energyLogs || []), newEntry]
+    }));
+  }, []);
+
   const deleteScheduleItem = useCallback((dayKey, itemId) => {
     setData(prev => {
       const dayData = prev[dayKey];
@@ -108,7 +143,10 @@ export const DataProvider = ({ children }) => {
       toggleScheduleTask, 
       resetStats, 
       updateFocusSettings,
-      deleteScheduleItem // Exporterad för användning i dina komponenter
+      deleteScheduleItem,
+      setTimerMode,      
+      completeSession,   
+      addEnergyLog       
     }}>
       {children}
     </DataContext.Provider>

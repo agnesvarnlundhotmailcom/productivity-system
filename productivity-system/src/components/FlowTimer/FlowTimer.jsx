@@ -1,78 +1,115 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./FlowTimer.css"; 
-import { DataContext } from "../../contexts/DataContext";
 import { Play, Pause, RotateCcw } from "lucide-react";
-import { useFlowTimer } from "../../hooks/useTimer";
+import { useFocusMode } from "../../contexts/FocusModeContext";
+import { useSession } from "../../contexts/SessionContext";
+import EnergyModal from "../Energy/EnergyModal";
 
 const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
 export default function FlowTimer() {
-  const { data, resetStats } = useContext(DataContext);
-  const [mode, setMode] = useState("work");
+  const { activeMode } = useFocusMode();
+  const { addSession } = useSession();
+  
+  // Vi börjar alltid på 0 sekunder
+  const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [showEnergyModal, setShowEnergyModal] = useState(false);
+  const [prevActiveModeId, setPrevActiveModeId] = useState(activeMode.id);
 
-  useFlowTimer(isRunning, mode);
 
-  const secondsWork = data.settings.secondsWork ?? 0;
-  const secondsBreak = data.settings.secondsBreak ?? 0;
-  const timeToShow = mode === "work" ? secondsWork : secondsBreak;
+  // så nollställer vi klockan och stoppar den.
+  if (activeMode.id !== prevActiveModeId) {
+    setPrevActiveModeId(activeMode.id);
+    setSecondsElapsed(0);
+    setIsRunning(false);
+  }
 
-  // Funktion för att hantera klick på Starta/Paus-knapparna
-  const handleModeClick = (targetMode) => {
-    if (mode === targetMode) {
-      // Om vi redan är i läget, toggla mellan start/stopp
-      setIsRunning(!isRunning);
+  const handleStop = useCallback(() => {
+    if (secondsElapsed > 0) {
+      // Sparar tiden du faktiskt kört till historiken
+      addSession({
+        startTime: new Date(Date.now() - secondsElapsed * 1000),
+        endTime: new Date(),
+        duration: secondsElapsed,
+        focusMode: activeMode.id
+      });
+      
+      setShowEnergyModal(true);
+    }
+    setIsRunning(false);
+  }, [secondsElapsed, activeMode.id, addSession]);
+
+  const handleToggle = () => {
+    setIsRunning(prev => !prev);
+  };
+
+  const resetClock = () => {
+    setSecondsElapsed(0);
+    setIsRunning(false);
+  };
+
+  useEffect(() => {
+    let interval = null;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setSecondsElapsed((prev) => prev + 1); // RÄKNAR UPPÅT
+      }, 1000);
     } else {
-      // Om vi byter läge, byt och starta direkt
-      setMode(targetMode);
-      setIsRunning(true);
+      clearInterval(interval);
     }
-  };
-
-  const resetAll = () => {
-    if (window.confirm("Vill du återställa all tid för idag?")) {
-      setIsRunning(false);
-      setMode("work");
-      resetStats(); 
-    }
-  };
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
   return (
     <div className="ft-container">
-      <div className="ft-card">
-        
+      <div className={`ft-card ${isRunning ? "is-active" : ""}`}>
+        {/* Visar vilket läge du kör (t.ex. Deep Work) */}
+        <div style={{textAlign: 'center', marginBottom: '10px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>
+          {activeMode.name}
+        </div>
+
         <div className="ft-display-area">
           <div className="ft-circle-outline">
-            <span className="ft-timer-digits">{formatMMSS(timeToShow)}</span>
+            {/* Visar sekunder som räknas upp */}
+            <span className="ft-timer-digits">{formatMMSS(secondsElapsed)}</span>
           </div>
         </div>
 
         <div className="ft-controls-wrapper">
           <div className="ft-btn-group">
             <button 
-              className={`ft-btn-base ft-btn-start ${isRunning && mode === "work" ? "is-running" : ""}`}
-              onClick={() => handleModeClick("work")}
+              className={`ft-btn-base ${isRunning ? "ft-btn-pause" : "ft-btn-start"}`}
+              onClick={handleToggle}
             >
-              {isRunning && mode === "work" ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
-              <span>{isRunning && mode === "work" ? "Pausa arbete" : "Starta arbete"}</span>
+              {isRunning ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+              <span>{isRunning ? "Pausa" : "Starta arbete"}</span>
             </button>
 
             <button 
-              className={`ft-btn-base ft-btn-pause ${isRunning && mode === "break" ? "is-running" : ""}`}
-              onClick={() => handleModeClick("break")}
+              className="ft-btn-base" 
+              style={{backgroundColor: 'var(--surface-3)', color: 'var(--text-primary)'}}
+              onClick={handleStop}
             >
-              {isRunning && mode === "break" ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
-              <span>{isRunning && mode === "break" ? "Pausa paus" : "Paus"}</span>
+              <RotateCcw size={18} />
+              <span>Avsluta</span>
             </button>
           </div>
 
-          {/* Återställningsknapp*/}
-          <button className="ft-reset-link" onClick={resetAll}>
+          <button className="ft-reset-link" onClick={resetClock}>
             <RotateCcw size={14} />
-            Återställ dagens framsteg
+            Nollställ klockan
           </button>
         </div>
 
+        <EnergyModal 
+          isOpen={showEnergyModal} 
+          onClose={() => {
+            setShowEnergyModal(false);
+            setSecondsElapsed(0); // Nollställ när modalen stängs
+          }} 
+          workedSeconds={secondsElapsed} 
+        />
       </div>
     </div>
   );
