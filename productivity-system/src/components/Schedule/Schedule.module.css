@@ -192,12 +192,12 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 16px; /* Något mer kompakt padding */
+    padding: 8px 16px;
     background-color: var(--surface-2);
     border-radius: 12px;
     cursor: pointer;
     border: 1px solid transparent;
-    font-size: 13px; /* Mindre textstorlek enligt önskemål */
+    font-size: 13px; 
     transition: transform 0.1s;
 }
 
@@ -209,10 +209,9 @@
     text-decoration: line-through;
     color: var(--text-secondary);
     opacity: 0.7;
-    font-size: 13px; /* Samma mindre storlek här */
+    font-size: 13px; 
 }
 
-/* --- IKONER OCH KNAPPAR --- */
 .actions, .miniActions {
     display: flex;
     align-items: center;
@@ -253,7 +252,6 @@
     color: #ef4444;
 }
 
-/* --- INPUTS FÖR UNDERUPPGIFTER --- */
 .miniInputGroup {
     display: flex;
     gap: 10px;

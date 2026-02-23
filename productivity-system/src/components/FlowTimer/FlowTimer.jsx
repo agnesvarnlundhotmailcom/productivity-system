@@ -1,40 +1,34 @@
 import { useState, useContext } from "react";
-import "./FlowTimer.css";
+import "./FlowTimer.css"; 
 import { DataContext } from "../../contexts/DataContext";
-import { RotateCcw, Coffee, Target } from "lucide-react";
-import CurrentTaskView from "../Taskview/CurrentTaskView";
+import { Play, Pause, RotateCcw } from "lucide-react";
 import { useFlowTimer } from "../../hooks/useTimer";
 
 const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
 export default function FlowTimer() {
-  const { data, resetStats } = useContext(DataContext); // Lade till resetStats här
+  const { data, resetStats } = useContext(DataContext);
   const [mode, setMode] = useState("work");
   const [isRunning, setIsRunning] = useState(false);
 
-  // Startar klockans interna logik (setInterval)
   useFlowTimer(isRunning, mode);
 
-  // Hämtar tider direkt från context
   const secondsWork = data.settings.secondsWork ?? 0;
   const secondsBreak = data.settings.secondsBreak ?? 0;
-  
-  // Förenklad logik: Visa sekunder baserat på läge (Arbete/Paus)
   const timeToShow = mode === "work" ? secondsWork : secondsBreak;
 
-  const startWork = () => {
-    setMode("work");
-    setIsRunning(true);
+  // Funktion för att hantera klick på Starta/Paus-knapparna
+  const handleModeClick = (targetMode) => {
+    if (mode === targetMode) {
+      // Om vi redan är i läget, toggla mellan start/stopp
+      setIsRunning(!isRunning);
+    } else {
+      // Om vi byter läge, byt och starta direkt
+      setMode(targetMode);
+      setIsRunning(true);
+    }
   };
 
-  const pause = () => setIsRunning(false);
-  
-  const startBreak = () => {
-    setMode("break");
-    setIsRunning(true);
-  };
-
-  // Använder nu den centrala resetStats-funktionen istället för manuell setData
   const resetAll = () => {
     if (window.confirm("Vill du återställa all tid för idag?")) {
       setIsRunning(false);
@@ -44,51 +38,42 @@ export default function FlowTimer() {
   };
 
   return (
-    <div className="ftWrap">
-      <section className="ftCard">
-        <CurrentTaskView 
-          onStartTimer={startWork} 
-          onPauseTimer={pause}
-          isRunning={isRunning}
-          timerMode={mode}
-        />
-
-        <div className="ftDial">
-          <div className="ftRing" />
-          <div className="ftTime">{formatMMSS(timeToShow)}</div>
-          <div className="ftModePill">
-            {mode === "work" ? <Target size={14} /> : <Coffee size={14} />}
-            <span>
-              {mode === "work" ? "Arbete" : "Paus"} {isRunning ? "• Pågår" : "• Pausad"}
-            </span>
+    <div className="ft-container">
+      <div className="ft-card">
+        
+        <div className="ft-display-area">
+          <div className="ft-circle-outline">
+            <span className="ft-timer-digits">{formatMMSS(timeToShow)}</span>
           </div>
         </div>
 
-        <div className="ftMiniActions" style={{ gap: '12px', display: 'flex', marginTop: '20px' }}>
-          <button 
-            className={`ftBtn ftBtnBreak ${mode === "break" && isRunning ? "isSelected" : ""}`}
-            onClick={isRunning && mode === "break" ? pause : startBreak}
-            style={{ 
-                padding: '12px 24px', 
-                fontSize: '13px', 
-                margin: 0, 
-                flex: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
-            }}
-          >
-            <Coffee size={18} />
-            {isRunning && mode === "break" ? "Stoppa paus" : "PAUSA"}
-          </button>
+        <div className="ft-controls-wrapper">
+          <div className="ft-btn-group">
+            <button 
+              className={`ft-btn-base ft-btn-start ${isRunning && mode === "work" ? "is-running" : ""}`}
+              onClick={() => handleModeClick("work")}
+            >
+              {isRunning && mode === "work" ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+              <span>{isRunning && mode === "work" ? "Pausa arbete" : "Starta arbete"}</span>
+            </button>
 
-          <button className="ftResetBtn" onClick={resetAll} style={{ flex: 1, margin: 0 }}>
-            <RotateCcw size={18} strokeWidth={2.5} />
-            Återställ
+            <button 
+              className={`ft-btn-base ft-btn-pause ${isRunning && mode === "break" ? "is-running" : ""}`}
+              onClick={() => handleModeClick("break")}
+            >
+              {isRunning && mode === "break" ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+              <span>{isRunning && mode === "break" ? "Pausa paus" : "Paus"}</span>
+            </button>
+          </div>
+
+          {/* Återställningsknapp*/}
+          <button className="ft-reset-link" onClick={resetAll}>
+            <RotateCcw size={14} />
+            Återställ dagens framsteg
           </button>
         </div>
-      </section>
+
+      </div>
     </div>
   );
 }
