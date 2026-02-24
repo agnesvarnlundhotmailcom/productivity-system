@@ -11,18 +11,19 @@
   z-index: 1000;
 }
 
-/* Vänster sida: Logo & Titel */
+/* Vänster sida: Hamburgare & Logo */
 .header-left {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 8px;
+  /* Drar knappen åt vänster för att ligga kant-i-kant med innehållet under */
+  margin-left: -10px; 
 }
 
 .logo-icon {
   color: var(--accent-primary);
   display: flex;
   align-items: center;
-  /* Din snygga glow-effekt */
   filter: drop-shadow(0 0 8px rgba(14, 211, 172, 0.4));
 }
 
@@ -34,7 +35,28 @@
   margin: 0;
 }
 
-/* MITTEN: Navigation (Pill-design) */
+/* Hamburgarknapp */
+.hamburger-btn {
+  display: none; /* Dold på desktop */
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  transition: all 0.2s;
+  display: none; 
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger-btn:hover,
+.hamburger-btn:active {
+  color: #6dbf9e;
+  background: rgba(109, 191, 158, 0.1);
+}
+
+/* MITTEN: Navigation */
 .header-nav {
   display: flex;
   gap: 8px;
@@ -58,8 +80,8 @@
 }
 
 .nav-link:hover {
-  color: var(--text-primary);
-  background: var(--surface-3);
+  color: #6dbf9e;
+  background: rgba(109, 191, 158, 0.1);
 }
 
 .nav-link.active {
@@ -68,7 +90,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* HÖGER SIDA: Ikoner & Toggle */
+/* HÖGER SIDA */
 .header-right {
   display: flex;
   align-items: center;
@@ -91,7 +113,7 @@
 .nav-icon-link:hover, 
 .settings-btn:hover {
   background: var(--surface-2);
-  color: var(--accent-primary);
+  color: #6dbf9e;
 }
 
 .divider {
@@ -101,55 +123,67 @@
   margin: 0 4px;
 }
 
-/* Responsivitet för mobilen */
+/* --- MOBIL-ANPASSNING --- */
 @media (max-width: 768px) {
   .header-container {
     padding: 0 var(--space-md);
-    height: 60px; 
+    height: 70px;
   }
-  
- 
+
+  .hamburger-btn {
+    display: flex; /* Visa hamburgaren */
+  }
+
   .app-title {
-    display: none; 
+    display: none !important; /* Dölj titeln */
   }
 
-  /* FLYTTA NER NAVIGERINGEN */
+  .header-left {
+    margin-left: -6px; /* Positionera exakt i kanten */
+  }
+
+  /* Dropdown-menyn */
   .header-nav {
-    position: fixed;    
-    bottom: 20px;       
-    left: 50%;
-    transform: translateX(-50%); 
-    width: calc(100% - 40px);    
-    max-width: 400px;           
-    justify-content: space-around;
-    background: var(--surface-1); 
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
-    padding: 10px;
-    z-index: 9999;
+    display: none; 
+    position: absolute;
+    top: 75px; 
+    left: var(--space-md);
+    right: var(--space-md);
+    flex-direction: column;
+    background: var(--surface-2);
+    padding: var(--space-md);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     border: 1px solid var(--surface-3);
+    z-index: 1000;
   }
 
-  /* Gör länkarna mer "tumb-vänliga" */
+  .header-nav.open {
+    display: flex;
+    animation: slideDown 0.25s ease-out;
+  }
+
   .nav-link {
-    flex-direction: column; 
-    gap: 4px;
-    padding: 8px;
-    flex: 1;
-    justify-content: center;
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    justify-content: flex-start;
   }
-
 
   .nav-link span {
-    display: none; 
+    display: inline !important;
   }
 
-  .nav-link svg {
-    width: 24px; 
-    height: 24px;
+  .header-right {
+    gap: 8px;
   }
 
-  /* Justera marginalen längst ner på sidan så inte innehållet hamnar bakom navbaren */
-  body {
-    padding-bottom: 100px;
+  .divider {
+    display: none;
   }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
