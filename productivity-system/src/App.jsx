@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-
-// Importera din SessionProvider
 import { SessionProvider } from "./contexts/SessionContext";
-
 import Header from "./components/Layout/Header";
 import SettingsModal from "./components/Settings/SettingsModal";
-
 import CalendarPage from "./pages/CalendarPage";
 import FlowTimerPage from "./pages/FlowTimerPage";
 import SessionLogsPage from "./pages/SessionLogsPage"; 
 import StatisticsOverTimePage from "./pages/StatisticsOverTimePage";
 import UserLoginPage from "./pages/UserLoginPage";
-
 import "./App.css";
 
 export default function App() {
@@ -20,7 +15,6 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
-    // 1. Omslut allt med SessionProvider så att alla sidor kan nå datan
     <SessionProvider>
       <div className="app-container">
         <Header onOpenSettings={() => setSettingsOpen(true)} />
