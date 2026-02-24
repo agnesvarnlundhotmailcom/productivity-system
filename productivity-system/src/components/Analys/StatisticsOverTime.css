@@ -62,7 +62,7 @@
 }
 
 .bar-energy { 
-  background-color: var(--surface-3); /* Helfärgad grå/yta-färg */
+  background-color: var(--surface-3);
   position: relative; 
 }
 
