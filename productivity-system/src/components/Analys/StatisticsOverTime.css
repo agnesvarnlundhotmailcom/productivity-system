@@ -1,10 +1,9 @@
 .stats-card {
   background: var(--surface-2); 
-  max-width: 500px; /* Smalare profil */
+  max-width: 500px; 
   margin: 20px auto;
   padding: 30px;
   
-  /* Rundade hörn och mjuk skugga */
   border-radius: 24px;
   border: 1px solid var(--surface-3);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -48,7 +47,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 6px; /* Lite mer luft mellan staplarna */
+  gap: 6px;
   height: 100%;
 }
 
@@ -58,7 +57,6 @@
   transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* HELFÄRGADE STAPLAR */
 .bar-work { 
   background-color: #6dbf9e; 
 }
