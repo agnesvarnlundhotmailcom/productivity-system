@@ -10,13 +10,11 @@ const EnergyCare = () => {
     if (!sessions || sessions.length === 0) return [];
 
     return sessions.slice(-15).map(session => {
-      // Vi tvingar fram ett nummer för att beräkningen ska fungera
       const level = Number(session.energyLevel || 3);
       
       return {
         level: level,
         modeId: session.modeId,
-        // Använder timestamp som vi såg i din modal/historik
         time: session.timestamp 
       };
     });
@@ -25,9 +23,9 @@ const EnergyCare = () => {
   const latestLevel = energyTrend.length > 0 ? energyTrend[energyTrend.length - 1].level : 0;
 
   const getStatusColor = (level) => {
-    if (level >= 4) return '#10b981'; // Grön
-    if (level === 3) return '#f59e0b'; // Gul
-    return '#ef4444'; // Röd
+    if (level >= 4) return '#10b981';
+    if (level === 3) return '#f59e0b';
+    return '#ef4444';
   };
 
   return (
@@ -35,7 +33,7 @@ const EnergyCare = () => {
       <div className="energy-card-header">
         <div className="header-title">
           <Zap size={20} className="zap-icon" />
-          <h3>Energinivå</h3>
+          <h3>Energinivå över tid</h3>
         </div>
         <div className="energy-badge">
           {latestLevel > 0 ? `${latestLevel} / 5` : "Ingen data"}
@@ -43,10 +41,6 @@ const EnergyCare = () => {
       </div>
 
       <div className="chart-section">
-        <div className="chart-meta">
-          <Activity size={14} />
-          <span>Fokus-trend</span>
-        </div>
         <div className="bar-chart-visual">
           {energyTrend.length > 0 ? (
             energyTrend.map((data, i) => (
