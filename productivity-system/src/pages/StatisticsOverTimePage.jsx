@@ -1,20 +1,24 @@
 import React from "react";
-import EnergyCare from "../components/EnergyCare/EnergyCare";
+import StatisticsOverTime from "../components/Analys/StatisticsOverTime"; 
+import { BarChart } from "lucide-react"; 
+import "../components/Analys/StatisticsOverTime.css";
 
-const StatisticsOverTime = () => {
+const StatisticsOverTimePage = () => {
   return (
-    <div className="statistics-page" style={{ padding: '20px' }}>
+    <div className="statistics-page">
+      <div className="stats-page-container">
+        
+        {/* Rubrik med ikon */}
+        <div className="stats-page-header-row">
+          <BarChart size={28} color="#6dbf9e" strokeWidth={2.5} />
+          <h1 className="stats-page-title">Din Statistik</h1>
+        </div>
 
-      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-        {/* Här renderas din energimätare som hämtar data från SessionContext */}
-        <EnergyCare />
-      </div>
-      
-      <div className="additional-stats" style={{ marginTop: '40px' }}>
-        {/* Här kan du senare lägga in tabeller eller andra grafer */}
+        <StatisticsOverTime />
+
       </div>
     </div>
   );
 };
 
-export default StatisticsOverTime;
+export default StatisticsOverTimePage;

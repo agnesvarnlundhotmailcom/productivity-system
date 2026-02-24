@@ -1,0 +1,143 @@
+.stats-card {
+  background: var(--surface-2); 
+  max-width: 500px; /* Smalare profil */
+  margin: 20px auto;
+  padding: 30px;
+  
+  /* Rundade hörn och mjuk skugga */
+  border-radius: 24px;
+  border: 1px solid var(--surface-3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 35px;
+}
+
+.stats-icon-bg {
+  background-color: rgba(109, 191, 158, 0.15);
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+}
+
+.stats-chart-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 180px;
+  border-bottom: 1px solid var(--surface-3);
+  padding-bottom: 60px;
+  position: relative;
+}
+
+.stats-day-column {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.stats-bars-wrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px; /* Lite mer luft mellan staplarna */
+  height: 100%;
+}
+
+.bar {
+  width: 12px !important;
+  border-radius: 4px 4px 2px 2px;
+  transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* HELFÄRGADE STAPLAR */
+.bar-work { 
+  background-color: #6dbf9e; 
+}
+
+.bar-energy { 
+  background-color: var(--surface-3); /* Helfärgad grå/yta-färg */
+  position: relative; 
+}
+
+.energy-bubble {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--surface-2);
+  border: 2px solid #6dbf9e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  z-index: 5;
+}
+
+.stats-label-group {
+  position: absolute;
+  top: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
+}
+
+.label-weekday {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.label-number {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stats-legend {
+  margin-top: 85px;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  font-size: 13px;
+}
+
+.legend-item { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  color: var(--text-secondary); 
+}
+
+.work-color { 
+  background-color: #6dbf9e; 
+  width: 12px; 
+  height: 12px; 
+  border-radius: 3px; 
+}
+
+.energy-color { 
+  background-color: var(--surface-3); 
+  width: 12px; 
+  height: 12px; 
+  border-radius: 3px; 
+  border: 1px solid rgba(0,0,0,0.1);
+}

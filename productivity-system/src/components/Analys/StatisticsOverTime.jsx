@@ -1,68 +1,92 @@
-import React, { useContext, useMemo } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { DataContext } from "../../contexts/DataContext";
-import { History } from "lucide-react";
+import React from "react";
+import { useSession } from "../../contexts/SessionContext";
+import { Activity } from "lucide-react";
+import "./StatisticsOverTime.css";
 
-export default function StatisticsOverTime() {
-  const { data } = useContext(DataContext);
+const StatisticsOverTime = () => {
+  const { sessions = [] } = useSession() || {};
 
-  const chartData = useMemo(() => {
+  const getChartData = () => {
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      days.push(d.toISOString().split('T')[0]);
+    }
 
-    const logs = data?.energyLogs || [];
+    return days.map(dateStr => {
+      const daySessions = sessions.filter(s => s.timestamp?.startsWith(dateStr));
+      const totalSec = daySessions.reduce((sum, s) => sum + (s.duration || 0), 0);
+      const energySessions = daySessions.filter(s => s.energyLevel !== undefined);
+      const energyAvg = energySessions.length > 0 
+        ? (energySessions.reduce((sum, s) => sum + s.energyLevel, 0) / energySessions.length)
+        : 0;
 
-    return logs.map((entry) => ({
-      time: new Date(entry.timestamp).toLocaleTimeString('sv-SE', {
-        hour: '2-digit',
-        minute: '2-digit'
-      }),
-      level: entry.level
-    }));
-  }, [data]);
+      const dateObj = new Date(dateStr);
+      return {
+        weekday: dateObj.toLocaleDateString('sv-SE', { weekday: 'short' }),
+        dayNumber: dateObj.getDate(),
+        minutes: Math.round(totalSec / 60),
+        energy: parseFloat(energyAvg.toFixed(1))
+      };
+    });
+  };
+
+  const data = getChartData();
+  const maxMinutes = Math.max(...data.map(d => d.minutes), 60);
 
   return (
-    <div className="statistics-card" style={{ padding: '20px', background: 'var(--card-bg)', borderRadius: '12px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
-        <History size={20} />
-        <h3 style={{ margin: 0 }}>Energi över tid</h3>
+    <div className="stats-card">
+      <div className="stats-header">
+        <div className="stats-icon-bg">
+          <Activity size={20} color="#6dbf9e" strokeWidth={2.5} />
+        </div>
+        <h2>Energi & effektivitet (7 dagar)</h2>
       </div>
 
-      <div style={{ width: '100%', height: 300, minWidth: 0 }}>
-        {chartData.length > 0 ? (
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
-              <XAxis
-                dataKey="time"
-                tick={{ fontSize: 10 }}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                domain={[1, 5]}
-                ticks={[1, 2, 3, 4, 5]}
-                tick={{ fontSize: 12 }}
-                tickLine={false}
-                axisLine={false}
-              />
-              <Tooltip
-                contentStyle={{ backgroundColor: '#222', border: 'none', borderRadius: '8px' }}
-                itemStyle={{ color: '#fff' }}
-              />
-              <Line
-                type="monotone"
-                dataKey="level"
-                stroke="var(--accent-primary, #39bef8)"
-                strokeWidth={3}
-                dot={{ r: 4, fill: 'var(--accent-primary, #39bef8)' }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        ) : (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', opacity: 0.5 }}>
-            Ingen data tillgänglig ännu.
-          </div>
-        )}
+      <div className="stats-chart-area">
+        {data.map((day, index) => {
+          const workHeight = (day.minutes / maxMinutes) * 100;
+          const energyHeight = (day.energy / 5) * 100; 
+          
+          return (
+            <div key={index} className="stats-day-column">
+              <div className="stats-bars-wrapper">
+                <div 
+                  className="bar bar-work" 
+                  style={{ height: `${workHeight}%` }} 
+                />
+                <div 
+                  className="bar bar-energy" 
+                  style={{ height: `${energyHeight}%` }}
+                >
+                  {day.energy > 0 && (
+                    <span className="energy-bubble">{day.energy}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="stats-label-group">
+                <span className="label-weekday">{day.weekday}</span>
+                <span className="label-number">{day.dayNumber}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="stats-legend">
+        <div className="legend-item">
+          <div className="legend-dot work-color" />
+          <span>Arbetstid</span>
+        </div>
+        <div className="legend-item">
+          <div className="legend-dot energy-color" />
+          <span>Energinivå</span>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default StatisticsOverTime;
