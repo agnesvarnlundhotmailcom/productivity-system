@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, PartyPopper, Zap, Play, Moon } from "lucide-react";
+import { X, PartyPopper, Play, Moon } from "lucide-react";
 import { useFocusMode } from "../../contexts/FocusModeContext";
 import { useSession } from "../../contexts/SessionContext";
 import "./EnergyModal.css";
@@ -11,10 +11,10 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
 
   if (!isOpen) return null;
 
-  const handleLogAndSave = (nextAction) => {
+  const handleAction = (nextStep) => {
     if (!selectedEnergy) return;
 
-    // 1. Spara sessionen
+    //Spara sessionen i historiken (med energinivån)
     addSession({
       duration: workedSeconds,
       modeId: activeMode.id,
@@ -22,20 +22,22 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
       timestamp: new Date().toISOString()
     });
 
-    // 2. Hantera nästa steg
-    if (nextAction === 'continue') {
-      setActiveMode('deepWork'); // Gå tillbaka till jobb
+    // Om användaren vill fortsätta jobba (t.ex. efter en paus)
+    if (nextStep === 'continue') {
+      setActiveMode('deepWork'); 
     } 
-    
-    // Nollställ och stäng
+
+    // Återställ och stäng
     setSelectedEnergy(null);
     onClose();
   };
 
   const energyLevels = [
-    { id: 1, label: "Låg", emoji: "😴" },
+    { id: 1, label: "Mycket låg", emoji: "😴" },
+    { id: 2, label: "Låg", emoji: "😔" },
     { id: 3, label: "Neutral", emoji: "😐" },
-    { id: 5, label: "Hög", emoji: "🔥" },
+    { id: 4, label: "Bra", emoji: "😊" },
+    { id: 5, label: "Utmärkt", emoji: "🔥" },
   ];
 
   return (
@@ -48,11 +50,11 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
             <PartyPopper size={32} color="#10b981" />
           </div>
           <h2>{activeMode.id === 'break' ? "Pausen är slut!" : "Bra jobbat!"}</h2>
-          <p>Tid: <strong>{Math.floor(workedSeconds / 60)} min {workedSeconds % 60} sek</strong></p>
+          <p>Tid loggad: <strong>{Math.floor(workedSeconds / 60)} min {workedSeconds % 60} sek</strong></p>
         </div>
 
         <div className="em-section">
-          <p className="em-question">Hur är energinivån?</p>
+          <p className="em-question">Hur känner du dig?</p>
           <div className="em-energy-grid">
             {energyLevels.map((level) => (
               <button
@@ -61,28 +63,35 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
                 onClick={() => setSelectedEnergy(level.id)}
               >
                 <span className="em-emoji">{level.emoji}</span>
+                <span className="em-label">{level.label}</span>
               </button>
             ))}
           </div>
         </div>
 
         <div className="em-action-group" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
+          {/* Knapp för att gå tillbaka till arbete */}
           <button 
             className="em-btn-primary" 
             disabled={!selectedEnergy} 
-            onClick={() => handleLogAndSave('continue')}
+            onClick={() => handleAction('continue')}
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
           >
-            <Play size={18} /> Fortsätt arbeta
+            <Play size={18} fill="currentColor" /> Fortsätt arbeta
           </button>
           
+          {/* Knapp för att avsluta dagen */}
           <button 
             className="em-btn-secondary" 
             disabled={!selectedEnergy} 
-            onClick={() => handleLogAndSave('finish')}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'transparent', border: '1px solid var(--surface-4)', color: 'var(--text-secondary)', padding: '12px', borderRadius: '12px', cursor: 'pointer' }}
+            onClick={() => handleAction('finish')}
+            style={{ 
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', 
+              background: 'transparent', border: '1px solid var(--surface-4)', 
+              color: 'var(--text-secondary)', padding: '12px', borderRadius: '12px', cursor: 'pointer' 
+            }}
           >
-            <Moon size={18} /> Avsluta för dagen
+            <Moon size={18} fill="currentColor" /> Avsluta för dagen
           </button>
         </div>
       </div>
