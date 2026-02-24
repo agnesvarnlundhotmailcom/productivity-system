@@ -24,11 +24,11 @@ const Statistics = () => {
   const { secondsElapsed, isRunning, activeMode } = useFocusMode();
 
   const stats = useMemo(() => {
-    // Beräkna tid från historik
+    // 1. Beräkna tid från historik
     const historyWork = sessions.filter(s => s.modeId !== 'break').reduce((acc, s) => acc + s.duration, 0);
     const historyBreak = sessions.filter(s => s.modeId === 'break').reduce((acc, s) => acc + s.duration, 0);
 
-    // Addera realtidstiden
+    // 2. Addera realtidstiden
     let liveWork = historyWork;
     let liveBreak = historyBreak;
 
