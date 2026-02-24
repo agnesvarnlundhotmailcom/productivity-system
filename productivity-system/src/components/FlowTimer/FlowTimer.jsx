@@ -21,7 +21,6 @@ export default function FlowTimer() {
   const [showEnergyModal, setShowEnergyModal] = useState(false);
   const targetSeconds = (activeMode.defaultDuration || 0) * 60;
 
-  // Växla läge mitt i (t.ex. vid manuell paus) och spara det man hunnit med
   const handleQuickSwitch = () => {
     if (secondsElapsed > 0) {
       addSession({
@@ -30,7 +29,6 @@ export default function FlowTimer() {
         timestamp: new Date().toISOString()
       });
     }
-    // Om vi är i paus, växla till jobb. Om vi jobbar, växla till paus.
     const nextMode = activeMode.id === 'break' ? 'deepWork' : 'break';
     setActiveModeId(nextMode);
     setSecondsElapsed(0);
@@ -44,7 +42,6 @@ export default function FlowTimer() {
     }, 10);
   }, [setIsRunning]);
 
-  // Auto-stopp när målet nås (t.ex. efter 15 min paus eller 90 min jobb)
   useEffect(() => {
     if (isRunning && targetSeconds > 0 && secondsElapsed >= targetSeconds) {
       finishSession();
@@ -66,7 +63,7 @@ export default function FlowTimer() {
   return (
     <div className="ft-container">
       <div className={`ft-card ${isRunning ? "is-active" : ""}`}>
-        <div style={{ marginBottom: '15px', color: 'var(--text-secondary)', fontWeight: '500' }}>
+        <div className="ft-mode-info">
           {activeMode.name} — {activeMode.defaultDuration} min
         </div>
 
@@ -78,7 +75,6 @@ export default function FlowTimer() {
 
         <div className="ft-controls-wrapper">
           <div className="ft-btn-group">
-            {/* Starta / Pausa-knapp */}
             <button 
               className={`ft-btn-base ${isRunning ? "ft-btn-pause" : "ft-btn-start"}`} 
               onClick={handleToggle}
@@ -87,17 +83,14 @@ export default function FlowTimer() {
               <span>{isRunning ? "Pausa" : "Starta"}</span>
             </button>
 
-            {/* NY KNAPP: Snabbväxel mellan arbete/paus */}
             <button 
-              className="ft-btn-base" 
+              className="ft-btn-base ft-btn-switch" 
               onClick={handleQuickSwitch}
-              style={{ backgroundColor: 'var(--surface-3)', color: 'var(--text-primary)' }}
             >
               <Coffee size={18} />
               <span>{activeMode.id === 'break' ? "Jobba nu" : "Ta en paus"}</span>
             </button>
 
-            {/* Avsluta-knapp (Stoppa helt och visa modal) */}
             <button 
               className="ft-btn-base ft-btn-stop" 
               onClick={() => secondsElapsed > 0 ? finishSession() : setIsRunning(false)}
@@ -112,7 +105,6 @@ export default function FlowTimer() {
           </button>
         </div>
 
-        {/* Modal som hanterar valen "Fortsätt arbeta" eller "Avsluta för dagen" */}
         <EnergyModal 
           isOpen={showEnergyModal} 
           onClose={() => { 
