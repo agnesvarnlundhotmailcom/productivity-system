@@ -137,34 +137,27 @@ border-radius: 50%;
 box-shadow: 0 0 8px var(--accent-warning);
 }
 
-
-
-/* --- FocusModes.css - Optimerad för en snygg mobilvy --- */
-
 @media (max-width: 900px) {
   
-  /* 1. Flytta upp komponenten och rensa ytan */
   .flow-page-grid {
     display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
-    padding: 10px !important;
+    gap: 16px !important;
   }
 
   .main-left-col, 
   .sidebar-right-col {
-    display: contents; 
+    display: contents !important; 
   }
 
   .focus-mode-wrapper { 
-    order: 1; /* Lägger den först, ovanför timern */
-    margin-bottom: 4px !important;
+    order: 1 !important;
+    margin-bottom: 8px !important;
   }
 
-  .timer-card-area { order: 2; }
-  .schedule-card-area { order: 3; }
+  .timer-card-area { order: 2 !important; }
+  .schedule-card-area { order: 3 !important; }
 
-  /* 2. Gör kortet "osynligt" så knapparna svävar snyggt */
   .focus-modes-card {
     padding: 0 !important;
     background: transparent !important;
@@ -172,45 +165,41 @@ box-shadow: 0 0 8px var(--accent-warning);
     box-shadow: none !important;
   }
 
-  .focus-header { display: none; }
+  .focus-header { display: none !important; }
 
-  /* 3. Knapparna på en rad som fyller hela bredden */
+ 
   .modes-list {
     flex-direction: row !important;
     justify-content: space-between !important;
     gap: 8px !important;
-    padding: 4px 2px !important;
-    width: 100% !important;
+    padding: 4px 0 !important;
   }
 
   .mode-item {
     flex: 1;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: center !important;
     padding: 10px 4px !important;
     border-radius: 14px !important;
     background-color: white !important;
-    border: 2px solid #fef3e2 !important; /* Beige ram */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+    border: 2px solid #fef3e2 !important;
+    justify-content: center !important;
   }
 
-  /* Aktiv knapp - Den turkosa färgen från din bild */
+ 
   .mode-item.active {
     background-color: #26b99a !important; 
     border-color: #26b99a !important;
-    box-shadow: 0 4px 10px rgba(38, 185, 154, 0.2) !important;
   }
 
-  /* Ikon-cirkeln inuti knappen */
+  .mode-item.active .mode-title {
+    color: white !important;
+  }
+
   .mode-icon-wrapper {
     width: 28px !important;
     height: 28px !important;
-    background-color: #f8fafc !important;
     border-radius: 50% !important;
     margin-right: 6px !important;
-    flex-shrink: 0 !important;
+    background-color: #f8fafc !important;
   }
 
   .mode-item.active .mode-icon-wrapper {
@@ -218,39 +207,21 @@ box-shadow: 0 0 8px var(--accent-warning);
     color: white !important;
   }
 
-  /* Texten inuti knappen */
   .mode-title {
     font-size: 0.8rem !important;
-    font-weight: 600 !important;
-    color: #334155 !important;
-    white-space: nowrap !important;
   }
 
-  .mode-item.active .mode-title {
-    color: white !important;
+  
+  .mode-desc, .mode-duration {
+    display: none !important;
   }
 
-  /* Göm beskrivningar och tider på mobil */
-  .mode-desc, .mode-duration { display: none !important; }
-
-  /* 4. Snygg status-footer centrerad under knapparna */
   .active-footer {
     display: flex !important;
     justify-content: center !important;
     background: transparent !important;
     border: none !important;
-    margin-top: 6px !important;
+    margin-top: 4px !important;
     padding: 0 !important;
-  }
-
-  .active-footer p {
-    font-size: 0.8rem !important;
-    color: #64748b !important;
-  }
-
-  .status-dot {
-    width: 6px !important;
-    height: 6px !important;
-    box-shadow: 0 0 6px var(--accent-warning);
   }
 }
