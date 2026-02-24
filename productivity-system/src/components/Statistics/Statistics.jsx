@@ -1,23 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useMemo } from 'react';
 import { Clock, Coffee, RefreshCcw, BarChart2 } from 'lucide-react';
 import './Statistics.css';
-import { DataContext } from "../../contexts/DataContext";
+import { useSession } from "../../contexts/SessionContext"; 
+import { useFocusMode } from "../../contexts/FocusModeContext";
 
-const StatCard = (props) => {
-  const { title, value, Icon, colorClass } = props;
-
-  return (
-    <div className="stat-card">
-      <div className="stat-header">
-        <Icon size={16} className={`stat-icon ${colorClass}`} />
-        <span className="stat-label">{title}</span>
-      </div>
-      <div className={`stat-value ${colorClass}`}>
-        {value}
-      </div>
+const StatCard = ({ title, value, colorClass }) => (
+  <div className="stat-card">
+    <div className="stat-header">
+      <span className="stat-label">{title}</span>
     </div>
-  );
-};
+    <div className={`stat-value ${colorClass}`}>{value}</div>
+  </div>
+);
 
 const formatMMSS = (seconds = 0) => {
   const m = Math.floor(seconds / 60);
@@ -26,51 +20,43 @@ const formatMMSS = (seconds = 0) => {
 };
 
 const Statistics = () => {
-  const { data } = useContext(DataContext);
+  const { sessions } = useSession(); 
+  const { secondsElapsed, isRunning, activeMode } = useFocusMode();
 
-  // Hämta värden från context (med fallback till 0)
-  const workSeconds = data.settings.secondsWork ?? 0;
-  const breakSeconds = data.settings.secondsBreak ?? 0;
-  const sessions = data.settings.sessions ?? 0; 
+  const stats = useMemo(() => {
+    // Beräkna tid från historik
+    const historyWork = sessions.filter(s => s.modeId !== 'break').reduce((acc, s) => acc + s.duration, 0);
+    const historyBreak = sessions.filter(s => s.modeId === 'break').reduce((acc, s) => acc + s.duration, 0);
 
-  // Beräkna Arbetsratio: (Arbetstid / Total tid) * 100
-  const totalSeconds = workSeconds + breakSeconds;
-  const ratio = totalSeconds > 0 
-    ? Math.round((workSeconds / totalSeconds) * 100) 
-    : 0;
+    // Addera realtidstiden
+    let liveWork = historyWork;
+    let liveBreak = historyBreak;
+
+    if (isRunning) {
+      if (activeMode.id === 'break') {
+        liveBreak += secondsElapsed;
+      } else {
+        liveWork += secondsElapsed;
+      }
+    }
+
+    const total = liveWork + liveBreak;
+    return {
+      work: liveWork,
+      break: liveBreak,
+      sessions: sessions.filter(s => s.modeId !== 'break').length + (isRunning && activeMode.id !== 'break' ? 1 : 0),
+      ratio: total > 0 ? Math.round((liveWork / total) * 100) : 0
+    };
+  }, [sessions, secondsElapsed, isRunning, activeMode]);
 
   return (
     <div className="stats-box">
       <h2 className="stats-main-title">Dagens statistik</h2>
-
       <div className="stats-grid">
-        <StatCard
-          title="Total arbetstid"
-          value={formatMMSS(workSeconds)}
-          Icon={Clock}
-          colorClass="green-theme"
-        />
-
-        <StatCard
-          title="Total paustid"
-          value={formatMMSS(breakSeconds)}
-          Icon={Coffee}
-          colorClass="orange-theme"
-        />
-
-        <StatCard
-          title="Sessioner"
-          value={sessions}
-          Icon={RefreshCcw}
-          colorClass="default-theme"
-        />
-
-        <StatCard
-          title="Arbetsratio"
-          value={`${ratio}%`}
-          Icon={BarChart2}
-          colorClass="green-theme"
-        />
+        <StatCard title="Total arbetstid" value={formatMMSS(stats.work)} Icon={Clock} colorClass="green-theme" />
+        <StatCard title="Total paustid" value={formatMMSS(stats.break)} Icon={Coffee} colorClass="orange-theme" />
+        <StatCard title="Sessioner" value={stats.sessions} Icon={RefreshCcw} colorClass="default-theme" />
+        <StatCard title="Arbetsratio" value={`${stats.ratio}%`} Icon={BarChart2} colorClass="green-theme" />
       </div>
     </div>
   );
