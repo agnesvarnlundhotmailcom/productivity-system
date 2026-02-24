@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, PartyPopper, Play, Moon } from "lucide-react";
+import { X, PartyPopper, Play, Moon, Coffee } from "lucide-react";
 import { useFocusMode } from "../../contexts/FocusModeContext";
 import { useSession } from "../../contexts/SessionContext";
 import "./EnergyModal.css";
@@ -14,7 +14,7 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
   const handleAction = (nextStep) => {
     if (!selectedEnergy) return;
 
-    //Spara sessionen i historiken (med energinivån)
+    // Spara sessionen i historiken
     addSession({
       duration: workedSeconds,
       modeId: activeMode.id,
@@ -22,9 +22,11 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
       timestamp: new Date().toISOString()
     });
 
-    // Om användaren vill fortsätta jobba (t.ex. efter en paus)
-    if (nextStep === 'continue') {
-      setActiveMode('deepWork'); 
+    // Logik för nästa steg
+    if (nextStep === 'switch') {
+      // Om vi precis körde paus -> gå till jobb. Om vi körde jobb -> gå till paus.
+      const nextMode = activeMode.id === 'break' ? 'deepWork' : 'break';
+      setActiveMode(nextMode);
     } 
 
     // Återställ och stäng
@@ -40,6 +42,9 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
     { id: 5, label: "Utmärkt", emoji: "🔥" },
   ];
 
+  // Bestäm knapp-text och ikon baserat på vilket läge som just avslutades
+  const isBreakOver = activeMode.id === 'break';
+
   return (
     <div className="em-overlay">
       <div className="em-content">
@@ -49,12 +54,12 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
           <div className="em-icon-circle">
             <PartyPopper size={32} color="#10b981" />
           </div>
-          <h2>{activeMode.id === 'break' ? "Pausen är slut!" : "Bra jobbat!"}</h2>
-          <p>Tid loggad: <strong>{Math.floor(workedSeconds / 60)} min {workedSeconds % 60} sek</strong></p>
+          <h2>{isBreakOver ? "Pausen är klar!" : "Snyggt jobbat!"}</h2>
+          <p>Tid: <strong>{Math.floor(workedSeconds / 60)} min {workedSeconds % 60} sek</strong></p>
         </div>
 
         <div className="em-section">
-          <p className="em-question">Hur känner du dig?</p>
+          <p className="em-question">Hur är energinivån?</p>
           <div className="em-energy-grid">
             {energyLevels.map((level) => (
               <button
@@ -70,17 +75,19 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
         </div>
 
         <div className="em-action-group" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
-          {/* Knapp för att gå tillbaka till arbete */}
+          
+          {/* DYNAMISK KNAPP: Visar "Ta en paus" efter jobb, eller "Fortsätt jobba" efter paus */}
           <button 
             className="em-btn-primary" 
             disabled={!selectedEnergy} 
-            onClick={() => handleAction('continue')}
+            onClick={() => handleAction('switch')}
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
           >
-            <Play size={18} fill="currentColor" /> Fortsätt arbeta
+            {isBreakOver ? <Play size={18} fill="currentColor" /> : <Coffee size={18} />}
+            {isBreakOver ? "Fortsätt jobba" : "Ta en paus nu"}
           </button>
           
-          {/* Knapp för att avsluta dagen */}
+          {/* AVBRYT KNAPP: Alltid samma */}
           <button 
             className="em-btn-secondary" 
             disabled={!selectedEnergy} 
