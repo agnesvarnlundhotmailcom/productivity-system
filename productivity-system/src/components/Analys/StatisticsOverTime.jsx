@@ -6,9 +6,8 @@ import { History } from "lucide-react";
 export default function StatisticsOverTime() {
   const { data } = useContext(DataContext);
 
-  // Vi flyttar in logiken för energyHistory i callbacken
   const chartData = useMemo(() => {
-    // Om data saknas eller energyLogs inte finns, returnera tom lista
+
     const logs = data?.energyLogs || [];
 
     return logs.map((entry) => ({
@@ -18,7 +17,6 @@ export default function StatisticsOverTime() {
       }),
       level: entry.level
     }));
-    // Nu beror useMemo bara på 'data', vilket är stabilt
   }, [data]);
 
   return (
