@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, PartyPopper, Coffee, Zap } from "lucide-react";
+import { X, PartyPopper, Zap, Play, Moon } from "lucide-react";
 import { useFocusMode } from "../../contexts/FocusModeContext";
 import { useSession } from "../../contexts/SessionContext";
 import "./EnergyModal.css";
@@ -11,45 +11,48 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
 
   if (!isOpen) return null;
 
-  const handleLogAndSave = () => {
-    if (selectedEnergy) {
-      // Här sparas datan som EnergyCare-grafen läser av
-      addSession({
-        duration: workedSeconds,
-        modeId: activeMode.id,
-        energyLevel: selectedEnergy, // Detta läses av grafen
-        timestamp: new Date().toISOString() // Detta läses av grafen
-      });
+  const handleLogAndSave = (nextAction) => {
+    if (!selectedEnergy) return;
 
-      onClose();
-      setSelectedEnergy(null);
-    }
-  };
+    // 1. Spara sessionen
+    addSession({
+      duration: workedSeconds,
+      modeId: activeMode.id,
+      energyLevel: selectedEnergy,
+      timestamp: new Date().toISOString()
+    });
 
-  const handleStartPause = () => {
-    setActiveMode('break');
+    // 2. Hantera nästa steg
+    if (nextAction === 'continue') {
+      setActiveMode('deepWork'); // Gå tillbaka till jobb
+    } 
+    
+    // Nollställ och stäng
+    setSelectedEnergy(null);
     onClose();
   };
 
   const energyLevels = [
-    { id: 1, label: "Mycket låg", emoji: "😴" },
-    { id: 2, label: "Låg", emoji: "😔" },
+    { id: 1, label: "Låg", emoji: "😴" },
     { id: 3, label: "Neutral", emoji: "😐" },
-    { id: 4, label: "Bra", emoji: "😊" },
-    { id: 5, label: "Utmärkt", emoji: "🔥" },
+    { id: 5, label: "Hög", emoji: "🔥" },
   ];
 
   return (
     <div className="em-overlay">
       <div className="em-content">
         <button className="em-close-btn" onClick={onClose}><X size={20} /></button>
+        
         <div className="em-header">
-          <div className="em-icon-circle"><PartyPopper size={32} color="#10b981" /></div>
-          <h2>Bra jobbat!</h2>
+          <div className="em-icon-circle">
+            <PartyPopper size={32} color="#10b981" />
+          </div>
+          <h2>{activeMode.id === 'break' ? "Pausen är slut!" : "Bra jobbat!"}</h2>
           <p>Tid: <strong>{Math.floor(workedSeconds / 60)} min {workedSeconds % 60} sek</strong></p>
         </div>
+
         <div className="em-section">
-          <div className="em-section-title"><Zap size={18} /><span>Hur känner du dig?</span></div>
+          <p className="em-question">Hur är energinivån?</p>
           <div className="em-energy-grid">
             {energyLevels.map((level) => (
               <button
@@ -58,17 +61,29 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
                 onClick={() => setSelectedEnergy(level.id)}
               >
                 <span className="em-emoji">{level.emoji}</span>
-                <span className="em-label">{level.label}</span>
               </button>
             ))}
           </div>
-          <button className="em-btn-primary" disabled={!selectedEnergy} onClick={handleLogAndSave}>
-            Spara i historik
-          </button>
         </div>
-        <div className="em-recommendation-card">
-          <p>Behöver du vila?</p>
-          <button className="em-btn-pause" onClick={handleStartPause}><Coffee size={18} /> Starta paus</button>
+
+        <div className="em-action-group" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
+          <button 
+            className="em-btn-primary" 
+            disabled={!selectedEnergy} 
+            onClick={() => handleLogAndSave('continue')}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+          >
+            <Play size={18} /> Fortsätt arbeta
+          </button>
+          
+          <button 
+            className="em-btn-secondary" 
+            disabled={!selectedEnergy} 
+            onClick={() => handleLogAndSave('finish')}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'transparent', border: '1px solid var(--surface-4)', color: 'var(--text-secondary)', padding: '12px', borderRadius: '12px', cursor: 'pointer' }}
+          >
+            <Moon size={18} /> Avsluta för dagen
+          </button>
         </div>
       </div>
     </div>
