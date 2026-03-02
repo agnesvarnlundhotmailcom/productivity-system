@@ -48,8 +48,8 @@ const Header = ({ onOpenSettings }) => {
 
       {/* HÖGER: User, Settings, Theme */}
       <div className="header-right">
-        <Link to="/login" className="nav-icon-link"><User size={20} /></Link>
-        <button className="settings-btn" onClick={onOpenSettings}>
+        <Link to="/login" className="nav-icon-link" aria-label="inlogning"><User size={20} /></Link>
+        <button className="settings-btn" aria-label="Inställningar" onClick={onOpenSettings}>
           <Settings size={20} />
         </button>
         <div className="divider" />
