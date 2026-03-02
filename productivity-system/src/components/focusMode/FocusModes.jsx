@@ -29,7 +29,7 @@ export default function FocusModes() {
     <div className="card focus-modes-card">
       <div className="focus-header">
         <Settings2 size={18} className="header-icon" />
-        <h3>Fokusläge</h3>
+        <h2>Fokusläge</h2>
       </div>
       
       <div className="modes-list">
