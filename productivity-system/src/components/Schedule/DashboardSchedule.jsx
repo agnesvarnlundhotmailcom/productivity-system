@@ -3,22 +3,48 @@ import { DataContext } from "../../contexts/DataContext";
 import { ListChecks, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import styles from './DashboardSchedule.module.css';
 
+/**
+ * En komponent som visar en sammanfattning av dagens schema på dashboarden.
+ * Den räknar ut framsteg i procent och låter användaren bocka av uppgifter.
+ * @component
+ * @param {Object} props
+ * @param {string|Date} props.selectedDate - Datumet som ska visas (t.ex. från en kalender).
+ */
 export default function DashboardSchedule({ selectedDate }) {
+  // Hämtar data och funktioner för att uppdatera schemat från vårt huvudarkiv
   const { data, updateScheduleItem, toggleScheduleTask } = useContext(DataContext);
+
+  // Håller koll på vilket schema-block som just nu är utfällt (för att se småuppgifter)
   const [expandedId, setExpandedId] = useState(null);
+
+  // Skapar en söknyckel för datumet, t.ex. "2024-05-22"
   const dateKey = new Date(selectedDate).toLocaleDateString('sv-SE');
+
+  // Hämtar listan med aktiviteter för dagen, eller en tom lista om inget finns sparat
   const activities = data[dateKey]?.schedule ?? [];
 
+/**
+ * Markerar ett helt tidsblock som "klart".
+ * * @param {Event} e - Själva klick-händelsen.
+ * @param {number|string} itemId - ID för det block som ska ändras.
+ * @param {boolean} currentStatus - Om blocket är avbockat just nu
+ */
   const handleToggleBlock = (e, itemId, currentStatus) => {
+    // Stoppar klicket från att "bubbla upp", så vi inte fäller ut raden av misstag
     e.stopPropagation();
     updateScheduleItem(dateKey, itemId, { completed: !currentStatus });
   };
 
+  /**
+   * Markerar en liten deluppgift (task) inuti ett block som klar.
+   * * @param {Event} e - Själva klick-händelsen
+   */
   const handleToggleTask = (e, itemId, taskId) => {
     e.stopPropagation();
     toggleScheduleTask(dateKey, itemId, taskId);
   };
 
+  
   const total = activities.length;
   const completed = activities.filter(item => item.completed).length;
   const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
