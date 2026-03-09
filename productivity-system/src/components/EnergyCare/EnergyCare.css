@@ -4,7 +4,6 @@
   padding: 24px;
   color: #f3f4f6;
   font-family: ui-sans-serif, system-ui, sans-serif;
-  /* Ingen border här */
 }
 
 .energy-card-header {
@@ -31,8 +30,14 @@
   color: #10b981;
 }
 
-.energy-badge {
+/* Gemensam stil för JetBrains Mono-elementen */
+.energy-badge,
+.chart-x-axis,
+.energy-footer-insight p {
   font-family: 'JetBrains Mono', monospace;
+}
+
+.energy-badge {
   color: #9ca3af;
   font-size: 0.9rem;
 }
@@ -70,15 +75,13 @@
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-  font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   color: #6b7280;
 }
 
 .energy-footer-insight {
   padding: 8px 0 8px 16px;
-  border-left-width: 4px;
-  border-left-style: solid;
+  border-left: 4px solid; /* Grupperad width och style, färgen sätts via inline-style i React */
   margin-top: 10px;
 }
 
@@ -86,5 +89,4 @@
   margin: 0;
   font-size: 0.95rem;
   color: #9ca3af;
-  font-family: 'JetBrains Mono', monospace;
 }
