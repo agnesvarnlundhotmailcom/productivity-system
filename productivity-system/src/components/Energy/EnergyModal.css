@@ -31,6 +31,11 @@
   color: var(--text-secondary);
   cursor: pointer;
   padding: 4px;
+  transition: opacity 0.2s;
+}
+
+.em-close-btn:hover {
+  opacity: 0.7;
 }
 
 .em-header {
@@ -63,10 +68,8 @@
   margin-bottom: 24px;
 }
 
-.em-section-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.em-question {
+  text-align: center;
   margin-bottom: 16px;
   font-weight: 500;
   color: var(--text-primary);
@@ -76,7 +79,6 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
-  margin-bottom: 16px;
 }
 
 .em-energy-option {
@@ -91,9 +93,13 @@
   transition: all 0.2s;
 }
 
+.em-energy-option:hover {
+  border-color: var(--accent-primary);
+}
+
 .em-energy-option.is-selected {
   border-color: var(--accent-primary);
-  background-color: rgba(var(--accent-primary-rgb), 0.1);
+  background-color: rgba(16, 185, 129, 0.1);
   transform: translateY(-2px);
 }
 
@@ -108,63 +114,62 @@
   color: var(--text-secondary);
 }
 
+/* Knapp-gruppering */
+.em-action-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Primär knapp (Ta paus / Fortsätt jobba) */
 .em-btn-primary {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   border-radius: 12px;
   border: none;
   background-color: var(--accent-primary);
   color: white;
   font-weight: 600;
   cursor: pointer;
-}
-
-.em-btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.em-recommendation-card {
-  background-color: var(--surface-2);
-  border-radius: 16px;
-  padding: 20px;
-  border: 1px solid var(--border-color);
-}
-
-.em-rec-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.em-rec-header h3 {
-  font-size: 1rem;
-  margin: 0;
-}
-
-.em-recommendation-card p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 16px;
-}
-
-.em-btn-pause {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid var(--accent-warning);
-  background-color: transparent;
-  color: var(--accent-warning);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
+  transition: opacity 0.2s, transform 0.1s;
 }
 
-.em-btn-pause:hover {
-  background-color: rgba(var(--accent-warning-rgb), 0.05);
+.em-btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.em-btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Sekundär knapp (Avsluta) */
+.em-btn-secondary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--surface-4);
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.em-btn-secondary:hover:not(:disabled) {
+  background-color: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.em-btn-primary:disabled, 
+.em-btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
