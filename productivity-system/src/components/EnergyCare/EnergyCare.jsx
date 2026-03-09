@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Zap, Activity } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { useSession } from '../../contexts/SessionContext'; 
 import './EnergyCare.css';
 
@@ -9,15 +9,9 @@ const EnergyCare = () => {
   const energyTrend = useMemo(() => {
     if (!sessions || sessions.length === 0) return [];
 
-    return sessions.slice(-15).map(session => {
-      const level = Number(session.energyLevel || 3);
-      
-      return {
-        level: level,
-        modeId: session.modeId,
-        time: session.timestamp 
-      };
-    });
+    return sessions.slice(-15).map(session => ({
+      level: Number(session.energyLevel || 3)
+    }));
   }, [sessions]);
 
   const latestLevel = energyTrend.length > 0 ? energyTrend[energyTrend.length - 1].level : 0;
