@@ -1,4 +1,5 @@
-.card {
+/* --- HUVUDKORT --- */
+.calendar-card {
   background-color: var(--surface-2);
   border: 1px solid var(--surface-3);
   border-radius: 16px;
@@ -6,49 +7,55 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
   margin-bottom: 16px;
+  color: var(--text-primary); /* Säkerställer att texten är ljus som bas */
 }
 
-.cardHeader {
+/* --- HEADER & TITEL --- */
+.calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 4px; /* Minimalt gap mellan titel och knappar */
-  width: 100%;
-  flex-wrap: nowrap !important;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.cardTitleWrap {
+.calendar-title-group {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 4px; 
+  gap: 10px;
   flex: 1;
-  min-width: 0;
 }
 
-.cardTitle, .cardTitleYear {
+.calendar-main-icon {
+  color: var(--accent-primary);
+  filter: drop-shadow(0 0 5px rgba(14, 211, 172, 0.4));
+}
+
+.calendar-labels {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-month {
   font-size: 1.1rem;
   font-weight: 700;
-  white-space: nowrap; 
+  text-transform: capitalize;
+  color: var(--text-primary);
 }
 
-.cardActions {
+.label-year {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* --- ÅTGÄRDSKNAPPAR (Idag, Vecka/Månad) --- */
+.calendar-actions {
   display: flex;
   align-items: center;
-  gap: 2px; 
-  flex-shrink: 0;
+  gap: 6px;
 }
 
-
-.logo-icon {
-  font-size: 1.5rem;
-  color: var(--accent-primary);
-  text-shadow: 0 0 12px rgba(14, 211, 172, 0.4);
-  filter: drop-shadow(0 0 5px var(--accent-primary));
-}
-
-.iconBtn, 
-.pillBtn {
+.icon-btn, .pill-btn {
   border: 1px solid var(--surface-3);
   background: var(--surface-1);
   color: var(--text-primary);
@@ -56,172 +63,170 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  outline: none;
 }
 
-.iconBtn {
-  width: 32px;
-  height: 32px;
+.icon-btn {
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
 }
 
-.pillBtn {
-  height: 32px;
-  padding: 0 var(--space-md);
+.pill-btn {
+  height: 34px;
+  padding: 0 12px;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
 }
 
-/* kalender och schema */
-
-.calendarRow {
-  display: flex;
-  align-items: flex;
-  justify-content: space-between;
-  justify-content: space-evenly;  
-  gap: 10px;
+.icon-btn:hover, .pill-btn:hover {
+  background: var(--surface-3);
+  border-color: var(--accent-primary);
 }
 
-.dayPill {
-  border-radius: 18px;
-  padding: 10px 8px;
+/* --- VECKOVY (DAY PILLS) --- */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day-pill {
+  border-radius: 16px;
+  padding: 12px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   border: 1px solid var(--surface-3);
   background: var(--surface-1);
+  cursor: pointer;
   transition: all 0.2s;
+  color: var(--text-primary); /* Fixar mörka siffror i dark mode */
+  outline: none;
 }
 
-.dayPill.isSelected {
+.day-pill.is-selected {
   background: var(--accent-primary);
   border-color: var(--accent-primary);
-  color: var(--text-on-accent);
+  color: white; /* Texten ska alltid vara vit på accentfärg */
+  transform: translateY(-2px);
 }
 
-/* Justering för textfärg inuti vald pill */
-.dayPill.isSelected .dow,
-.dayPill.isSelected .dom {
-  color: var(--text-on-accent);
-}
-
-.dow {
-  font-size: 0.75rem;
+.day-name {
+  font-size: 0.7rem;
   text-transform: uppercase;
   color: var(--text-secondary);
   font-weight: 600;
 }
 
-.dom {
-  font-size: 1.25rem;
+/* Gör veckodagsnamnet vitt när pillen är vald */
+.day-pill.is-selected .day-name {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.day-number {
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
-.scheduleHeader {
+/* --- MÅNADSVY (GRID) --- */
+.month-container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-md);
+  flex-direction: column;
 }
 
-.scheduleTitle {
-  font-size: 1.5rem;
-  margin: 0;
-}
-
-.scheduleEmpty {
-  text-align: center;
-  padding: var(--space-xl) var(--space-sm);
-  color: var(--text-secondary);
-  font-style: italic;
-}
-
-/* månads grid*/
-
-.monthDowRow, .monthGrid {
+.month-header, .month-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
 }
 
-.monthDowCell {
+.month-dow-cell {
   color: var(--text-secondary);
   font-size: 0.7rem;
   font-weight: 700;
   text-align: center;
-  text-transform: uppercase;
   padding-bottom: 8px;
+  text-transform: uppercase;
 }
 
-.monthCell {
+.month-cell {
   aspect-ratio: 1/1;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: var(--surface-1);
+  color: var(--text-primary); /* Fixar siffrorna i dark mode */
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  background: var(--surface-1);
-  border: 1px solid transparent;
+  outline: none;
 }
 
-.monthCell.isOutside {
+/* Effekt för dagar utanför aktuell månad */
+.month-cell.is-outside {
   opacity: 0.25;
 }
 
-.monthCell.isSelected {
-  background: rgba(14, 211, 172, 0.2);
+.month-cell:hover:not(.is-selected):not(.is-outside) {
+  background: var(--surface-3);
+  border-color: var(--surface-4);
+}
+
+.month-cell.is-selected {
+  background: rgba(14, 211, 172, 0.15); /* Svagt grön bakgrund */
   border-color: var(--accent-primary);
-  color: var(--accent-primary);
+  color: var(--accent-primary); /* Accentfärg på vald siffra */
   font-weight: 700;
 }
 
-/* (Desktop)*/
-
-@media (min-width: 900px) {
-  .iconBtn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .pillBtn {
-    height: 40px;
-  }
-
-  .cardTitle, .cardTitleYear {
-    font-size: 1.5rem;
-  }
-
-  .dom {
-    font-size: 1.5rem;
-  }
+.active-dot {
+  width: 4px;
+  height: 4px;
+  background-color: white;
+  border-radius: 50%;
+  margin-top: 2px;
 }
 
-@media (max-width: 700px) {
-  .cardTitle, .cardTitleYear {
-    font-size: 0.95rem; 
+/* --- RESPONSIVITET --- */
+@media (max-width: 600px) {
+  .calendar-card {
+    padding: 12px;
   }
-
   
-  .pillBtn {
-    padding: 0 5px !important;
-    height: 26px !important;
-    font-size: 10px !important;
-    letter-spacing: -0.5px; /* Drar ihop bokstäverna lite */
+  .calendar-header {
+    gap: 8px;
   }
 
-  .iconBtn {
-    width: 26px !important;
-    height: 26px !important;
+  .pill-btn {
+    padding: 0 8px;
+    font-size: 0.75rem;
+    height: 30px;
   }
 
+  .icon-btn {
+    width: 30px;
+    height: 30px;
+  }
 
-  .cardTitleWrap svg, .calendarIcon {
-    width: 16px;
-    height: 16px;
-    margin-right: 2px;
+  .label-month {
+    font-size: 1rem;
+  }
+
+  .label-year {
+    font-size: 0.75rem;
+  }
+
+  .day-pill {
+    padding: 8px 2px;
+  }
+
+  .day-number {
+    font-size: 1rem;
   }
 }
