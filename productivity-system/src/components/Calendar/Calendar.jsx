@@ -1,4 +1,3 @@
-// src/components/Calendar/Calendar.jsx
 import "./Calendar.css";
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCalendar, sameDay } from "../../hooks/useCalendar";
@@ -9,77 +8,78 @@ export default function Calendar({ selectedTs, onDateChange }) {
     weekDays, monthCells, navigate, DOW_SV 
   } = useCalendar(selectedTs);
 
-  const yearLabel = currentDate.toLocaleString("sv-SE", { year: "numeric" });
   const monthLabel = currentDate.toLocaleString("sv-SE", { month: "long" });
+  const yearLabel = currentDate.toLocaleString("sv-SE", { year: "numeric" });
 
   return (
-    <main className="screen">
-      <div className="stack">
-        <section className="card">
-          <div className="cardHeader">
-            <div className="cardTitleWrap">
-              <CalendarIcon size={32} color="#0ed3ac" />
-              <div className="dateLabelGroup">
-                <span className="monthLabel">{monthLabel}</span>
-                <span className="yearLabel">{yearLabel}</span>
-              </div>
-            </div>
-            
-            <div className="cardActions">
-              <button className="iconBtn" onClick={() => navigate("prev")}>
-                <ChevronLeft size={20} />
-              </button>
-              <button className="pillBtn" onClick={() => onDateChange(Date.now())}>Idag</button>
-              <button className="pillBtn" onClick={() => setView(v => v === "week" ? "month" : "week")}>
-                {view === "week" ? "Månad" : "Vecka"}
-              </button>
-              <button className="iconBtn" onClick={() => navigate("next")}>
-                <ChevronRight size={20} />
-              </button>
-            </div>
+    <section className="calendar-card">
+      <header className="calendar-header">
+        <div className="calendar-title-group">
+          <CalendarIcon size={32} className="calendar-main-icon" />
+          <div className="calendar-labels">
+            <span className="label-month">{monthLabel}</span>
+            <span className="label-year">{yearLabel}</span>
           </div>
+        </div>
+        
+        <div className="calendar-actions">
+          <button className="icon-btn" onClick={() => navigate("prev")}>
+            <ChevronLeft size={20} />
+          </button>
+          
+          <button className="pill-btn" onClick={() => onDateChange(Date.now())}>
+            Idag
+          </button>
+          
+          <button className="pill-btn" onClick={() => setView(v => v === "week" ? "month" : "week")}>
+            {view === "week" ? "Månad" : "Vecka"}
+          </button>
+          
+          <button className="icon-btn" onClick={() => navigate("next")}>
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </header>
 
-          {view === "week" ? (
-            <div className="calendarRow">
-              {weekDays.map((day) => {
-                const isSelected = sameDay(day.date, selectedDate);
-                return (
-                  <div
-                    key={day.date.toISOString()}
-                    className={isSelected ? "dayPill isSelected" : "dayCell"}
-                    onClick={() => onDateChange(day.date.getTime())}
-                  >
-                    <div className={isSelected ? "dow" : "dow isMuted"}>{day.dow}</div>
-                    <div className="dom">{day.dom}</div>
-                    {isSelected && <div className="dot" />}
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="monthWrap">
-              <div className="monthDowRow">
-                {DOW_SV.map(d => <div key={d} className="monthDowCell">{d}</div>)}
-              </div>
-              <div className="monthGrid">
-                {monthCells.map((d, idx) => {
-                  const isSelected = sameDay(d, selectedDate);
-                  const isCurrentMonth = d.getMonth() === currentDate.getMonth();
-                  return (
-                    <div
-                      key={idx}
-                      className={`monthCell ${isCurrentMonth ? "" : "isOutside"} ${isSelected ? "isSelected" : ""}`}
-                      onClick={() => onDateChange(d.getTime())}
-                    >
-                      {d.getDate()}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </section>
-      </div>
-    </main>
+      {view === "week" ? (
+        <div className="week-grid">
+          {weekDays.map((day) => {
+            const isSelected = sameDay(day.date, selectedDate);
+            return (
+              <button
+                key={day.date.toISOString()}
+                className={`day-pill ${isSelected ? "is-selected" : ""}`}
+                onClick={() => onDateChange(day.date.getTime())}
+              >
+                <span className="day-name">{day.dow}</span>
+                <span className="day-number">{day.dom}</span>
+                {isSelected && <span className="active-dot" />}
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="month-container">
+          <div className="month-header">
+            {DOW_SV.map(d => <div key={d} className="month-dow-cell">{d}</div>)}
+          </div>
+          <div className="month-grid">
+            {monthCells.map((d, idx) => {
+              const isSelected = sameDay(d, selectedDate);
+              const isOutside = d.getMonth() !== currentDate.getMonth();
+              return (
+                <button
+                  key={idx}
+                  className={`month-cell ${isOutside ? "is-outside" : ""} ${isSelected ? "is-selected" : ""}`}
+                  onClick={() => onDateChange(d.getTime())}
+                >
+                  {d.getDate()}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </section>
   );
 }
