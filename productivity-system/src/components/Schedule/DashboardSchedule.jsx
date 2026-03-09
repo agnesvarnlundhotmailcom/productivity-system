@@ -38,19 +38,25 @@ export default function DashboardSchedule({ selectedDate }) {
   /**
    * Markerar en liten deluppgift (task) inuti ett block som klar.
    * * @param {Event} e - Själva klick-händelsen
+   * @param {number|string} itemId - ID för huvudblocket.
+   * @param {number|string} task-Id - ID för den specifika deluppgiften.
    */
   const handleToggleTask = (e, itemId, taskId) => {
     e.stopPropagation();
     toggleScheduleTask(dateKey, itemId, taskId);
   };
 
-  
+  // Räknar ut statistik för mätaren (Progress bar)
   const total = activities.length;
   const completed = activities.filter(item => item.completed).length;
+  /** 
+   * @type {number} Räknar ut procentandelen avklarade uppgifter (0 till 100).
+   */
   const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
     <div className={styles.mainWrapper}>
+      {/* Rubrik och räknare (t.ex. 2/5 klara) */}
       <div className={styles.header}>
         <div className={styles.headerTitle}>
           <ListChecks size={20} color="#0ed3ac" />
@@ -59,6 +65,7 @@ export default function DashboardSchedule({ selectedDate }) {
         <span className={styles.counter}>{completed}/{total}</span>
       </div>
 
+      {/* Progress-sektionen: Visar mätaren och procenten */}
       <div className={styles.progressSection}>
         <div className={styles.progressLabel}>
           <span>Framsteg</span>
@@ -71,19 +78,23 @@ export default function DashboardSchedule({ selectedDate }) {
 
       <div className={styles.list}>
         {activities.map((item) => {
+          // Hjälpvariabler för att göra koden nedanför lättare att läsa
           const isDone = !!item.completed;
           const isExpanded = expandedId === item.id;
           const barColor = isDone ? '#cbd5e1' : (item.color || '#0ed3ac');
 
           return (
             <div key={item.id} className={styles.cardContainer}>
+              {/* Själva kortet för ett tidspass */}
               <div 
                 className={`${styles.card} ${isDone ? styles.rowDone : ''}`}
                 onClick={() => setExpandedId(isExpanded ? null : item.id)}
               >
+                {/* Den lilla färgade kanten till vänster */}
                 <div className={styles.accentBar} style={{ backgroundColor: barColor }} />
                 <div className={styles.cardContent}>
                   <div className={styles.left}>
+                    {/* Cirkeln man klickar i för att bocka av hela passet */}
                     <div 
                       className={`${styles.statusCircle} ${isDone ? styles.circleDone : ''}`}
                       style={{ borderColor: isDone ? '#94a3b8' : barColor }}
@@ -96,6 +107,7 @@ export default function DashboardSchedule({ selectedDate }) {
                   </div>
                   <div className={styles.rightSide}>
                     <span className={styles.categoryTag}>{isDone ? 'Klar' : item.category}</span>
+                    {/* Visa en pil om det finns smågrupper inuti blocket */}
                     {item.tasks?.length > 0 && (
                       <div className={styles.chevron}>
                         {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -105,6 +117,7 @@ export default function DashboardSchedule({ selectedDate }) {
                 </div>
               </div>
 
+              {/* Om man klickat på kortet och det finns underuppgifter: visa dem här */}
               {isExpanded && item.tasks?.length > 0 && (
                 <div className={styles.taskDropdown}>
                   {item.tasks.map((task) => (
