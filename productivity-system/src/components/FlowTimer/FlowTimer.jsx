@@ -21,12 +21,28 @@ export default function FlowTimer() {
   const [showEnergyModal, setShowEnergyModal] = useState(false);
   const targetSeconds = (activeMode.defaultDuration || 0) * 60;
 
+  // Stäng av timern och visa modalen
+  const finishSession = useCallback(() => {
+    setIsRunning(false);
+    setShowEnergyModal(true);
+  }, [setIsRunning]);
+
+  // Effekt för att bevaka när tiden är ute
+  useEffect(() => {
+    if (isRunning && targetSeconds > 0 && secondsElapsed >= targetSeconds) {
+      const timer = setTimeout(() => {
+        finishSession();
+      }, 0);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [secondsElapsed, targetSeconds, isRunning, finishSession]);
+
   const handleQuickSwitch = () => {
     if (secondsElapsed > 0) {
       addSession({
         duration: secondsElapsed,
-        modeId: activeMode.id,
-        timestamp: new Date().toISOString()
+        modeId: activeMode.id
       });
     }
     const nextMode = activeMode.id === 'break' ? 'deepWork' : 'break';
@@ -35,24 +51,19 @@ export default function FlowTimer() {
     setIsRunning(true);
   };
 
-  const finishSession = useCallback(() => {
-    setIsRunning(false);
-    setTimeout(() => {
-      setShowEnergyModal(true);
-    }, 10);
-  }, [setIsRunning]);
-
-  useEffect(() => {
-    if (isRunning && targetSeconds > 0 && secondsElapsed >= targetSeconds) {
-      finishSession();
-    }
-  }, [secondsElapsed, targetSeconds, isRunning, finishSession]);
-
   const handleToggle = () => {
     if (!isRunning && targetSeconds > 0 && secondsElapsed >= targetSeconds) {
       setSecondsElapsed(0);
     }
     setIsRunning(prev => !prev);
+  };
+
+  const handleManualStop = () => {
+    if (secondsElapsed > 0) {
+      finishSession();
+    } else {
+      setIsRunning(false);
+    }
   };
 
   const resetClock = () => {
@@ -83,18 +94,12 @@ export default function FlowTimer() {
               <span>{isRunning ? "Pausa" : "Starta"}</span>
             </button>
 
-            <button 
-              className="ft-btn-base ft-btn-switch" 
-              onClick={handleQuickSwitch}
-            >
+            <button className="ft-btn-base ft-btn-switch" onClick={handleQuickSwitch}>
               <Coffee size={18} />
               <span>{activeMode.id === 'break' ? "Jobba nu" : "Ta en paus"}</span>
             </button>
 
-            <button 
-              className="ft-btn-base ft-btn-stop" 
-              onClick={() => secondsElapsed > 0 ? finishSession() : setIsRunning(false)}
-            >
+            <button className="ft-btn-base ft-btn-stop" onClick={handleManualStop}>
               <RotateCcw size={18} />
               <span>Avsluta</span>
             </button>

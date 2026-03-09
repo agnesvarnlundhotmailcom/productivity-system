@@ -2,13 +2,10 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 0; 
 }
 
 .ft-card {
   background: transparent; 
-  border: none;
-  box-shadow: none;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -89,7 +86,6 @@
   box-shadow: 0 4px 12px rgba(237, 171, 77, 0.2);
 }
 
-/* Ny stil för Switch-knappen som ersätter inline-style */
 .ft-btn-switch {
   background-color: var(--surface-3);
   color: var(--text-primary);
@@ -97,8 +93,7 @@
 }
 
 .ft-btn-stop {
-  background-color: #ef4444; /* Röd färg för avsluta/stopp */
-  color: white;
+  background-color: #ef4444; 
 }
 
 .ft-btn-base:hover {
@@ -128,7 +123,7 @@
   text-decoration: underline;
 }
 
-/* MOBILANPASSNING (Responsivitet) */
+/* Responsivitet */
 @media (max-width: 600px) {
   .ft-circle-outline {
     width: 220px;
@@ -140,12 +135,12 @@
   }
 
   .ft-btn-group {
-    flex-direction: column; /* Stapla knappar på varandra på mobilen */
+    flex-direction: column;
     width: 90%;
     max-width: 300px;
   }
 
   .ft-btn-base {
-    width: 100%; /* Knappar tar hela bredden på mobilen */
+    width: 100%;
   }
 }
