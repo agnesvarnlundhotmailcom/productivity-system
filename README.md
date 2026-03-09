@@ -125,7 +125,39 @@ Ikoner i gränssnittet implementeras med hjälp av Lucide React för ett modernt
 
 ## Projektstruktur
 
+src/ 
+├── components/
+│ 	├── Analys/
+│ 	├── Calendar/
+│ 	├── Energy/
+│ 	├── EnergyCare/
+│ 	├── FlowTimer/
+│ 	├── FocusMode/
+│ 	├── Layout/
+│ 	├── Schedule/
+│ 	├── SessionLogs/
+│ 	├── Settings/
+│ 	├── Statistics/
+│ 	├── Taskview/
+│ 	├── Theme/
+│ 	├── ToDo/
+│ 	├── UserLogin/
+├── contexts/
+├── hooks/
+├── pages/
+├── contexts/
+
 
 ---
 
 ## UserStories
+
+- Som en användare vill jag kunna planera in mina arbetspass direkt i en kalender, så att jag får en tydlig visuell översikt över min dag.
+
+- Som en användare vill jag koppla specifika att-göra-listor till mina inbokade kalenderpass, så att jag vet exakt vad jag ska fokusera på när passet börjar.
+
+- Som en användare vill jag att mitt planerade pass är direkt kopplat till en timer, så att jag slipper ställa in tiden manuellt när det är dags att börja jobba.
+
+- Som en användare vill jag själv kunna välja vilket läge (t.ex. Deep Work eller Möte) jag startar timern i, så att jag kan anpassa appens tidsspårning efter aktivitetens karaktär.
+
+- Som en användare vill jag logga min energinivå i samband med mina pass, så att jag i efterhand kan se hur olika typer av arbete påverkar mitt mående.
