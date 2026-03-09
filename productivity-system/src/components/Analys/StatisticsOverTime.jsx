@@ -33,7 +33,7 @@ const StatisticsOverTime = () => {
 
       // Räkna ut ett medelvärde på energin (om det finns någon energi sparad)
       const energySessions = daySessions.filter(s => s.energyLevel !== undefined);
-      const energyAvg = energySessions.length > 0 
+      const energyAvg = energySessions.length > 0
         ? (energySessions.reduce((sum, s) => sum + s.energyLevel, 0) / energySessions.length)
         : 0;
 
@@ -67,19 +67,20 @@ const StatisticsOverTime = () => {
         {data.map((day, index) => {
           // Räkna ut hur många procent hög stapeln ska vara i diagrammet
           const workHeight = (day.minutes / maxMinutes) * 100;
-          const energyHeight = (day.energy / 5) * 100; 
-          
+          const energyHeight = (day.energy / 5) * 100;
+
           return (
             <div key={index} className="stats-day-column">
               <div className="stats-bars-wrapper">
                 {/* Den blå stapeln för arbetstid*/}
-                <div 
-                  className="bar bar-work" 
-                  style={{ height: `${workHeight}%` }} 
+                test-kommentar
+                <div
+                  className="bar bar-work"
+                  style={{ height: `${workHeight}%` }}
                 />
                 {/*Den gröna stapeln för energinivå */}
-                <div 
-                  className="bar bar-energy" 
+                <div
+                  className="bar bar-energy"
                   style={{ height: `${energyHeight}%` }}
                 >
                   {day.energy > 0 && (
