@@ -22,9 +22,8 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
       timestamp: new Date().toISOString()
     });
 
-    // Logik för nästa steg
+    // Logik för nästa steg (växla läge eller avsluta)
     if (nextStep === 'switch') {
-      // Om vi precis körde paus -> gå till jobb. Om vi körde jobb -> gå till paus.
       const nextMode = activeMode.id === 'break' ? 'deepWork' : 'break';
       setActiveMode(nextMode);
     } 
@@ -42,20 +41,23 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
     { id: 5, label: "Utmärkt", emoji: "🔥" },
   ];
 
-  // Bestäm knapp-text och ikon baserat på vilket läge som just avslutades
   const isBreakOver = activeMode.id === 'break';
+  const minutes = Math.floor(workedSeconds / 60);
+  const seconds = workedSeconds % 60;
 
   return (
     <div className="em-overlay">
       <div className="em-content">
-        <button className="em-close-btn" onClick={onClose}><X size={20} /></button>
+        <button className="em-close-btn" onClick={onClose}>
+          <X size={20} />
+        </button>
         
         <div className="em-header">
           <div className="em-icon-circle">
             <PartyPopper size={32} color="#10b981" />
           </div>
           <h2>{isBreakOver ? "Pausen är klar!" : "Snyggt jobbat!"}</h2>
-          <p>Tid: <strong>{Math.floor(workedSeconds / 60)} min {workedSeconds % 60} sek</strong></p>
+          <p>Tid: <strong>{minutes} min {seconds} sek</strong></p>
         </div>
 
         <div className="em-section">
@@ -74,29 +76,22 @@ export default function EnergyModal({ isOpen, onClose, workedSeconds }) {
           </div>
         </div>
 
-        <div className="em-action-group" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
-          
-          {/* DYNAMISK KNAPP: Visar "Ta en paus" efter jobb, eller "Fortsätt jobba" efter paus */}
+        <div className="em-action-group">
+          {/* Huvudknapp: Växlar mellan jobb/paus */}
           <button 
             className="em-btn-primary" 
             disabled={!selectedEnergy} 
             onClick={() => handleAction('switch')}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
           >
             {isBreakOver ? <Play size={18} fill="currentColor" /> : <Coffee size={18} />}
             {isBreakOver ? "Fortsätt jobba" : "Ta en paus nu"}
           </button>
           
-          {/* AVBRYT KNAPP: Alltid samma */}
+          {/* Sekundär knapp: Avslutar passet helt */}
           <button 
             className="em-btn-secondary" 
             disabled={!selectedEnergy} 
             onClick={() => handleAction('finish')}
-            style={{ 
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', 
-              background: 'transparent', border: '1px solid var(--surface-4)', 
-              color: 'var(--text-secondary)', padding: '12px', borderRadius: '12px', cursor: 'pointer' 
-            }}
           >
             <Moon size={18} fill="currentColor" /> Avsluta för dagen
           </button>
