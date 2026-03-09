@@ -4,6 +4,18 @@ import "./Layout.css";
 import { History, Calendar, Timer, User, Settings, BarChart, Zap, Menu, X } from "lucide-react";
 import { ThemeToggle } from "../Theme/ThemeToggle";
 
+/**
+ * Header för appens huvudnavigation.
+ * @param {{onOpenSettings: () => void }} props
+ * @param {()=> void} props.onOpenSettings
+ */
+
+/**
+ * Returnerar CSS-klass för aktiv/inaktiv navigationslänk.
+ * @param {string} path - Route att jämföra med aktuell 
+ * @returns {string} Klassnamn för länken.
+ */
+
 const Header = ({ onOpenSettings }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -19,7 +31,7 @@ const Header = ({ onOpenSettings }) => {
         <button className="hamburger-btn" onClick={toggleMenu} aria-label="Meny">
           {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
-        
+
         <span className="logo-icon">
           <Zap size={24} fill="currentColor" />
         </span>
