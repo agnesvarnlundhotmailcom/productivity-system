@@ -127,6 +127,7 @@ Ikoner i gränssnittet implementeras med hjälp av Lucide React för ett modernt
 # Projektstruktur
 
 ```bash
+productivity-system/
 src/
 │
 ├── components/
