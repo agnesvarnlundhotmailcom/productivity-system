@@ -2,14 +2,24 @@ import "./Calendar.css";
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCalendar, sameDay } from "../../hooks/useCalendar";
 
+/**
+ * En kalenderkomponent som låter användaren välja datum.
+ * Den kan visa antingen en hel månad eller bara den nuvarande veckan.
+ * * @component
+ * @param {Object} props
+ * @param {number} props.selectedTs
+ * @param {Function} props.onDateChange
+ */
 export default function Calendar({ selectedTs, onDateChange }) {
+  // Här hämtar vi all kalender-logik från vår egen "hook"
   const { 
     view, setView, currentDate, selectedDate, 
     weekDays, monthCells, navigate, DOW_SV 
   } = useCalendar(selectedTs);
 
+  // Skapa snygga texter för månad och år på svenska
   const monthLabel = currentDate.toLocaleString("sv-SE", { month: "long" });
-  const yearLabel = currentDate.toLocaleString("sv-SE", { year: "numeric" });
+  const yearLabel = currentDate.toLocaleString("sv-SE", { year: "numeric" })
 
   return (
     <section className="calendar-card">
@@ -41,9 +51,11 @@ export default function Calendar({ selectedTs, onDateChange }) {
         </div>
       </header>
 
+      {/* Om vyn är 'week', rita upp veckovyn. Annars rita upp månaden.*/}
       {view === "week" ? (
         <div className="week-grid">
           {weekDays.map((day) => {
+            // Kolla om just den här dagen är den som användaren har valt
             const isSelected = sameDay(day.date, selectedDate);
             return (
               <button
@@ -53,6 +65,7 @@ export default function Calendar({ selectedTs, onDateChange }) {
               >
                 <span className="day-name">{day.dow}</span>
                 <span className="day-number">{day.dom}</span>
+                {/* Visa en liten prick om dagen är vald */}
                 {isSelected && <span className="active-dot" />}
               </button>
             );
@@ -61,6 +74,7 @@ export default function Calendar({ selectedTs, onDateChange }) {
       ) : (
         <div className="month-container">
           <div className="month-header">
+            {/*Ritar ut namnen på veckodagarna */}
             {DOW_SV.map(d => <div key={d} className="month-dow-cell">{d}</div>)}
           </div>
           <div className="month-grid">
