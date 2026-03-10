@@ -7,7 +7,7 @@ import { DataContext } from "../../contexts/DataContext";
 /**
  * En komponent som ritar upp dagens schema.
  * Den sköter allt från att visa listan till att skapa nya tidsblock.
- * * @component
+ * @component
  * @param {Object} props
  * @param {string|Date} props.selectedDate - Datumet som användaren har valt att titta på.
  */

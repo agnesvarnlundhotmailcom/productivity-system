@@ -17,7 +17,7 @@ const formatMMSS = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${Stri
 /**
  * Huvudkomponenten för timern.
  * Den håller koll på om klockan tickar, visar tiden och öppnar energirutan när tiden är ute.
- * * @component
+ * @component
  */
 export default function FlowTimer() {
   // Här hämtar vi allt vi behöver om nuvarande läge och tid från vår FocusContext

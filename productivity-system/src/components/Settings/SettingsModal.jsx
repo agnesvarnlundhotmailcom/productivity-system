@@ -3,28 +3,46 @@ import { X, Brain, Users, Coffee, Settings, Database, Trash2 } from "lucide-reac
 import { useFocusMode } from "../../contexts/FocusModeContext";
 import "./SettingsModal.css";
 
+/**
+ * En modal för appens inställningar.
+ * Här kan användaren ändra tider för fokuslägen och rensa all sparad data.
+ * * @component
+ * @param {Object} props
+ * @param {boolean} props.open - Om modalen ska synas eller vara dold.
+ * @param {Function} props.onClose - Funktionen som körs för att stänga modalen.
+ */
 export default function SettingsModal({ open, onClose }) {
-  //Hämtar fokuslägen och funktion fr att uppdatera standardtiden för varje läge.
+  //Hämtar inställningar och funktioner för fokuslägen (t.ex. Deep Work, Möte)
   const { modes, updateModeDuration } = useFocusMode();
-  //Rendera inget om modalen inte är öppen
+
+  // Om modalen inte ska vara öppen ritar vi inte ut någonting alls (null)
   if (!open) return null;
 
-  //Hämtar standardtid (minuter) för ett visst läge-id.
+  /**
+   * Hittar och hämtar standardtiden för ett specifikt läge.
+   * * @param {string} id - Det unika. ID:t för läget (t.ex. 'deepWork)
+   * @returns {number} Antalet minuter som är inställda som standard.
+   */
   const getDuration = (id) => modes.find(m => m.id === id)?.defaultDuration || 0;
 
-  // Rensar all data från localStorage efter bekräftelse (Fabriksåterställning)
+  /**
+   * Rensar bort precis allt som sparats lokalt i webbläsaren.
+   * Detta nollställer appen.
+   */
   const clearAllData = () => {
+    // En inbyggd webbläsar-ruta som tvingar användaren att bekräfta valet
     if (window.confirm("Är du säker på att du vill radera all sparad data? Detta kan inte ångras.")) {
-      localStorage.clear();
+      localStorage.clear(); // Tömmer webbläsarens lokala databas
       alert("All data har raderats.");
-      window.location.reload();
+      window.location.reload(); // Laddar om sidan för att rensa appens minne
     }
   };
 
   return (
-    //Klick på overlay stänger modalen
+    /* Overlay: Den mörka bakgrunden. Klick här stänger modalen via props.onClose */
     <div className="modal-overlay" onClick={onClose}>
-      {/* Stoppar klick inuti modalen från att bubbla till overlay */}
+
+      {/* Själva modal-fönstret. stopPropagation hindrar klick här inne från att stänga modalen */}
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
           <div className="header-title">
@@ -36,7 +54,7 @@ export default function SettingsModal({ open, onClose }) {
         </header>
 
         <section className="modal-body">
-          {/* Sektion: justera standardtider för fokuslägen */}
+          {/* Sektion: fokuslägen (sliders för tid) */}
           <div className="settings-section card">
             <div className="section-title">
               <Brain className="section-icon" size={20} />
@@ -45,18 +63,19 @@ export default function SettingsModal({ open, onClose }) {
             <p className="section-desc">Ändra måltiden för när klockan ska stanna automatiskt.</p>
 
             <div className="slider-group">
-              {/* Deep Work Slider - ID: deepWork */}
+              {/* Deep Work slider */}
               <div className="slider-item">
                 <div className="label-box"><Brain size={18} /> <span>Deep Work</span></div>
                 <input
                   type="range" min="5" max="120" step="5"
                   value={getDuration('deepWork')}
+                  /* Number() ser till att värdet sparas som en siffra och inte text */
                   onChange={(e) => updateModeDuration('deepWork', Number(e.target.value))}
                 />
                 <span className="value-display">{getDuration('deepWork')} min</span>
               </div>
 
-              {/* Möte Slider - ID: meeting */}
+              {/* Möte slider */}
               <div className="slider-item">
                 <div className="label-box"><Users size={18} /> <span>Möte</span></div>
                 <input
@@ -67,7 +86,7 @@ export default function SettingsModal({ open, onClose }) {
                 <span className="value-display">{getDuration('meeting')} min</span>
               </div>
 
-              {/* Paus Slider - ID: break */}
+              {/* Paus slider */}
               <div className="slider-item">
                 <div className="label-box"><Coffee size={18} /> <span>Paus</span></div>
                 <input

@@ -4,7 +4,7 @@ import styles from './Schedule.module.css';
 /**
  * Ett formulär för att skapa nya tidsblock i schemat.
  * Håll koll på tider, titel och kategori medan användaren skriver.
- * * @component
+ * @component
  * @param {Object} props
  * @param {Function} props.onSave - Funktionen som körs när man klickar på "Skapa block".
  */

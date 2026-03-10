@@ -3,19 +3,32 @@ import { ListTodo, CircleCheck, Circle, Plus, Pencil, Trash2, Check, X } from 'l
 import { DataContext } from "../../contexts/DataContext";
 import styles from './TodoWidget.module.css';
 
+/**
+ * En widget för att hantera att-göra-listor kopplade till specifika datum.
+ * Tillåter användaren att lägga till, markera som klar, redigera och radera uppgifter.
+ * @component
+ * @param {Object} props
+ * @param {Date|string} props.selectedDate - Det valda datumet från kalendern.
+ */
 const TodoWidget = ({ selectedDate }) => {
+  // Hämtar global data och funktionen för att uppdatera den
   const { data, setData } = useContext(DataContext);
 
-  // Skapar datumnyckel baserat på valda dagen i kalendern
+  // Skapar en unik datumnyckel för att hitta rätt dag i databasen
   const dateKey = new Date(selectedDate).toLocaleDateString('sv-SE');
 
-  // Hämtar tasks för valt datum
+  // Hämtar listan med uppgifter för det valda datumet, annars en tom lista []
   const tasks = data[dateKey]?.tasks ?? [];
 
-  const [inputValue, setInputValue] = useState("");
-  const [editingId, setEditingId] = useState(null);
-  const [editText, setEditText] = useState("");
+  // State för att hantera inmatning och redigering lokalt i komponenten
+  const [inputValue, setInputValue] = useState(""); // Ny uppgift
+  const [editingId, setEditingId] = useState(null); // Vilket ID som redigeras just nu
+  const [editText, setEditText] = useState(""); // Texten i redigeringsfältet
 
+  /**
+   * Uppdaterar listan med uppfiter i den globala DataContext för det valda datumet.
+   * @param {Array<Object} newTasks - Den nya listan med task-objekt.
+   */
   const updateTasks = (newTasks) => {
     setData(prev => ({
       ...prev,
@@ -26,6 +39,9 @@ const TodoWidget = ({ selectedDate }) => {
     }));
   };
 
+  /**
+   * Skapar en ny uppgift och lägger till den i listan.
+   */
   const addTask = () => {
     if (inputValue.trim() === "") return;
     const newTask = {
@@ -37,28 +53,50 @@ const TodoWidget = ({ selectedDate }) => {
     setInputValue("");
   };
 
+  /**
+   * Växlar status på en uppgift mellan klar och inte klar.
+   * @param {number} id - ID på uppgiften som ska ändras.
+   */
   const toggleTask = (id) => {
     updateTasks(tasks.map(t =>
       t.id === id ? { ...t, completed: !t.completed } : t
     ));
   };
 
+  /**
+   * Tar bort en uppgift från listan.
+   * @param {Event} e - Klick-event (används för att stoppa bubbling).
+   * @param {number} id - ID på uppgiften som ska raderas.
+   */
   const deleteTask = (e, id) => {
     e.stopPropagation();
     updateTasks(tasks.filter(t => t.id !== id));
   };
 
+  /**
+   * Aktiverar redigeringsläget för en specifik uppgift.
+   * @param {Event} e -Klick-event.
+   * @param {Object} task - Uppgiften som ska redigeras.
+   */
   const startEdit = (e, task) => {
     e.stopPropagation();
     setEditingId(task.id);
     setEditText(task.text);
   };
 
+  /**
+   * Avbryter redigeringsläget utan att spara ändringar.
+   * @param {Event} e - Klick-event
+   */
   const cancelEdit = (e) => {
     e.stopPropagation();
     setEditingId(null);
   };
 
+  /**
+   * Sparar den redigerade texten till den globala datan och stänger redigeringsläget.
+   * @param {Event} e - Klick-event.
+   */
   const saveEdit = (e) => {
     e.stopPropagation();
     updateTasks(tasks.map(t =>
@@ -67,6 +105,7 @@ const TodoWidget = ({ selectedDate }) => {
     setEditingId(null);
   };
 
+  // Räknar ut hur många uppgifter som är markerade som klara
   const completedCount = tasks.filter(t => t.completed).length;
 
   return (
