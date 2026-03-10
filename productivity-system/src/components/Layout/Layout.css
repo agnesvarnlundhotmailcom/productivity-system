@@ -11,13 +11,11 @@
   z-index: 1000;
 }
 
-/* Vänster sida: Hamburgare & Logo */
+/* Vänster sida: Logo */
 .header-left {
   display: flex;
   align-items: center;
   gap: 8px;
-  /* Drar knappen åt vänster för att ligga kant-i-kant med innehållet under */
-  margin-left: -10px; 
 }
 
 .logo-icon {
@@ -33,27 +31,6 @@
   color: var(--text-primary);
   letter-spacing: -0.02em;
   margin: 0;
-}
-
-/* Hamburgarknapp */
-.hamburger-btn {
-  display: none; /* Dold på desktop */
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 10px;
-  transition: all 0.2s;
-  display: none; 
-  align-items: center;
-  justify-content: center;
-}
-
-.hamburger-btn:hover,
-.hamburger-btn:active {
-  color: #6dbf9e;
-  background: rgba(109, 191, 158, 0.1);
 }
 
 /* MITTEN: Navigation */
@@ -97,7 +74,7 @@
   gap: var(--space-md);
 }
 
-.nav-icon-link, 
+.nav-icon-link,
 .settings-btn {
   background: transparent;
   border: none;
@@ -110,7 +87,7 @@
   transition: all 0.2s;
 }
 
-.nav-icon-link:hover, 
+.nav-icon-link:hover,
 .settings-btn:hover {
   background: var(--surface-2);
   color: #6dbf9e;
@@ -123,63 +100,79 @@
   margin: 0 4px;
 }
 
+/* ============== BOTTOM NAVIGATION ============== */
+.bottom-nav {
+  display: none;
+}
+
+.bottom-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  flex: 1;
+  height: 100%;
+  transition: all 0.2s;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.bottom-nav-link:active {
+  color: var(--accent-primary);
+}
+
+.bottom-nav-link.active {
+  color: var(--accent-primary);
+}
+
+.bottom-nav-link svg {
+  transition: transform 0.2s;
+}
+
+.bottom-nav-link.active svg {
+  transform: scale(1.1);
+}
+
 /* --- MOBIL-ANPASSNING --- */
 @media (max-width: 768px) {
   .header-container {
     padding: 0 var(--space-md);
-    height: 70px;
-  }
-
-  .hamburger-btn {
-    display: flex; /* Visa hamburgaren */
+    height: 56px;
+    padding-top: env(safe-area-inset-top);
   }
 
   .app-title {
-    display: none !important; /* Dölj titeln */
+    display: none;
   }
 
-  .header-left {
-    margin-left: -6px; /* Positionera exakt i kanten */
-  }
-
-  /* Dropdown-menyn */
   .header-nav {
-    display: none; 
-    position: absolute;
-    top: 75px; 
-    left: var(--space-md);
-    right: var(--space-md);
-    flex-direction: column;
-    background: var(--surface-2);
-    padding: var(--space-md);
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--surface-3);
-    z-index: 1000;
-  }
-
-  .header-nav.open {
-    display: flex;
-    animation: slideDown 0.25s ease-out;
-  }
-
-  .nav-link {
-    width: 100%;
-    padding: 14px 16px;
-    font-size: 1rem;
-    justify-content: flex-start;
-  }
-
-  .nav-link span {
-    display: inline !important;
+    display: none;
   }
 
   .header-right {
-    gap: 8px;
+    gap: 4px;
   }
 
   .divider {
     display: none;
+  }
+
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    background-color: var(--surface-1);
+    border-top: 1px solid var(--surface-3);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 

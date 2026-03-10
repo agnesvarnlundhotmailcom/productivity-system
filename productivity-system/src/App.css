@@ -4,6 +4,12 @@
   padding: var(--app-padding);
 }
 
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom) + var(--app-padding));
+  }
+}
+
 .main-grid {
   display: grid;
   grid-template-columns: 1fr 1.5fr 1fr;
