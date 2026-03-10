@@ -69,13 +69,6 @@ export default function SessionLogs() {
 
   return (
     <div className={styles.fullPage}>
-      {/* Header med ikon och titel */}
-      <header className={styles.header}>
-        <div className={styles.titleGroup}>
-          <History size={32} color="#0ed3ac" />
-          <h1>Historik</h1>
-        </div>
-      </header>
 
       {/* Visa tomt tillstånd eller sessionslista */}
       {!sessions || sessions.length === 0 ? (
