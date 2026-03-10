@@ -73,7 +73,6 @@ const StatisticsOverTime = () => {
             <div key={index} className="stats-day-column">
               <div className="stats-bars-wrapper">
                 {/* Den blå stapeln för arbetstid*/}
-                test-kommentar
                 <div
                   className="bar bar-work"
                   style={{ height: `${workHeight}%` }}
