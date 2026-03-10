@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Layout.css";
-import { History, Calendar, Timer, User, Settings, BarChart, Zap, Menu, X } from "lucide-react";
+import { History, Calendar, Timer, User, Settings, BarChart, Zap } from "lucide-react";
 import { ThemeToggle } from "../Theme/ThemeToggle";
 
 /**
@@ -11,49 +11,37 @@ import { ThemeToggle } from "../Theme/ThemeToggle";
  */
 
 const Header = ({ onOpenSettings }) => {
-  //Styr om mobilmenyn är öppen eller stängd
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   //Hämtar aktuell route för att kunna markera aktiv länk
   const location = useLocation();
 
   /** Returnerar aktiv klass för nuvarande route. */
   const isActive = (path) => location.pathname === path ? "nav-link active" : "nav-link";
 
-  //Växlar mobilmenyn mellan öppen/stängd
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
   return (
     <header className="header-container">
-      {/* VÄNSTER: Hamburgare och Logo */}
+      {/* VÄNSTER: Logo */}
       <div className="header-left">
-        <button className="hamburger-btn" onClick={toggleMenu} aria-label="Meny">
-          {/* Visar X när menyn är öppen, annars hamburgerikonen */}
-          {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
-        </button>
-
-      {/* Appens visuella logotyp och titel */}
         <span className="logo-icon">
           <Zap size={24} fill="currentColor" />
         </span>
         <h1 className="app-title">FlowTime</h1>
       </div>
 
-      {/* MITTEN: Navigation (Desktop) / Dropdown (Mobil) */}
-      <nav className={`header-nav ${isMenuOpen ? "open" : ""}`}>
-        {/* Varje länk klick stänger mobilmenyn för bättre UX */}
-        <Link to="/flow" className={isActive("/flow")} onClick={() => setIsMenuOpen(false)}>
+      {/* MITTEN: Navigation (Desktop only) */}
+      <nav className="header-nav">
+        <Link to="/flow" className={isActive("/flow")}>
           <Timer size={18} />
           <span>FlowTimer</span>
         </Link>
-        <Link to="/calendar" className={isActive("/calendar")} onClick={() => setIsMenuOpen(false)}>
+        <Link to="/calendar" className={isActive("/calendar")}>
           <Calendar size={18} />
           <span>Kalender</span>
         </Link>
-        <Link to="/history" className={isActive("/history")} onClick={() => setIsMenuOpen(false)}>
+        <Link to="/history" className={isActive("/history")}>
           <History size={18} />
           <span>Historik</span>
         </Link>
-        <Link to="/stats" className={isActive("/stats")} onClick={() => setIsMenuOpen(false)}>
+        <Link to="/stats" className={isActive("/stats")}>
           <BarChart size={18} />
           <span>Statistik</span>
         </Link>
