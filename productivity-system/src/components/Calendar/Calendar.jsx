@@ -5,7 +5,7 @@ import { useCalendar, sameDay } from "../../hooks/useCalendar";
 /**
  * En kalenderkomponent som låter användaren välja datum.
  * Den kan visa antingen en hel månad eller bara den nuvarande veckan.
- * * @component
+ * @component
  * @param {Object} props
  * @param {number} props.selectedTs
  * @param {Function} props.onDateChange

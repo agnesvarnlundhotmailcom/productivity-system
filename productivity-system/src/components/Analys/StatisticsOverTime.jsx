@@ -5,7 +5,7 @@ import "./StatisticsOverTime.css";
 
 /**
  * Den här komponenten ritar upp ett diagram som visar hur mycket man har jobbat och hur energin varit de senaste 7 dagarna.
- * * @component
+ * @component
  */
 const StatisticsOverTime = () => {
   const { sessions = [] } = useSession() || {};
