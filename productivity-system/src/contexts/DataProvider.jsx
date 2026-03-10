@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { DataContext } from "./DataContext";
 
+// Nyckeln som används för att spara och hitta vår data i webbläsarens minne
 const STORAGE_KEY = "boiler_app_data";
 
+// Standardvärden som används om det är första gången appen startas
 const defaultData = {
   settings: {
     theme: "light",
@@ -13,10 +15,17 @@ const defaultData = {
   energyLogs: [] 
 };
 
+/**
+ * Provider-komponent som omsluter hela appen.
+ * Den sköter allt som har med lagring och uppdatering av användarens data att göra.
+ * @component
+ */
 export const DataProvider = ({ children }) => {
+  // Initierar state genom att försöka läsa från localStorage
   const [data, setData] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
+      // Om det finns sparad data, omvandla den från text till objekt, annars använd standardvärden
       return saved ? JSON.parse(saved) : defaultData;
     } catch (error) {
       console.error("Kunde inte ladda data från localStorage", error);
@@ -24,12 +33,17 @@ export const DataProvider = ({ children }) => {
     }
   });
 
-  // Sparar automatiskt till localStorage vid varje ändring
+  /**
+   * En "Side Effekt" som ser till att varje gång 'data' ändras i appen, sparas den senaste versionen ner till webbläsarens minne (localStorage).
+   */
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data]);
 
-  
+  /**
+   * Sparar en ny mätning av energinivå med nuvarande tidpunkt.
+   * @param {number} level - Energinivån.
+   */
   const addEnergyLog = useCallback((level) => {
     setData(prev => ({
       ...prev,
@@ -44,7 +58,11 @@ export const DataProvider = ({ children }) => {
     }));
   }, []);
 
-  // Funktioner för schemaläggning
+  /**
+   * Tar bort ett specifikt pass eller händelse från schemat för en viss dag.
+   * @param {string} dataKey - Datumet det gäller.
+   * @param {number|string} itemId - Unikt ID för saken som ska bort.
+   */
   const deleteScheduleItem = useCallback((dayKey, itemId) => {
     setData(prev => {
       const dayData = prev[dayKey];
@@ -60,6 +78,9 @@ export const DataProvider = ({ children }) => {
     });
   }, []);
 
+  /**
+   * Uppdaterar information i ett befintligt schema-objekt.
+   */
   const updateScheduleItem = useCallback((dayKey, itemId, updates) => {
     setData(prev => ({
       ...prev,
@@ -72,6 +93,9 @@ export const DataProvider = ({ children }) => {
     }));
   }, []);
 
+  /**
+   * Växlar status (klar/inte klar) på en specifik under-uppgift i schemat.
+   */
   const toggleScheduleTask = useCallback((dayKey, itemId, taskId) => {
     setData(prev => {
       const dayData = prev[dayKey] || { schedule: [] };
@@ -88,6 +112,9 @@ export const DataProvider = ({ children }) => {
     });
   }, []);
 
+  /**
+   * Nollställer statistik över arbetstid och sessioner 
+   */
   const resetStats = useCallback(() => {
     setData(prev => ({
       ...prev,
