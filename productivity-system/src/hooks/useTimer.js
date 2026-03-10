@@ -1,6 +1,32 @@
 import { useEffect, useContext } from 'react';
 import { DataContext } from "../contexts/DataContext";
 
+/**
+ * Hook för att hantera en flow/pomodoro-timer som uppdaterar arbets- och paustid.
+ *
+ * @param {boolean} isRunning - Anger om timern är aktiv eller pausad.
+ * @param {string} mode - Timerläget: "work" för arbetstid eller "break" för paustid.
+ *
+ * @description
+ * Uppdaterar DataContext med ökad tid baserat på läget. När arbetstiden når måltiden (activeTaskDuration),
+ * stoppas timern automatiskt. Timern uppdateras varje sekund när den är aktiv.
+ *
+ * @example
+ * function TimerComponent() {
+ *   const { settings } = useData();
+ *   const [isRunning, setIsRunning] = useState(false);
+ *   const [mode, setMode] = useState("work");
+ *
+ *   useFlowTimer(isRunning, mode);
+ *
+ *   return (
+ *     <div>
+ *       <p>Arbetstid: {settings.secondsWork}s</p>
+ *       <p>Paustid: {settings.secondsBreak}s</p>
+ *     </div>
+ *   );
+ * }
+ */
 export function useFlowTimer(isRunning, mode) {
   const { setData } = useContext(DataContext);
 

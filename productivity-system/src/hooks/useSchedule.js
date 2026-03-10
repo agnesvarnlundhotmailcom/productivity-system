@@ -2,6 +2,30 @@
 import { useContext } from 'react';
 import { DataContext } from "../contexts/DataContext";
 
+/**
+ * Hook för att hantera schemaaktiviteter för ett specifikt datum.
+ *
+ * @param {Date|string} valtDatum - Det valda datumet för schemat (konverteras till 'sv-SE' format).
+ *
+ * @returns {Object} Ett objekt med schemahanteringsfunktioner och data:
+ * @returns {Array} activities - Lista över aktiviteter för det valda datumet.
+ * @returns {Function} handleAdd - Funktion för att lägga till en ny aktivitet.
+ * @returns {Function} handleDelete - Funktion för att ta bort en aktivitet (tar id som parameter).
+ * @returns {Function} handleUpdate - Funktion för att uppdatera en aktivitet (tar id och ändringar som parametrar).
+ * @returns {string} dateKey - Datumnyckeln i 'sv-SE' format.
+ *
+ * @example
+ * function ScheduleComponent() {
+ *   const { activities, handleAdd, handleDelete, handleUpdate } = useSchedule(new Date());
+ *   return (
+ *     <div>
+ *       {activities.map(activity => (
+ *         <div key={activity.id}>{activity.name}</div>
+ *       ))}
+ *     </div>
+ *   );
+ * }
+ */
 export function useSchedule(valtDatum) {
   const { data, setData, updateScheduleItem } = useContext(DataContext);
 
