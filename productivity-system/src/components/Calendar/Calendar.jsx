@@ -25,7 +25,7 @@ export default function Calendar({ selectedTs, onDateChange }) {
     <section className="calendar-card">
       <header className="calendar-header">
         <div className="calendar-title-group">
-          <CalendarIcon size={32} className="calendar-main-icon" />
+          <CalendarIcon size={30} className="calendar-main-icon" />
           <div className="calendar-labels">
             <span className="label-month">{monthLabel}</span>
             <span className="label-year">{yearLabel}</span>
