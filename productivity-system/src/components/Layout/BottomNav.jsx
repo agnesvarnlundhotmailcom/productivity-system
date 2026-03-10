@@ -19,6 +19,7 @@ const BottomNav = () => {
 
   return (
     <nav className="bottom-nav">
+      {/* eslint-disable-next-line no-unused-vars */}
       {navItems.map(({ path, icon: Icon, label }) => (
         <Link
           key={path}
