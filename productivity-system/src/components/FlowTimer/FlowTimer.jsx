@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useRef } from "react";
 import "./FlowTimer.css"; 
 import { Play, Pause, RotateCcw, Coffee } from "lucide-react";
 import { useFocusMode } from "../../contexts/FocusModeContext";
@@ -30,11 +30,35 @@ export default function FlowTimer() {
     setActiveModeId 
   } = useFocusMode();
   
-  const { addSession } = useSession(); 
+  const { addSession } = useSession();
   // Håller koll på om vi ska visa den stora rutan för att välja energi
   const [showEnergyModal, setShowEnergyModal] = useState(false);
   // Räknar ut hur många sekunder vi siktar på (t.ex 25 min * 60)
   const targetSeconds = (activeMode.defaultDuration || 0) * 60;
+  // Ref för att spara när fliken doldes
+  const backgroundTimeRef = useRef(null);
+
+  /**
+   * Hantera när användaren byter flik/fönster eller går till annan sida
+   */
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        // Spara tidpunkten när fliken döljs
+        backgroundTimeRef.current = Date.now();
+      } else if (document.visibilityState === "visible" && isRunning && backgroundTimeRef.current) {
+        // Räkna ut hur länge vi var borta
+        const spentAway = Math.floor((Date.now() - backgroundTimeRef.current) / 1000);
+        if (spentAway > 0) {
+          setSecondsElapsed(prev => prev + spentAway);
+        }
+        backgroundTimeRef.current = null;
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [isRunning, setSecondsElapsed]);
 
 /**
  * Stoppar klockan och visar rutan där man loggar sin energi.
