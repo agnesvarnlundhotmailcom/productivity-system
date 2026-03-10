@@ -9,7 +9,8 @@ export default function UserLogin() {
   const navigate = useNavigate();
 
   const [isRegisterMode, setIsRegisterMode] = useState(false);
-  const [username, setUsername] = useState(""); // NYTT: State för användarnamn
+  const [username, setUsername] = useState("");
+  // NYTT: State för användarnamn
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
