@@ -85,9 +85,9 @@ Appen har ett begränsat globalt state. Context API räcker gott och hållet uta
 `userLogin.tsx` är den enda filen skriven i TypeScript. Resten av projektet använder JavaScript med JSX.
 
 #### Externa API:er
-| API | Används för |
-|-----|------------|
-| `Nager.Date` (öppet API) | Hämtar svenska helgdagar per år via `calendarApi.jsx` |
+| API | Status | Används för |
+|-----|--------|------------|
+| `Nager.Date` (öppet API) | Ej inkopplad | Finns implementerad i `calendarApi.jsx` men används inte ännu i appen. Tanken är att hämta svenska helgdagar per år och visa dem i kalendern. |
 
 ---
 
@@ -165,7 +165,7 @@ src/
 │   ├── StatisticsOverTimePage.jsx ← /stats
 │   └── UserLoginPage.jsx          ← /login
 ├── services/
-│   └── calendarApi.jsx            ← Hämtar svenska helgdagar via Nager.Date API
+│   └── calendarApi.jsx            ← Implementering för Nager.Date API (ej inkopplad ännu)
 ├── App.jsx                        ← Rotkomponent – providers, routes, layout
 ├── App.css
 └── main.jsx                       ← Entry point – BrowserRouter mountas här
