@@ -203,4 +203,5 @@ src/
 ---
 
 *Dokumentationen underhålls på branchen `docs/documentation-agent` och mergas till `main` via Pull Request.*
+git checkout origin/main -- docs/overview.md
 *Mappstrukturen uppdateras automatiskt av `.github/agenter/generate-structure.js` vid varje push till `main`.*
