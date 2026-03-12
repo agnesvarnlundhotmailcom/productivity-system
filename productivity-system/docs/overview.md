@@ -8,20 +8,49 @@ Productivity System är en webbaserad app som hjälper dig att strukturera din d
 
 ### Vad kan du göra i appen?
 
-#### ⏱️ Flow Timer
-Starta fokussessioner inspirerade av Pomodoro-metoden. Timern hjälper dig att arbeta i koncentrerade intervall med pauser emellan. Varje session sparas automatiskt så du kan följa din progress.
+#### ⏱️ Flow Timer (`/flow`)
+Starta fokussessioner med en inbyggd timer. Du väljer ett fokusläge – **Deep Work**, **Möte** eller **Paus** – och timern räknar upp mot det valda intervallet. När tiden är ute loggas sessionen automatiskt och du får fylla i din energinivå.
 
-#### 📅 Kalender
-Se och planera din vecka eller månad. Du kan växla mellan **veckovy** och **månadsvy** och klicka på ett datum för att se vad som är inplanerat den dagen. Svenska helgdagar visas automatiskt.
+Du kan när som helst:
+- **Pausa och återuppta** timern
+- **Snabbväxla** direkt till paus (och tillbaka) utan att starta om – det du hunnit med sparas
+- **Stoppa manuellt** och logga sessionen i förtid
 
-#### 📋 Historik
-Se alla dina tidigare fokussessioner. Här kan du följa hur mycket du jobbat och när du är som mest produktiv.
+Under timern ser du även **dagens schema** med dina inplanerade aktiviteter och kan bocka av dem direkt från timervyn.
 
-#### 📊 Statistik
-Visualisering av din produktivitet över tid. Hjälper dig att se mönster och trender i ditt arbete.
+#### 🎯 Fokuslägen
+I högerkolumnen på timersidan väljer du vilket läge du befinner dig i. Varje läge har ett eget tidsintervall som du kan anpassa i inställningarna.
+
+| Läge | Standardtid | Syfte |
+|------|-------------|-------|
+| Deep Work | 25 min | Intensivt fokusarbete utan avbrott |
+| Möte | 45 min | Samarbete och kommunikation |
+| Paus | 5 min | Vila och återhämtning |
+
+#### ⚙️ Inställningar
+Öppnas via kugghjulet i headern. Här kan du:
+- **Justera tidsintervall** för varje fokusläge med en slider (5–120 min för Deep Work och Möte, 1–60 min för Paus)
+- **Radera all sparad data** om du vill börja om från noll (obs: kan inte ångras)
+
+All data sparas lokalt i din webbläsare – inget skickas till någon server.
+
+#### 📅 Kalender (`/calendar`)
+Planera din dag, vecka eller månad. Du kan:
+- Växla mellan **veckovy** och **månadsvy**
+- Klicka på ett datum för att se och redigera schemat för den dagen
+- Lägga till **schemablock** med titel, tid och egna deluppgifter (checklistor) kopplade till blocket
+- Hantera din **att-göra-lista** för varje dag separat
+
+Deluppgifterna i ett schemablock kan bockas av direkt i kalender- och timervyn.
 
 #### ⚡ Energi
-Logga din energinivå under dagen så att du över tid kan förstå när du presterar bäst och när du behöver återhämtning.
+När ett fokuspass avslutas (automatiskt eller manuellt) visas en ruta där du loggar din energinivå. Över tid ger detta dig insikt i när du mår och presterar som bäst.
+
+#### 📋 Historik (`/history`)
+Se alla dina avslutade fokussessioner – vilket läge, hur lång tid och när de ägde rum.
+
+#### 📊 Statistik (`/stats`)
+Visualisering av din produktivitet och dina sessioner över tid.
 
 ---
 
