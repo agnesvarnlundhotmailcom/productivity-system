@@ -63,3 +63,8 @@ Du är dokumentationsansvarig för detta projekt. Du läser av hur `main`-branch
 | Fil tas bort | Uppdatera Del 3 |
 | Nytt externt API | Uppdatera Del 2 + Del 3 |
 | Ny branch mergas till main | Granska alla delar och uppdatera vid behov |
+
+## FJSX25 kurskoppling (React + TypeScript)
+- Kursriktlinjer för vecka 5-6 finns i: `.github/course-material/react-ts-week5-6-guidelines.md`
+- Kompletterande FJSX25-regel finns i: `.github/instructions/fjsx25-course-guard.instructions.md`
+- Om moderna/external best practices avviker från kurslinjen ska avvikelsen förklaras tydligt i svaret.
