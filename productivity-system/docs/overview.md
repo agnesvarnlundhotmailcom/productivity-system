@@ -143,7 +143,8 @@ src/
 │   │   └── EnergyCare.jsx
 │   ├── FlowTimer
 │   │   ├── FlowTimer.css
-│   │   └── FlowTimer.jsx
+│   │   ├── FlowTimer.jsx
+│   │   └── FlowTimer.test.jsx
 │   ├── focusMode
 │   │   ├── FocusModes.css
 │   │   └── FocusModes.jsx
