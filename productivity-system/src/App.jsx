@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { SessionProvider } from "./contexts/SessionContext";
 import Header from "./components/Layout/Header";
 import BottomNav from "./components/Layout/BottomNav";
 import SettingsModal from "./components/Settings/SettingsModal";
@@ -16,7 +15,6 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
-    <SessionProvider>
       <div className="app-container">
         <Header onOpenSettings={() => setSettingsOpen(true)} />
 
@@ -37,6 +35,5 @@ export default function App() {
         <BottomNav />
         <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       </div>
-    </SessionProvider>
   );
 }
