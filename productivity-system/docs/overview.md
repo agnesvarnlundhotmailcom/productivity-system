@@ -122,82 +122,88 @@ Appen har ett begränsat globalt state. Context API räcker gott och hållet uta
 
 ## Mappstruktur
 
-Senast uppdaterad: 2026-03-12
+Senast uppdaterad: 2026-03-16
 
 ```
 src/
-├── components/
-│   ├── Analys/
-│   │   ├── StatisticsOverTime.jsx
-│   │   └── StatisticsOverTime.css
-│   ├── Calendar/
-│   │   ├── Calendar.jsx           ← Visar vecko- eller månadsvy
-│   │   └── Calendar.css
-│   ├── Energy/
-│   │   ├── EnergyModal.jsx
-│   │   └── EnergyModal.css
-│   ├── EnergyCare/
-│   │   ├── EnergyCare.jsx
-│   │   └── EnergyCare.css
-│   ├── FlowTimer/
-│   │   ├── FlowTimer.jsx          ← Fokustimer (Pomodoro-inspirerad)
-│   │   └── FlowTimer.css
-│   ├── focusMode/
-│   │   ├── FocusModes.jsx
-│   │   └── FocusModes.css
-│   ├── Layout/
-│   │   ├── Header.jsx
+├── assets
+│   └── react.svg
+├── components
+│   ├── Analys
+│   │   ├── StatisticsOverTime.css
+│   │   └── StatisticsOverTime.jsx
+│   ├── Calendar
+│   │   ├── Calendar.css
+│   │   └── Calendar.jsx
+│   ├── Energy
+│   │   ├── EnergyModal.css
+│   │   └── EnergyModal.jsx
+│   ├── EnergyCare
+│   │   ├── EnergyCare.css
+│   │   └── EnergyCare.jsx
+│   ├── FlowTimer
+│   │   ├── FlowTimer.css
+│   │   └── FlowTimer.jsx
+│   ├── focusMode
+│   │   ├── FocusModes.css
+│   │   └── FocusModes.jsx
+│   ├── Layout
 │   │   ├── BottomNav.jsx
+│   │   ├── Header.jsx
 │   │   └── Layout.css
-│   ├── Schedule/
+│   ├── Schedule
 │   │   ├── DailySchedule.jsx
 │   │   ├── DashboardSchedule.jsx
 │   │   ├── DashboardSchedule.module.css
+│   │   ├── Schedule.module.css
 │   │   ├── ScheduleForm.jsx
-│   │   ├── ScheduleItem.jsx
-│   │   └── Schedule.module.css
-│   ├── SessionLogs/
+│   │   └── ScheduleItem.jsx
+│   ├── SessionLogs
 │   │   ├── SessionLogs.jsx
 │   │   └── SessionLogs.module.css
-│   ├── Settings/
-│   │   ├── SettingsModal.jsx
-│   │   └── SettingsModal.css
-│   ├── Statistics/
-│   │   ├── Statistics.jsx
-│   │   └── Statistics.css
-│   ├── Taskview/
-│   │   ├── CurrentTaskView.jsx
-│   │   └── CurrentTask.module.css
-│   ├── Theme/
+│   ├── Settings
+│   │   ├── SettingsModal.css
+│   │   └── SettingsModal.jsx
+│   ├── Statistics
+│   │   ├── Statistics.css
+│   │   └── Statistics.jsx
+│   ├── Taskview
+│   │   ├── CurrentTask.module.css
+│   │   └── CurrentTaskView.jsx
+│   ├── Test
+│   │   └── test.jsx
+│   ├── Theme
+│   │   ├── ThemeToggle.css
 │   │   └── ThemeToggle.jsx
-│   ├── ToDo/
+│   ├── ToDo
 │   │   ├── TodoWidget.jsx
 │   │   └── TodoWidget.module.css
-│   └── UserLogin/
-│       ├── userLogin.tsx          ← Enda filen skriven i TypeScript
-│       └── userLogin.css
-├── contexts/
-│   ├── DataContext.jsx            ← Skapar och exporterar DataContext
-│   ├── DataProvider.jsx           ← Hanterar global appdata (schema, todos)
-│   ├── FocusModeContext.jsx       ← Hanterar aktivt fokusläge
-│   ├── SessionContext.jsx         ← Sparar och läser fokussessioner
-│   └── ThemeContext.jsx           ← Hanterar mörkt/ljust tema
-├── hooks/
-│   ├── useCalendar.js             ← Kalenderlogik (vyer, navigering, datumceller)
-│   ├── useData.js                 ← Läser från DataContext
-│   ├── useSchedule.js             ← Schemalogik (lägg till, ta bort händelser)
-│   └── useTimer.js                ← Timerlogik (start, stopp, återställ)
-├── pages/
-│   ├── CalendarPage.jsx           ← /calendar
-│   ├── FlowTimerPage.jsx          ← /flow
-│   ├── SessionLogsPage.jsx        ← /history
-│   ├── StatisticsOverTimePage.jsx ← /stats
-│   └── UserLoginPage.jsx          ← /login
-├── services/
-│   └── calendarApi.jsx            ← Implementering för Nager.Date API (ej inkopplad ännu)
-├── App.jsx                        ← Rotkomponent – providers, routes, layout
+│   └── UserLogin
+│       ├── userLogin.css
+│       └── userLogin.tsx
+├── contexts
+│   ├── DataContext.jsx
+│   ├── DataProvider.jsx
+│   ├── FocusModeContext.jsx
+│   ├── SessionContext.jsx
+│   └── ThemeContext.jsx
+├── hooks
+│   ├── useCalendar.js
+│   ├── useData.js
+│   ├── useSchedule.js
+│   └── useTimer.js
+├── pages
+│   ├── CalendarPage.jsx
+│   ├── FlowTimerPage.jsx
+│   ├── SessionLogsPage.jsx
+│   ├── StatisticsOverTimePage.jsx
+│   └── UserLoginPage.jsx
+├── services
+│   └── calendarApi.jsx
 ├── App.css
-└── main.jsx                       ← Entry point – BrowserRouter mountas här
+├── App.jsx
+├── index.css
+└── main.jsx
 ```
 
 ---
