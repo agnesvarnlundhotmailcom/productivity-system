@@ -170,8 +170,6 @@ src/
 │   ├── Taskview
 │   │   ├── CurrentTask.module.css
 │   │   └── CurrentTaskView.jsx
-│   ├── Test
-│   │   └── test.jsx
 │   ├── Theme
 │   │   ├── ThemeToggle.css
 │   │   └── ThemeToggle.jsx
