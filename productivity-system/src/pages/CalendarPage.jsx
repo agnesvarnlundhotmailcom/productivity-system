@@ -46,7 +46,7 @@ export default function CalendarPage({ selectedDate, setSelectedDate }) {
 
         {/* Höger kolumn: En widget för att hantera dagens att-göra-lista */}
         <div className="todo-wrapper">
-          <TodoWidget />
+          <TodoWidget selectedDate={safeDate} />
         </div>
       </div>
 
