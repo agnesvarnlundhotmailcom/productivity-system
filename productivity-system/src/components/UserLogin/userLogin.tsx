@@ -24,12 +24,13 @@ export default function UserLogin() {
   const navigate = useNavigate();
 
   const [isRegisterMode, setIsRegisterMode] = useState(false);
-  const [username, setUsername] = useState(""); 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   /**
    * Validerar formuläret och returnerar städad data vid godkänd input.
@@ -93,8 +94,8 @@ export default function UserLogin() {
         setStatus("Konto skapat! Kontrollera din mejl för bekräftelse.");
         setIsRegisterMode(false);
       } else {
-        // TODO: Ersätt med riktig login när useAuth/authService finns.
-        navigate("/dashboard");
+          setStatus("Du är inloggad!");
+          setLoginSuccess(true);
       }
     } catch (error: unknown) {
       setStatus(getErrorMessage(error));
@@ -103,8 +104,9 @@ export default function UserLogin() {
     }
   };
 
-  return (
-    <div className="login-wrapper">
+return (
+  <div className="login-wrapper">
+    {!loginSuccess ? (
       <form className="form" onSubmit={handleAuth}>
         <h2>{isRegisterMode ? "Skapa konto" : "Logga in"}</h2>
 
@@ -160,8 +162,13 @@ export default function UserLogin() {
           </button>
         </div>
 
-        {status && <p className="statusInfo">{status}</p>}
+         {status && <p className="statusInfo">{status}</p>}
       </form>
-    </div>
-  );
+    ) : (
+      <div className="success-message">
+        <p>Du är inloggad!</p>
+      </div>
+    )}
+  </div>
+);
 }
