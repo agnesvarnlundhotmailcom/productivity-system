@@ -27,7 +27,6 @@ function getErrorMessage(error: unknown): string {
  * - Validerar input och visar statusmeddelanden.
  * - Efter lyckad login visas ett välkomstmeddelande.
  */
-export default function UserLogin() { ... }
 export default function UserLogin() {
   const navigate = useNavigate();
 
