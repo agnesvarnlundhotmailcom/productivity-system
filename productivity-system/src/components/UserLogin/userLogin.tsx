@@ -3,51 +3,68 @@ import { useNavigate } from "react-router-dom";
 import "./userLogin.css";
 
 type ValidatedForm = {
-  cleanEmail: string;
+  cleanInput: string;
   password: string;
   username: string;
 };
 
+
 /**
  * Returnerar ett användarvänligt felmeddelande oavsett feltyp.
+ * @param {unknown} error - Det fel som fångats.
+ * @returns {string} - Ett användarvänligt felmeddelande.
  */
+
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
   return "Något gick fel. Försök igen.";
 }
 
+
 /**
- * Login/registreringsformulär.
- * Hanterar lokal validering och växling mellan inloggning och registrering.
+ * UserLogin-komponenten hanterar login och registrering.
+ * - Visar formulär för login eller registrering beroende på state.
+ * - Validerar input och visar statusmeddelanden.
+ * - Efter lyckad login visas ett välkomstmeddelande.
  */
+export default function UserLogin() { ... }
 export default function UserLogin() {
   const navigate = useNavigate();
 
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [input, setInput] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
 
-  /**
-   * Validerar formuläret och returnerar städad data vid godkänd input.
-   * Returnerar null om något fält är ogiltigt.
-   */
+/**
+ * Validerar formuläret för login eller registrering.
+ * @returns {ValidatedForm | null} - Städad data om validering lyckas, annars null.
+ */
   const validateForm = (): ValidatedForm | null => {
-    const cleanEmail = email.trim();
+    const cleanInput = input.trim();
     const cleanUsername = username.trim();
-
-    if (isRegisterMode && cleanUsername.length < 2) {
-      setStatus("Användarnamnet är för kort.");
-      return null;
-    }
-
-    if (!cleanEmail.includes("@")) {
-      setStatus("Ange en giltig e-postadress.");
-      return null;
+    const cleanEmail = email.trim();
+// Kontrollera att användarnamnet är tillräckligt långt vid registrering
+    if (isRegisterMode) {
+      if (cleanUsername.length < 2) {
+        setStatus("Användarnamnet är för kort.");
+        return null;
+      }
+      if (!cleanEmail.includes("@")) {
+        setStatus("Ange en giltig e-postadress.");
+        return null;
+      }
+    } else {
+      // Om login: kontrollera att input är tillräckligt långt
+      if (cleanInput.length < 2) {
+        setStatus("Ange e-post eller användarnamn.");
+        return null;
+      }
     }
 
     if (password.length < 6) {
@@ -60,12 +77,16 @@ export default function UserLogin() {
       return null;
     }
 
-    return { cleanEmail, password, username: cleanUsername };
+    // Vid login kan användaren ange både e-post eller användarnamn, därför används cleanInput här.
+    return isRegisterMode
+      ? { cleanInput: cleanEmail, password, username: cleanUsername }
+      : { cleanInput, password, username: "" };
   };
 
-  /**
-   * Växlar mellan login/register och rensar formulärstatus.
-   */
+/**
+ * Hanterar submit för login och registrering.
+ * @param {React.FormEvent} event - Formulärets submit-event.
+ */
   const handleModeToggle = () => {
     setIsRegisterMode((prev) => !prev);
     setStatus("");
@@ -75,9 +96,11 @@ export default function UserLogin() {
     setConfirmPassword("");
   };
 
-  /**
-   * Hanterar submit för både login och registrering.
-   */
+
+/**
+ * Hanterar submit för login och registrering.
+ * @param {React.FormEvent} event - Formulärets submit-event.
+ */
   const handleAuth = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -94,7 +117,8 @@ export default function UserLogin() {
         setStatus("Konto skapat! Kontrollera din mejl för bekräftelse.");
         setIsRegisterMode(false);
       } else {
-          setStatus("Du är inloggad!");
+        // Visa vem som är inloggad (kan vara e-post eller användarnamn)
+          setStatus(`Välkommen, {input}!`);
           setLoginSuccess(true);
       }
     } catch (error: unknown) {
@@ -110,25 +134,36 @@ return (
       <form className="form" onSubmit={handleAuth}>
         <h2>{isRegisterMode ? "Skapa konto" : "Logga in"}</h2>
 
-        {isRegisterMode && (
+
+        {isRegisterMode ? (
+          <>
+            <input
+              className="input"
+              type="text"
+              placeholder="Användarnamn"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <input
+              className="input"
+              type="email"
+              placeholder="E-post"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </>
+        ) : (
           <input
             className="input"
             type="text"
-            placeholder="Användarnamn"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="E-post eller användarnamn"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             required
           />
         )}
-
-        <input
-          className="input"
-          type="email"
-          placeholder="E-post"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
 
         <input
           className="input"
@@ -166,7 +201,7 @@ return (
       </form>
     ) : (
       <div className="success-message">
-        <p>Du är inloggad!</p>
+        <p>Du är inloggad som {input}!</p>
       </div>
     )}
   </div>
