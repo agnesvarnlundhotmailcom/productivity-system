@@ -59,7 +59,7 @@ export function useCalendar(selectedTs) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const currentDate = new Date(currentTs);
+  const currentDate = useMemo(() => new Date(currentTs), [currentTs]);
   const selectedDate = new Date(selectedTs);
 
   // Beräknar veckans dagar (mån-sön)
