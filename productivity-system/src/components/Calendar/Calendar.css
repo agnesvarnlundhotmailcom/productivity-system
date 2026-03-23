@@ -304,3 +304,9 @@
   color: crimson;
   font-weight: 700;
 }
+
+@media (max-width: 600px) {
+  .holiday-div {
+    display: none;
+  }
+}
