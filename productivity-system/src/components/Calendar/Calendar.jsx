@@ -28,10 +28,16 @@ export default function Calendar({ selectedTs, onDateChange }) {
    * Skapar en snabbuppslagskarta för helgdagar:
    * "YYYY-MM-DD" => holiday-objekt
    * Används för att snabbt avgöra om ett datum är en helgdag.
+   * Fixar tidzonsproblem genom att alltid skapa datum explicit.
    */
   const holidayByDate = useMemo(() => {
     const map = new Map();
-    holidays.forEach(h => map.set(h.date, h));
+    holidays.forEach(h => {
+      // Skapa alltid datumsträng i lokal tid (YYYY-MM-DD)
+      const [year, month, day] = h.date.split('-');
+      const localIso = new Date(Number(year), Number(month) - 1, Number(day)).toISOString().slice(0, 10);
+      map.set(localIso, h);
+    });
     return map;
   }, [holidays]);
 
