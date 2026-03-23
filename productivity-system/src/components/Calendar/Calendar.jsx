@@ -5,23 +5,29 @@ import { useCalendar, sameDay } from "../../hooks/useCalendar";
 import { useMemo } from "react";
 
 /**
- * En kalenderkomponent som låter användaren välja datum.
- * Den kan visa antingen en hel månad eller bara den nuvarande veckan.
+ * Kalenderkomponent för att visa och välja datum.
+ *
+ * Funktioner:
+ * - Visar antingen en hel månad eller aktuell vecka.
+ * - Markerar helgdagar (röda dagar) och visar deras namn.
+ * - Låter användaren navigera mellan månader/veckor och välja dagens datum.
+ *
  * @component
  * @param {Object} props
- * @param {number} props.selectedTs
- * @param {Function} props.onDateChange
+ * @param {number} props.selectedTs - Tidsstämpel (ms) för valt datum
+ * @param {Function} props.onDateChange - Callback när användaren väljer nytt datum (får ny tidsstämpel)
  */
 export default function Calendar({ selectedTs, onDateChange }) {
-  // Hooks: Hämta kalenderdata och helgdagar
+  // Hämta kalenderdata och helgdagar via custom hook
   const {
     view, setView, currentDate, selectedDate,
     weekDays, monthCells, navigate, DOW_SV, holidays, loading, error
   } = useCalendar(selectedTs);
 
   /**
-   * Skapa en lookup-map för helgdagar: "YYYY-MM-DD" => holiday-objekt
-   * Gör det snabbt att slå upp om ett datum är en helgdag.
+   * Skapar en snabbuppslagskarta för helgdagar:
+   * "YYYY-MM-DD" => holiday-objekt
+   * Används för att snabbt avgöra om ett datum är en helgdag.
    */
   const holidayByDate = useMemo(() => {
     const map = new Map();
@@ -29,21 +35,21 @@ export default function Calendar({ selectedTs, onDateChange }) {
     return map;
   }, [holidays]);
 
-  // Hantera laddning och fel
+  // Hantera laddningsstatus och eventuella fel vid hämtning av helgdagar
   let status = null;
   if (loading) status = <p>Laddar helgdagar…</p>;
   if (error) status = <p className="calendar-error">Fel: {error}</p>;
 
-  // Skapa snygga texter för månad och år på svenska
+  // Formatera månad och år på svenska för kalenderhuvudet
   const monthLabel = currentDate.toLocaleString("sv-SE", { month: "long" });
   const yearLabel = currentDate.toLocaleString("sv-SE", { year: "numeric" });
 
-  // Rendera kalendern
+  // Renderar kalendern med rätt vy (vecka/månad)
   return (
     <section className="calendar-card">
-      {/* Visa laddningsindikator eller felmeddelande */}
+      {/* Laddningsindikator eller felmeddelande */}
       {status}
-      {/* Kalenderhuvud med månad, år och navigering */}
+      {/* Kalenderhuvud: månad, år och navigeringsknappar */}
       <header className="calendar-header">
         <div className="calendar-title-group">
           <CalendarIcon size={30} className="calendar-main-icon" />
@@ -86,14 +92,14 @@ export default function Calendar({ selectedTs, onDateChange }) {
                 className={`day-pill week-pill${isSelected ? " is-selected" : ""}`}
                 onClick={() => onDateChange(day.date.getTime())}
               >
-                {/* Helgdag överst */}
+                {/* Helgdagens namn överst (eller tom rad för layout) */}
                 {holiday ? (
                   <div className="holiday-div">{holiday.localName}</div>
                 ) : (
                   <div className="holiday-div hidden">&nbsp;</div>
                 )}
                 <span className="day-name">{day.dow}</span>
-                <span className={`month-date${holiday ? " is-holiday-date" : ""}`}>{day.dom}</span>
+                <span className={`day-date${holiday ? " is-holiday-date" : ""}`}>{day.dom}</span>
                 {/* Visa en liten prick om dagen är vald */}
                 {isSelected && <span className="active-dot" />}
               </button>
@@ -103,7 +109,7 @@ export default function Calendar({ selectedTs, onDateChange }) {
       ) : (
         <div className="month-container">
           <div className="month-header">
-            {/* Rendera veckodagsnamn */}
+            {/* Rendera veckodagsnamn (Mån, Tis, ...) */}
             {DOW_SV.map(d => <div key={d} className="month-dow-cell">{d}</div>)}
           </div>
           <div className="month-grid">
@@ -120,13 +126,13 @@ export default function Calendar({ selectedTs, onDateChange }) {
                   onClick={() => onDateChange(d.getTime())}
                   title={holiday ? holiday.localName : undefined}
                 >
-                  {/* Visa namn på helgdag överst */}
+                  {/* Helgdagens namn överst (eller tom rad för layout) */}
                   {holiday ? (
                     <div className="holiday-div">{holiday.localName}</div>
                   ) : (
                     <div className="holiday-div hidden">&nbsp;</div>
                   )}
-                  <span className="month-date">{d.getDate()}</span>
+                  <span className={`day-date${holiday ? " is-holiday-date" : ""}`}>{d.getDate()}</span>
                 </button>
               );
             })}

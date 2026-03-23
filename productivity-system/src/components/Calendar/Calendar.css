@@ -253,7 +253,7 @@
   min-height: 1.2em;
 }
 
-.month-date {
+.day-date {
   display: flex;
   align-items: center;
   justify-content: center;
