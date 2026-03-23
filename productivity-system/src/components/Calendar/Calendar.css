@@ -1,3 +1,6 @@
+.holiday-div.hidden {
+  visibility: hidden;
+}
 .week-pill {
   display: flex;
   flex-direction: column;
@@ -71,9 +74,9 @@
     font-size: 16px;
     font-weight: 500;
     text-transform: capitalize;
-}
+  }
 
-.label-year {
+  .label-year {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -81,16 +84,16 @@
     font-size: 16px;
     font-weight: 500;
     text-transform: capitalize;
-}
+  }
 
-/* --- ÅTGÄRDSKNAPPAR (Idag, Vecka/Månad) --- */
-.calendar-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+  /* --- ÅTGÄRDSKNAPPAR (Idag, Vecka/Månad) --- */
+  .calendar-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-.icon-btn, .pill-btn {
+  .icon-btn, .pill-btn {
   border: 1px solid var(--surface-3);
   background: var(--surface-1);
   color: var(--text-primary);
@@ -238,15 +241,10 @@
 }
 
 /* Helgdag i månadsvyn */
-.month-cell.is-holiday {
-  color: crimson;
-  font-weight: 600;
-}
 
 .holiday-div {
   display: block;
   font-size: 0.8em;
-  color: crimson;
   margin-top: 0;
   margin-bottom: 0;
   font-weight: 600;
@@ -301,4 +299,8 @@
   .day-number {
     font-size: 1rem;
   }
+}
+.is-holiday-date {
+  color: crimson;
+  font-weight: 700;
 }

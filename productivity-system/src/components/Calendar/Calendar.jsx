@@ -90,10 +90,10 @@ export default function Calendar({ selectedTs, onDateChange }) {
                 {holiday ? (
                   <div className="holiday-div">{holiday.localName}</div>
                 ) : (
-                  <div className="holiday-div" style={{ visibility: "hidden" }}>&nbsp;</div>
+                  <div className="holiday-div hidden">&nbsp;</div>
                 )}
                 <span className="day-name">{day.dow}</span>
-                <span className="month-date">{day.dom}</span>
+                <span className={`month-date${holiday ? " is-holiday-date" : ""}`}>{day.dom}</span>
                 {/* Visa en liten prick om dagen är vald */}
                 {isSelected && <span className="active-dot" />}
               </button>
@@ -124,7 +124,7 @@ export default function Calendar({ selectedTs, onDateChange }) {
                   {holiday ? (
                     <div className="holiday-div">{holiday.localName}</div>
                   ) : (
-                    <div className="holiday-div" style={{ visibility: "hidden" }}>&nbsp;</div>
+                    <div className="holiday-div hidden">&nbsp;</div>
                   )}
                   <span className="month-date">{d.getDate()}</span>
                 </button>
