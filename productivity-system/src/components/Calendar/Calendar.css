@@ -1,3 +1,17 @@
+.week-pill {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 2px;
+}
+.week-pill {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 2px;
+}
 /* Gör så att helgdagsnamnet alltid hamnar på en ny rad ovanför datumet */
 .holiday-div {
   display: block;

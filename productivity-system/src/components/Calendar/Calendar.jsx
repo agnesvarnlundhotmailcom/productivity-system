@@ -78,14 +78,22 @@ export default function Calendar({ selectedTs, onDateChange }) {
           {weekDays.map((day) => {
             // Markera vald dag
             const isSelected = sameDay(day.date, selectedDate);
+            const iso = day.date.toISOString().slice(0, 10); // YYYY-MM-DD
+            const holiday = holidayByDate.get(iso);
             return (
               <button
                 key={day.date.toISOString()}
-                className={`day-pill ${isSelected ? "is-selected" : ""}`}
+                className={`day-pill week-pill${isSelected ? " is-selected" : ""}`}
                 onClick={() => onDateChange(day.date.getTime())}
               >
+                {/* Helgdag överst */}
+                {holiday ? (
+                  <div className="holiday-div">{holiday.localName}</div>
+                ) : (
+                  <div className="holiday-div" style={{ visibility: "hidden" }}>&nbsp;</div>
+                )}
                 <span className="day-name">{day.dow}</span>
-                <span className="day-number">{day.dom}</span>
+                <span className="month-date">{day.dom}</span>
                 {/* Visa en liten prick om dagen är vald */}
                 {isSelected && <span className="active-dot" />}
               </button>
