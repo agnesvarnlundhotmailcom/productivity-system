@@ -32,7 +32,7 @@ export default function Calendar({ selectedTs, onDateChange }) {
   // Hantera laddning och fel
   let status = null;
   if (loading) status = <p>Laddar helgdagar…</p>;
-  if (error) status = <p style={{ color: 'crimson' }}>Fel: {error}</p>;
+  if (error) status = <p className="calendar-error">Fel: {error}</p>;
 
   // Skapa snygga texter för månad och år på svenska
   const monthLabel = currentDate.toLocaleString("sv-SE", { month: "long" });
@@ -108,14 +108,17 @@ export default function Calendar({ selectedTs, onDateChange }) {
               return (
                 <button
                   key={idx}
-                  className={`month-cell ${isOutside ? "is-outside" : ""} ${isSelected ? "is-selected" : ""}`}
+                  className={`month-cell${isOutside ? " is-outside" : ""}${isSelected ? " is-selected" : ""}${holiday ? " is-holiday" : ""}`}
                   onClick={() => onDateChange(d.getTime())}
-                  style={holiday ? { color: "crimson", fontWeight: 600 } : {}}
                   title={holiday ? holiday.localName : undefined}
                 >
-                  {d.getDate()}
-                  {/* Visa ikon för helgdag */}
-                  {holiday && <span style={{ marginLeft: 4 }}>🎉</span>}
+                  {/* Visa namn på helgdag överst */}
+                  {holiday ? (
+                    <div className="holiday-div">{holiday.localName}</div>
+                  ) : (
+                    <div className="holiday-div" style={{ visibility: "hidden" }}>&nbsp;</div>
+                  )}
+                  <span className="month-date">{d.getDate()}</span>
                 </button>
               );
             })}
