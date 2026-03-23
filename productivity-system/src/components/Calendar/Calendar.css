@@ -261,7 +261,6 @@
   font-size: 1.1em;
   font-weight: 700;
   width: 100%;
-  margin-bottom: 20px;
 }
 
 /* --- RESPONSIVITET --- */
@@ -309,5 +308,11 @@
 @media (max-width: 600px) {
   .holiday-div {
     display: none;
+  }
+}
+
+@media (min-width: 601px) {
+  .day-date {
+    margin-bottom: 16px;
   }
 }

@@ -8,7 +8,8 @@
     max-width: 100%;
     font-family: 'Inter', sans-serif;
     margin-bottom: var(--space-md);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    text-align: left;
 }
   
 /* Headern med titel och räknare */
