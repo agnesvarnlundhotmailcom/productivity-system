@@ -108,27 +108,34 @@ export function useCalendar(selectedTs) {
     setCurrentTs(d.getTime());
   };
 
+
+
+ // useEffect körs varje gång currentDate ändras (dvs när användaren byter vecka/månad).
 useEffect(() => {
+  // Skapar en AbortController för att kunna avbryta API-anropet om komponenten avmonteras eller currentDate ändras snabbt.
   const controller = new AbortController();
   const year = currentDate.getFullYear();
 
+  // Funktion som hämtar helgdagar för det aktuella året.
   async function fetchData() {
-    setLoading(true);
-    setError(null);
+    setLoading(true);      // Visar laddningsindikator i UI.
+    setError(null);        // Nollställer eventuella tidigare fel.
     try {
+      // Hämtar helgdagar från API:t och skickar med abort-signal.
       const data = await fetchPublicHolidaysSE(year, controller.signal);
-      setHolidays(data);
+      setHolidays(data);   // Sparar helgdagarna i state.
     } catch (e) {
+      // Om felet inte beror på att anropet avbröts, visa felmeddelande.
       if (e.name !== "AbortError") setError(String(e.message || e));
     } finally {
-      setLoading(false);
+      setLoading(false);   // Döljer laddningsindikatorn.
     }
   }
 
-  fetchData();
+  fetchData(); // Startar hämtningen av helgdagar.
+  // Om komponenten avmonteras eller currentDate ändras innan anropet är klart, avbryt API-anropet.
   return () => controller.abort();
 }, [currentDate]);
-
 
 
   return {
