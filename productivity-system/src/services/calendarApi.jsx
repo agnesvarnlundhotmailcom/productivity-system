@@ -1,4 +1,3 @@
-// Hämtar svenska helgdagar för ett visst år, returnerar en array [{date, localName, ...}]
 import axios from "axios";
 
 // Hämtar svenska helgdagar för ett visst år, returnerar en array [{date, localName, ...}]
