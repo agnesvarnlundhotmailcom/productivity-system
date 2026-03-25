@@ -16,7 +16,8 @@ Under vecka 6 började vi använda TypeScript. Vi installerade det och gjorde gr
 
 Vecka 8 handlade om routing. Vi använde React Router med BrowserRouter, Routes och Route för att skapa olika sidor som timer, kalender, historik, statistik och login. Startsidan skickades automatiskt vidare till timern. Layout-komponenter låg utanför routes så att de alltid visades. Vi använde inte nested routes eller URL-parametrar, utan höll det enkelt.
 
-Under vecka 10 arbetade vi med testning. Vi installerade Jest och React Testing Library och skrev tester i egna brancher. Vi testade bland annat FlowTimer och UserLogin samt funktioner med custom hooks genom att mocka data. Vi testade även användarinteraktioner genom att simulera klick. Vi använde inget API. En viktig lärdom var att testning kräver många dependencies och en del konfiguration.
+Under vecka 10 arbetade vi med testning. Vi installerade Jest och React Testing Library och skrev tester i egna brancher. Vi testade bland annat FlowTimer och UserLogin samt funktioner med custom hooks genom att mocka data. Vi testade även användarinteraktioner genom att simulera klick. En viktig lärdom var att testning kräver många dependencies och en del konfiguration.
+
+API (Nager.Date) lade vi in som extra på slutet för att få in de svenska röda dagarna i kalendern, så att man förhindrar situationen "att jobba" istället för att vara ledig med familjen.
 
 Avslutningsvis fungerade vår tidsplanering bra och hjälpte oss att hålla struktur. Nästa gång hade vi velat arbeta mer med daily stand-ups och följa agila metoder mer konsekvent. Vi utvecklade särskilt våra tekniska kunskaper inom att dela upp arbete och arbeta med brancher och features. Teamarbetet fungerade bra, och vi hade ett flexibelt samarbete där alla bidrog och hjälpte varandra.
-
